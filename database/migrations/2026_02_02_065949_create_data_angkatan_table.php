@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_angkatan', function (Blueprint $table) {
-            $table->id();
+            $table->integer('angkatan', 3)->primary();
+            $table->integer('tahun_masuk', 4);
+            $table->integer('tahun_lulus', 4);
             $table->timestamps();
         });
     }
