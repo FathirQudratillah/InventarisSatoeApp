@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('peminjaman_barang', function (Blueprint $table) {
             $table->id();
+            $table->char('id_peminjaman', 8)->primary();
+            $table->string('status_peminjaman', 16);
+            $table->date('tanggal_peminjaman');
+            $table->date('tanggal_pengembalian');
             $table->timestamps();
         });
     }
