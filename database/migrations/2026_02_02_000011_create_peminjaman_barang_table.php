@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('peminjaman_barang', function (Blueprint $table) {
             $table->char('id_peminjaman', 8)->primary();
+            $table->char('user_id', 10);
+            $table->char('data_admin', 18);
 
             $table->foreign('user_id')
             ->references('user_id')
-            ->on('peminjaman_barang')
+            ->on('data_akun')
             ->cascadeOnDelete();
 
             $table->foreign('data_admin')
-            ->references('data_admin')
-            ->on('peminjaman_barang')
+            ->references('nip')
+            ->on('data_admin')
             ->cascadeOnDelete();
 
             $table->string('status_peminjaman', 16);
