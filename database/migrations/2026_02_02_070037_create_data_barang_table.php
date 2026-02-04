@@ -19,6 +19,21 @@ return new class extends Migration
             $table->string('kondisi_barang', 8);
             $table->text('keterangan');
             $table->timestamps();
+
+            $table->foreign('id_ruang')
+                ->references('id_ruang')
+                ->on('data_ruang')
+                ->cascadeOnDelete();
+                
+            $table->foreign('id_kategori')
+                ->references('id_kategori')
+                ->on('data_kategori_barang')
+                ->cascadeOnDelete();
+
+            $table->foreign('jenis_barang')
+                ->references('jenis_barang')
+                ->on('data_jenis_barang')
+                ->cascadeOnDelete();
         });
     }
 
