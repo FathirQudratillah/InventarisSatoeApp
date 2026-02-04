@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('detail_peminjaman', function (Blueprint $table) {
             $table->char('id_detail', 10)->primary();
+
+            $table->foreign('kode_barang')
+            ->references('kode_barang')
+            ->on('detail_peminjaman')
+            ->cascadeOnDelete();
+
+            $table->foreign('id_peminjaman')
+            ->references('id_peminjaman')
+            ->on('detail_peminjaman')
+            ->cascadeOnDelete();
+            
             $table->string('kondisi_sebelum', 5);
             $table->string('kondisi_sesusdah', 5);
             $table->timestamps();
