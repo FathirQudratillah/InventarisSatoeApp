@@ -16,6 +16,12 @@ return new class extends Migration
             $table->char('user_id', 10);
             $table->text('aksi');
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('user_id')
+                ->on('data_akun')
+                ->cascadeOnDelete();
+
         });
     }
 

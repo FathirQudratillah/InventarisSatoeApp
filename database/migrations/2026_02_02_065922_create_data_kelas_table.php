@@ -18,6 +18,16 @@ return new class extends Migration
             $table->integer('kelas', 2);
             $table->string('subkelas', 1);
             $table->timestamps();
+
+            $table->foreign('id_jurusan')
+                  ->references('id_jurusan')
+                  ->on('data_jurusan')
+                  ->cascadeOnDelete();
+                  
+            $table->foreign('angkatan')
+                ->references('angkatan')
+                ->on('data_angkatan')
+                ->cascadeOnDelete();
         });
     }
 

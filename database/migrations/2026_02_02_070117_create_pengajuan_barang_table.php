@@ -19,6 +19,12 @@ return new class extends Migration
             $table->date('tanggal_pengajuan', 10);
             $table->integer('jumlah_pengajuan', 4);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('user_id')
+                ->on('data_akun')
+                ->cascadeOnDelete();
+
         });
     }
 
