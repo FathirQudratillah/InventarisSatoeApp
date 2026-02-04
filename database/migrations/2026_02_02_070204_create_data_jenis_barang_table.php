@@ -14,6 +14,12 @@ return new class extends Migration
         Schema::create('data_jenis_barang', function (Blueprint $table) {
             $table->char('jenis_barang', 10)->primary();
             $table->string('nama_barang', 100);
+
+            $table->foreign('id_kategori')
+            ->references('id_kategori')
+            ->on('data_jenis_barang')
+            ->cascadeOnDelete();
+            
             $table->integer('tahun_perolehan');
             $table->string('sumber', 15);
             $table->text('spesifikasi');
