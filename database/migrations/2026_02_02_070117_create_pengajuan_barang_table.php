@@ -16,7 +16,7 @@ return new class extends Migration
             $table->char('user_id', 10);
             $table->string('nama_barang', 100);
             $table->string('status_pengajuan', 10);
-            $table->date('tanggal_pengajuan', 10);
+            $table->date('tanggal_pengajuan');
             $table->integer('jumlah_pengajuan', 4);
             $table->timestamps();
 
