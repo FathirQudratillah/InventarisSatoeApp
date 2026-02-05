@@ -16,7 +16,7 @@ return new class extends Migration
             $table->char('user_id', 10);
             $table->string('nama', 60);
             $table->string('email', 255)->unique();
-            $table->integer('no_kontak', 13);
+            $table->string('no_kontak', 13);
             $table->string('alamat', 255);
             $table->timestamps();
 
