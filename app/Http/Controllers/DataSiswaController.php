@@ -21,4 +21,10 @@ class DataSiswaController extends Controller
         $siswa->save();
         return redirect('/');
     }
+
+    public function destroy($id){
+        $siswa = DataSiswa::find($id);
+        $siswa->delete();
+        return redirect('/');
+    }
 }

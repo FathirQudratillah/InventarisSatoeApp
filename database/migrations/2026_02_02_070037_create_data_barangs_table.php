@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_barang', function (Blueprint $table) {
+        Schema::create('data_barangs', function (Blueprint $table) {
             $table->char('kode_barang', 11)->primary();
             $table->char('id_ruang', 5);
             $table->char('id_kategori', 3);
@@ -22,17 +22,17 @@ return new class extends Migration
 
             $table->foreign('id_ruang')
                 ->references('id_ruang')
-                ->on('data_ruang')
+                ->on('data_ruangs')
                 ->cascadeOnDelete();
                 
             $table->foreign('id_kategori')
                 ->references('id_kategori')
-                ->on('data_kategori_barang')
+                ->on('data_kategori_barangs')
                 ->cascadeOnDelete();
 
             $table->foreign('jenis_barang')
                 ->references('jenis_barang')
-                ->on('data_jenis_barang')
+                ->on('data_jenis_barangs')
                 ->cascadeOnDelete();
         });
     }
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_barang');
+        Schema::dropIfExists('data_barangs');
     }
 };
