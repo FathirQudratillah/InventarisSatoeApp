@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengajuan_barang', function (Blueprint $table) {
+        Schema::create('pengajuan_barangs', function (Blueprint $table) {
             $table->char('id_pengajuan', 8)->primary();
             $table->char('user_id', 10);
             $table->string('nama_barang', 100);
@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->foreign('user_id')
                 ->references('user_id')
-                ->on('data_akun')
+                ->on('data_akuns')
                 ->cascadeOnDelete();
 
         });
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengajuan_barang');
+        Schema::dropIfExists('pengajuan_barangs');
     }
 };
