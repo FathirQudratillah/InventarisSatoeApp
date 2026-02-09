@@ -11,7 +11,7 @@ class DataAkunController extends Controller
 {
     public function index(){
         $akun = DataAkun::All();
-        return view('home', compact('akun'));
+        return view('data-akun.index', compact('akun'));
     }
 
     public function show($id)
