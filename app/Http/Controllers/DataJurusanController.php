@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataJurusan;
 use Illuminate\Http\Request;
 
 class DataJurusanController extends Controller
 {
    public function index()
     {
-        //
+        $jurusans = DataJurusan::All();
+        return view('data-jurusan.index', compact('jurusans'));
     }
 
     /**

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataKategoriBarang;
 use Illuminate\Http\Request;
 
 class DataKategoriBarangController extends Controller
 {
     public function index()
     {
-        //
+        $kategoriBarangs = DataKategoriBarang::All();
+        return view('data-kategori-barang.index', compact('kategoriBarangs'));
     }
 
     /**

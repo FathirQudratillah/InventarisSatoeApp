@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataJenisBarang;
 use Illuminate\Http\Request;
 
 class DataJenisBarangController extends Controller
 {
     public function index()
     {
-        //
+        $jenisBarangs = DataJenisBarang::All();
+        return view('data-jenis-barang.index', compact('jenisBarangs'));
     }
 
     /**

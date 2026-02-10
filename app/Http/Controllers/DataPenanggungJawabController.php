@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataPenanggungJawab;
 use Illuminate\Http\Request;
 
 class DataPenanggungJawabController extends Controller
 {
     public function index()
     {
-        //
+        $penanggungJawabs = DataPenanggungJawab::All();
+        return view('data-akun.index', compact('penanggungJawabs'));
     }
 
     /**

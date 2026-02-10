@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataAdmin;
 use Illuminate\Http\Request;
 
 class DataAdminController extends Controller
 {
     public function index()
     {
-        //
+        $admins = DataAdmin::All();
+        return view('data-admin.index', compact('admins'));
     }
 
     /**

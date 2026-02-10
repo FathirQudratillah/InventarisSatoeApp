@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PeminjamanBarang;
 use Illuminate\Http\Request;
 
 class PeminjamanBarangController extends Controller
 {
    public function index()
     {
-        //
+        $peminjamanBarangs = PeminjamanBarang::All();
+        return view('peminjaman-barang.index', compact('peminjamanBarangs'));
     }
 
     /**

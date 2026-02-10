@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataAngkatan;
 use Illuminate\Http\Request;
 
 class DataAngkatanController extends Controller
 {
     public function index()
     {
-        //
+        $angkatans = DataAngkatan::All();
+        return view('data-angkatan.index', compact('angkatans'));
     }
 
     /**
