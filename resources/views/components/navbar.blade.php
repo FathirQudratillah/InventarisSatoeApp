@@ -1,6 +1,4 @@
-
-    
-        <!-- Sidebar -->
+ <!-- Sidebar -->
         <aside
             id="sidebar"
             class="fixed inset-y-0 left-0 z-40 w-80 bg-gray-900 text-white
@@ -25,7 +23,7 @@
                 </div>
             </div> --}}
 
-            <nav class="mt-5 px-2">
+            <nav class="mt-5 px-2 flex-1 overflow-y-auto pb-28">
                 <!-- Main Navigation -->
                 <div class="space-y-4">
                     <!-- Dashboard -->
@@ -37,7 +35,7 @@
                     </x-side-link>
 
                     <!-- Analytics Dropdown -->
-                    <div class="space-y-1">
+                    <div class="">
                         <button class="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none" aria-expanded="true" aria-controls="analytics-dropdown">
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -208,9 +206,3 @@
                 </div>
             </div>
         </aside>
-
-
-        
-    
-
-    
