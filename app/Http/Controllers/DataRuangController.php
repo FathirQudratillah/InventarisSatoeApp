@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataRuang;
 use Illuminate\Http\Request;
 
 class DataRuangController extends Controller
 {
     public function index()
     {
-        //
+        $ruangs = DataRuang::All();
+        return view('data-ruang.index', compact('ruangs'));
     }
 
     /**

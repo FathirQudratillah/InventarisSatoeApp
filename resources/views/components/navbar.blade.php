@@ -4,14 +4,19 @@
         <aside
             id="sidebar"
             class="fixed inset-y-0 left-0 z-40 w-80 bg-gray-900 text-white
-                    transform -translate-x-full transition-transform duration-300
-                    md:relative md:translate-x-0 md:flex md:flex-col">
+                transform -translate-x-full transition-transform duration-300
+                md:relative md:translate-x-0 md:flex md:flex-col
+                h-screen overflow-y-auto"
+                style="scrollbar-width:none; -ms-overflow-style:none;"
+                >
+
 
             <div class="p-4 border-b border-gray-800">
                 <div class="flex items-center justify-between">
                     <img src="{{ asset('images/logo_notext.png') }}" alt="Logo" class="h-10 w-auto">
                     <span class="text-xl font-bold">Admin</span>
                 </div>
+            
 
             <!-- Search Bar -->
             {{-- <div class="p-4">
@@ -123,7 +128,7 @@
             </nav>
 
             <!-- User Profile -->
-            <div class="mt-auto p-4 border-t border-gray-800 fixed bottom-0">
+            <div class="mt-auto p-4 border-t border-gray-800 ">
                 <div class="flex items-center">
                     <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                     <div class="ml-3">

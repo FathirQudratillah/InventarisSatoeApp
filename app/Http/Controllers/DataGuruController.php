@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataGuru;
 use Illuminate\Http\Request;
 
 class DataGuruController extends Controller
 {
    public function index()
     {
-        //
+        $gurus = DataGuru::All();
+        return view('data-guru.index', compact('gurus'));
     }
 
     /**

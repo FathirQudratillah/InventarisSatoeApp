@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PemeliharaanBarang;
 use Illuminate\Http\Request;
 
 class PemeliharaanBarangController extends Controller
 {
     public function index()
     {
-        //
+        $pemeliharaanBarangs = PemeliharaanBarang::All();
+        return view('pemeliharaan-barang.index', compact('pemeliharaanBarangs'));
     }
 
     /**

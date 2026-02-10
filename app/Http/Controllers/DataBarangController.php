@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataBarang;
 use Illuminate\Http\Request;
 
 class DataBarangController extends Controller
 {
     public function index()
     {
-        //
+        $barangs = DataBarang::All();
+        return view('data-barang.index', compact('barangs'));
     }
 
     /**
