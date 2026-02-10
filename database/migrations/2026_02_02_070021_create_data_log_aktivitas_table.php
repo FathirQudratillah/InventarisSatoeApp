@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_admins', function (Blueprint $table) {
-            $table->char('nip', 10)->primary();
+        Schema::create('data_log_aktivitas', function (Blueprint $table) {
+            $table->char('id_log', 8)->primary();
             $table->char('user_id', 10);
-            $table->string('nama', 60);
-            $table->string('email', 255)->unique();
-            $table->string('no_kontak', 13);
-            $table->string('alamat', 255);
+            $table->text('aksi');
             $table->timestamps();
 
             $table->foreign('user_id')
                 ->references('user_id')
-                ->on('data_akuns')
+                ->on('data_akun')
                 ->cascadeOnDelete();
 
         });
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_admins');
+        Schema::dropIfExists('data_log_aktivitas');
     }
 };

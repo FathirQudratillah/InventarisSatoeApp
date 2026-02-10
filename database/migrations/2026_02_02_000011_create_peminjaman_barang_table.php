@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peminjaman_barangs', function (Blueprint $table) {
+        Schema::create('peminjaman_barang', function (Blueprint $table) {
             $table->char('id_peminjaman', 8)->primary();
             $table->char('user_id', 10);
             $table->char('data_admin', 18);
 
             $table->foreign('user_id')
             ->references('user_id')
-            ->on('data_akuns')
+            ->on('data_akun')
             ->cascadeOnDelete();
 
             $table->foreign('data_admin')
             ->references('nip')
-            ->on('data_admins')
+            ->on('data_admin')
             ->cascadeOnDelete();
 
             $table->string('status_peminjaman', 16);
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peminjaman_barangs');
+        Schema::dropIfExists('peminjaman_barang');
     }
 };

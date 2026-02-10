@@ -19,4 +19,9 @@ class DataKelasController extends Controller
         $kelas->save();
         return redirect('/');
     }
+
+    public function index(){
+        $akun = DataKelas::All();
+        return view('data-kelas.index', compact('akun'));
+    }
 }

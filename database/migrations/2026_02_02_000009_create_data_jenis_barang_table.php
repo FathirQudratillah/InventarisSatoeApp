@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_jenis_barangs', function (Blueprint $table) {
+        Schema::create('data_jenis_barang', function (Blueprint $table) {
             $table->char('jenis_barang', 10)->primary();
             $table->char('id_kategori', 3);
             $table->string('nama_barang', 100);
 
             $table->foreign('id_kategori')
             ->references('id_kategori')
-            ->on('data_kategori_barangs')
+            ->on('data_kategori_barang')
             ->cascadeOnDelete();
             
             $table->integer('tahun_perolehan');
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_jenis_barangs');
+        Schema::dropIfExists('data_jenis_barang');
     }
 };

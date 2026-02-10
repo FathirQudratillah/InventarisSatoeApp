@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_angkatans', function (Blueprint $table) {
-            $table->integer('angkatan', 3)->primary();
-            $table->integer('tahun_masuk', 4);
-            $table->integer('tahun_lulus', 4);
+        Schema::create('data_akun', function (Blueprint $table) {
+            $table->char('user_id', 10)->primary();
+            $table->string('username', 32);
+            $table->string('password', 16);
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_angkatans');
+        Schema::dropIfExists('data_akun');
     }
 };
