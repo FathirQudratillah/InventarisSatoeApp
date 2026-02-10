@@ -11,27 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_siswas', function (Blueprint $table) {
-            $table->char('nis', 10)->primary();
-            $table->char('id_kelas', 9);
+        Schema::create('data_admin', function (Blueprint $table) {
+            $table->char('nip', 10)->primary();
             $table->char('user_id', 10);
             $table->string('nama', 60);
             $table->string('email', 255)->unique();
-            $table->string('jenis_kelamin', 9);
             $table->string('no_kontak', 13);
             $table->string('alamat', 255);
             $table->timestamps();
 
-            $table->foreign('id_kelas')
-                ->references('id_kelas')
-                ->on('data_kelass')
-                ->cascadeOnDelete();
-                
             $table->foreign('user_id')
                 ->references('user_id')
-                ->on('data_akuns')
+                ->on('data_akun')
                 ->cascadeOnDelete();
-            
 
         });
     }
@@ -41,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_siswas');
+        Schema::dropIfExists('data_admin');
     }
 };

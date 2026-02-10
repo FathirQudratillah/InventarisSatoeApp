@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataSiswa extends Model
 {
-    
+    protected $table = 'data_siswa';
     protected $primaryKey = 'nis';
     public $incrementing = false;
     protected $keyType = 'string';

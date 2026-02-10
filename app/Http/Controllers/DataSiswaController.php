@@ -8,6 +8,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DataSiswaController extends Controller
 {
+    public function index(){
+        $akun = DataSiswa::All();
+        return view('data-siswa.index', compact('akun'));
+    }
+
     public function store(Request $request): RedirectResponse{
         $siswa = new DataSiswa;
         $siswa->nis = $request->nis;

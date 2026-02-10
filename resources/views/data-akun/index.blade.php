@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @vite('resources/css/app.css')
-    <title>Document</title>
-</head>
-<body>
-    <h1>Data Akun</h1>
-    <h1 class="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-</body>
-</html>
+<x-layout>
+    <x-slot:title>Data Akun</x-slot:title>
+        <div class="mt-4 p-6 bg-white rounded-lg shadow-md">
+            <p class="text-gray-600">Data Akun</p>
+        </div>
+        
+        {{-- @foreach ($akuns as $akun )
+            
+        <h3>{{ $akun->user_id }}</h3>
+        @endforeach --}}
+        
+</x-layout>

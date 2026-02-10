@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+<x-layout>
+    <x-slot:title>Home</x-slot:title>
     <a href="{{ route('data-akun.index') }}">data akun</a>
-</body>
-</html>
+            <div class="mt-4 p-6 bg-white rounded-lg shadow-md">
+                <p class="text-gray-600">This is a dark sidebar example with submenus.</p>
+            </div>
+        
+</x-layout>

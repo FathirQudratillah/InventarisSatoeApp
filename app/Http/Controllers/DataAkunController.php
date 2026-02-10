@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class DataAkunController extends Controller
 {
     public function index(){
-        $akun = DataAkun::All();
-        return view('data-akun.index', compact('akun'));
+        $akuns = DataAkun::All();
+        return view('data-akun.index', compact('akuns'));
     }
 
     public function show($id)
@@ -25,7 +25,7 @@ class DataAkunController extends Controller
         $akun->username = $request->username;
         $akun->password = $request->password;
         $akun->save();
-        return redirect('/');
+        return redirect('data-akun.index');
     }
 
     public function destroy($id){

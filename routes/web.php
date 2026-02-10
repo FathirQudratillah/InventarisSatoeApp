@@ -9,7 +9,7 @@ use App\Http\Controllers\DataKelasController;
 use App\Http\Controllers\DataSiswaController;
 
 Route::get('/', function () {
-    return view('home',  [DataAkunController::class, 'index']);
+    return view('dashboard');
 });
 
 Route::resource('data-akun', DataAkunController::class);
