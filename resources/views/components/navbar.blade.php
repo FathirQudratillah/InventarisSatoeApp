@@ -53,6 +53,19 @@
                             <x-side-link href="{{ route('data-akun.index') }}" :active="request()->is('data-akun')">Data Akun</x-side-link>
                             <x-side-link href="{{ route('data-siswa.index') }}" :active="request()->is('data-siswa')">Data Siswa</x-side-link>
                             <x-side-link href="{{ route('data-kelas.index') }}" :active="request()->is('data-kelas')">Data Kelas</x-side-link>
+                            <x-side-link href="{{ route('data-jurusan.index') }}" :active="request()->is('data-jurusan')">Data Jurusan</x-side-link>
+                            <x-side-link href="{{ route('data-ruang.index') }}" :active="request()->is('data-ruang')">Data Ruang</x-side-link>
+                            <x-side-link href="{{ route('angkatan.index') }}" :active="request()->is('angkatan')">Data Angkatan</x-side-link>
+                            <x-side-link href="{{ route('data-guru.index') }}" :active="request()->is('data-guru')">Data Guru</x-side-link>
+                            <x-side-link href="{{ route('data-admin.index') }}" :active="request()->is('data-admin')">Data Admin</x-side-link>
+                            <x-side-link href="{{ route('data-barang.index') }}" :active="request()->is('data-barang')">Data Barang</x-side-link>
+                            <x-side-link href="{{ route('data-jenis-barang.index') }}" :active="request()->is('data-jenis-barang')">Data Jenis Barang</x-side-link>
+                            <x-side-link href="{{ route('data-kategori-barang.index') }}" :active="request()->is('data-kategori-barang')">Data Kategori Barang</x-side-link>
+                            <x-side-link href="{{ route('peminjaman-barang.index') }}" :active="request()->is('peminjaman-barang')">Peminjaman Barang</x-side-link>
+                            <x-side-link href="{{ route('detail-peminjaman.index') }}" :active="request()->is('detail-peminjaman')">Detail Peminjaman</x-side-link>
+                            <x-side-link href="{{ route('pemeliharaan-barang.index') }}" :active="request()->is('pemeliharaan-barang')">Pemeliharaan Barang</x-side-link>
+                            <x-side-link href="{{ route('pengajuan-barang.index') }}" :active="request()->is('pengajuan-barang')">Pengajuan Barang</x-side-link>
+                            <x-side-link href="{{ route('data-penanggung-jawab.index') }}" :active="request()->is('data-penanggung-jawab')">Data Penanggung Jawab</x-side-link>
                             
                         </div>
                     </div>
