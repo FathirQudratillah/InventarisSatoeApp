@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->foreign('kode_barang')
             ->references('kode_barang')
-            ->on('data_log_aktivitasdata_barang')
+            ->on('data_barang')
             ->cascadeOnDelete();
 
             $table->foreign('id_pj')
