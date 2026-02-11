@@ -13,7 +13,9 @@
     <x-navbar></x-navbar>
 
     <!-- Main Content -->
-        <main class="flex-1 p-6 bg-gray-100">
+        <main class="flex-1 p-6 bg-gray-100 overflow-y-auto"
+                style="scrollbar-width:none; -ms-overflow-style:none;"
+        >
             <x-header>{{ $title }}</x-header>
             {{ $slot }}
         </main>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('data_akun', function (Blueprint $table) {
             $table->char('user_id', 10)->primary();
             $table->string('username', 32);
-            $table->string('password', 16);
+            $table->string('password');
             $table->timestamps();
         });
     }

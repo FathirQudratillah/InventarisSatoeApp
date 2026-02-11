@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class DataSiswaController extends Controller
 {
     public function index(){
-        $akun = DataSiswa::All();
-        return view('data-siswa.index', compact('akun'));
+        $siswas = DataSiswa::All();
+        return view('data-siswa.index', compact('siswas'));
     }
 
     public function store(Request $request): RedirectResponse{
