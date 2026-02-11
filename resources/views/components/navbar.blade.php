@@ -14,7 +14,7 @@
             <div class="p-4 border-b border-gray-800">
                 <div class="flex items-center justify-between">
                     <img src="{{ asset('images/logo_notext.png') }}" alt="Logo" class="h-10 w-auto">
-                    <span class="text-xl font-bold">Admin</span>
+                    <span class="text-xl font-bold">InventarisSatoeApp</span>
                 </div>
             
 
@@ -66,10 +66,6 @@
                             <x-side-link href="{{ route('data-barang.index') }}" :active="request()->is('data-barang')">Data Barang</x-side-link>
                             <x-side-link href="{{ route('data-jenis-barang.index') }}" :active="request()->is('data-jenis-barang')">Data Jenis Barang</x-side-link>
                             <x-side-link href="{{ route('data-kategori-barang.index') }}" :active="request()->is('data-kategori-barang')">Data Kategori Barang</x-side-link>
-                            <x-side-link href="{{ route('peminjaman-barang.index') }}" :active="request()->is('peminjaman-barang')">Peminjaman Barang</x-side-link>
-                            <x-side-link href="{{ route('detail-peminjaman.index') }}" :active="request()->is('detail-peminjaman')">Detail Peminjaman</x-side-link>
-                            <x-side-link href="{{ route('pemeliharaan-barang.index') }}" :active="request()->is('pemeliharaan-barang')">Pemeliharaan Barang</x-side-link>
-                            <x-side-link href="{{ route('pengajuan-barang.index') }}" :active="request()->is('pengajuan-barang')">Pengajuan Barang</x-side-link>
                             <x-side-link href="{{ route('data-penanggung-jawab.index') }}" :active="request()->is('data-penanggung-jawab')">Data Penanggung Jawab</x-side-link>
                             
                         </div>
@@ -82,7 +78,7 @@
                                 <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                 </svg>
-                                Team
+                                Data Transaksi
                             </div>
                             <svg class="ml-2 h-5 w-5 transform transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -90,13 +86,16 @@
                         </button>
                         <div class="hidden space-y-1 pl-11" id="team-dropdown">
                             <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Members
+                                Peminjaman Barang
                             </a>
                             <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Calendar
+                                Detail Peminjaman
                             </a>
                             <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Settings
+                                Pemeliharaan Barang
+                            </a>
+                            <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
+                                Pengajuan Barang
                             </a>
                         </div>
                     </div>
