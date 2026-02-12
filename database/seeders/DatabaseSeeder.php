@@ -28,6 +28,11 @@ class DatabaseSeeder extends Seeder
             DataAkunSeeder::class,
             DataSiswaSeeder::class,
             DataGuruSeeder::class,
+            DataAdminSeeder::class,
+            DataPenanggungJawabSeeder::class,
+            DataKategoriBarangSeeder::class,
+            DataJenisBarangSeeder::class,
+            DataBarangSeeder::class,
 
 
         ]);

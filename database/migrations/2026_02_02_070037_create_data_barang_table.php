@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('data_barang', function (Blueprint $table) {
             $table->char('kode_barang', 11)->primary();
             $table->char('id_ruang', 5);
-            $table->char('id_kategori', 3);
             $table->char('jenis_barang', 10);
-            $table->string('kondisi_barang', 8);
+            $table->string('kondisi_barang', 10);
+            $table->integer('tahun_perolehan');
             $table->text('keterangan');
             $table->timestamps();
 
@@ -25,10 +25,6 @@ return new class extends Migration
                 ->on('data_ruang')
                 ->cascadeOnDelete();
                 
-            $table->foreign('id_kategori')
-                ->references('id_kategori')
-                ->on('data_kategori_barang')
-                ->cascadeOnDelete();
 
             $table->foreign('jenis_barang')
                 ->references('jenis_barang')

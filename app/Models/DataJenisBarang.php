@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataJenisBarang extends Model
 {
+    use HasFactory;
     protected $table = 'data_jenis_barang';
     protected $fillable = ['jenis_barang', 
                             'nama_barang', 
-                            'tahun',
                             'sumber',
                             'spesifikasi',
                             'keterangan',

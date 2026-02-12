@@ -34,5 +34,13 @@ class DataAkunSeeder extends Seeder
                 'password' => Hash::make('password'),
             ];
         })->create();
+
+        DataAkun::factory()->count(5)->state(function () {
+            return [
+                'user_id' => 'ADMIN' . fake()->unique()->numerify('#####'),
+                'username' => fake()->name(),
+                'password' => Hash::make('password'),
+            ];
+        })->create();
     }
 }
