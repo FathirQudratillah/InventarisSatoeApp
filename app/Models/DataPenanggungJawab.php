@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataPenanggungJawab extends Model
 {
+    use HasFactory;
     protected $table = 'data_penanggung_jawab';
     protected $fillable = ['id_pj', 
                             'nama', 

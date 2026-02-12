@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_jenis_barang', function (Blueprint $table) {
-            $table->char('jenis_barang', 10)->primary();
+            $table->char('jenis_barang', 7)->primary();
             $table->char('id_kategori', 3);
             $table->string('nama_barang', 100);
 
@@ -21,7 +21,7 @@ return new class extends Migration
             ->on('data_kategori_barang')
             ->cascadeOnDelete();
             
-            $table->integer('tahun_perolehan');
+            
             $table->string('sumber', 15);
             $table->text('spesifikasi');
             $table->text('keterangan');
