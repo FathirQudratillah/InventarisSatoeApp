@@ -31,7 +31,7 @@ class DataAngkatanController extends Controller
         $akun->tahun_masuk = $request->tahun_masuk;
         $akun->tahun_lulus = $request->tahun_lulus;
         $akun->save();
-        return redirect('data-angkatan.index');
+        return redirect()->route('data-angkatan.index');
     }
 
     /**
