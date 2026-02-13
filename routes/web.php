@@ -35,7 +35,7 @@ Route::resource('data-guru', DataGuruController::class);
 
 Route::resource('data-jurusan', DataJurusanController::class);
 
-Route::resource('angkatan', DataAngkatanController::class);
+Route::resource('data-angkatan', DataAngkatanController::class);
 
 Route::resource('data-admin', DataAdminController::class);
 
