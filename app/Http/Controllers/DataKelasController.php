@@ -17,7 +17,7 @@ class DataKelasController extends Controller
         $kelas->subkelas = $request->subkelas;
 
         $kelas->save();
-        return redirect('/');
+        return redirect()->route('data-kelas.index');
     }
 
     public function index(){

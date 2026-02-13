@@ -26,7 +26,15 @@ class PengajuanBarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new PengajuanBarang;
+        $akun->id_pengajuan = $request->id_pengajuan;
+        $akun->user_id = $request->user_id;
+        $akun->nama_barang = $request->nama_barang;
+        $akun->status_pengajuan = $request->status_pengajuan;
+        $akun->tanggal_pengajuan = $request->tanggal_pengajuan;
+        $akun->jumlah_pengajuan = $request->jumlah_pengajuan;
+        $akun->save();
+        return redirect()->route('data-pengajuanbarang.index');
     }
 
     /**

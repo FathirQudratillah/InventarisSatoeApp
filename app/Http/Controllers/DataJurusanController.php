@@ -26,7 +26,12 @@ class DataJurusanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataJurusan;
+        $akun->data_jurusan = $request->data_jurusan;
+        $akun->id_jurusan = $request->id_jurusan;
+        $akun->jurusan = $request->jurusan;
+        $akun->save();
+        return redirect()->route('data-jurusan.index');
     }
 
     /**

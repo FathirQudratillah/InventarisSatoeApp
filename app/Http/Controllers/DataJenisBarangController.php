@@ -26,7 +26,12 @@ class DataJenisBarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataJenisBarang;
+        $akun->jenis_barang = $request->jenis_barang;
+        $akun->id_kategori = $request->id_kategori;
+        $akun->nama_barang = $request->nama_barang;
+        $akun->save();
+        return redirect()->route('data-jenisbarang.index');
     }
 
     /**

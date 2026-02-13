@@ -29,7 +29,7 @@ class DataSiswaController extends Controller
         $siswa->no_kontak = $request->no_kontak;
         $siswa->alamat = $request->alamat;
         $siswa->save();
-        return redirect('/');
+       return redirect()->route('data-siswa.index');
     }
 
     public function destroy($id){

@@ -26,7 +26,17 @@ class DataGuruController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataGuru;
+        $akun->nip = $request->nip;
+        $akun->user_id = $request->user_id;
+        $akun->nama = $request->nama;
+        $akun->email = $request->email;
+        $akun->jenis_kelamin = $request->jenis_kelamin;
+        $akun->no_kontak = $request->no_kontak;
+        $akun->alamat = $request->alamat;
+        $akun->save();
+        return redirect()->route('data-guru.index');
+
     }
 
     /**

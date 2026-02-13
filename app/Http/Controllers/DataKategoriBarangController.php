@@ -26,7 +26,11 @@ class DataKategoriBarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataKategoriBarang;
+        $akun->id_kategori = $request->id_kategori;
+        $akun->kategori = $request->kategori;
+        $akun->save();
+        return redirect()->route('data-kategoribarang.index');
     }
 
     /**
