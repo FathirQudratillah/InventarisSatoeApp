@@ -26,7 +26,12 @@ class PemeliharaanBarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new PemeliharaanBarang;
+        $akun->id_pemeliiharaan = $request->id_pemeliharaan;
+        $akun->kode_barang = $request->kode_barang;
+        $akun->id_pj = $request->id_pj;
+        $akun->save();
+        return redirect()->route('data-pemeliharaanbarang.index');
     }
 
     /**

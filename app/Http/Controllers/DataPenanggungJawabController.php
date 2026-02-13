@@ -26,7 +26,15 @@ class DataPenanggungJawabController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun= new DataPenanggungJawab;
+        $akun->id_pj = $request->id_pj;
+        $akun->nama = $request->nama;
+        $akun->nama_perusahaan = $request->nama_perusahaan;
+        $akun->alamat_perusahaan = $request->alamat_perusahaan;
+        $akun->no_kontak = $request->no_kontak;
+        $akun->save();
+        return redirect()->route('data-penanggungjawab-index');
+
     }
 
     /**

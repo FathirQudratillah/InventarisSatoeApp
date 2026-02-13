@@ -26,7 +26,12 @@ class DetailPeminjamanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DetailPeminjaman;
+        $akun->id_detail = $request->id_detail;
+        $akun->kode_barang = $request->kode_barang;
+        $akun->id_peminjaman = $request->id_peminjaman;
+        $akun->save();
+        return redirect()->route('data-detailpeminjaman.index');
     }
 
     /**

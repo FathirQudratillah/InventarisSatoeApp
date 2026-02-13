@@ -26,7 +26,14 @@ class DataRuangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataRuang;
+        $akun->id_ruang = $request->id_ruang;
+        $akun->nama_ruang = $request->nama_ruang;
+        $akun->jenis_ruang = $request->jenis_ruang;
+        $akun->kapasitas = $request->kapasitas;
+        $akun->lokasi = $request->lokasi;
+        $akun->save();
+        return redirect()->route('data-ruang.index');
     }
 
     /**

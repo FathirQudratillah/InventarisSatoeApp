@@ -26,7 +26,12 @@ class PeminjamanBarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new PeminjamanBarang;
+        $akun->id_peminjaman = $request->id_peminjaman;
+        $akun->user_id = $request->user_id;
+        $akun->data_admin = $request->data_admin;
+        $akun->save();
+        return redirect()->route('data-peminjamanbarang.index');
     }
 
     /**
