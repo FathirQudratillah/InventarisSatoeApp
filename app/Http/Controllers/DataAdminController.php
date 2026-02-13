@@ -18,7 +18,7 @@ class DataAdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-admin.create');
     }
 
     /**
@@ -26,7 +26,15 @@ class DataAdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataAdmin;
+        $akun->nip = $request->nip;
+        $akun->user_id = $request->user_id;
+        $akun->nama = $request->nama;
+        $akun->email = $request->email;
+        $akun->no_kontak = $request->no_kontak;
+        $akun->alamat = $request->alamat;
+        $akun->save();
+        return redirect('data-admin.index');
     }
 
     /**

@@ -13,6 +13,11 @@ class DataSiswaController extends Controller
         return view('data-siswa.index', compact('siswas'));
     }
 
+     public function create()
+    {
+        return view('data-siswa.create');
+    }
+
     public function store(Request $request): RedirectResponse{
         $siswa = new DataSiswa;
         $siswa->nis = $request->nis;

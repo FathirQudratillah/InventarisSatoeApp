@@ -18,7 +18,7 @@ class DataKategoriBarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-kategori-barang.create');
     }
 
     /**

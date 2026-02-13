@@ -18,7 +18,7 @@ class PengajuanBarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('pengajuan-barang.create');
     }
 
     /**

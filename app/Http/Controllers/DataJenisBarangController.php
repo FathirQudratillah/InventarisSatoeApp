@@ -18,7 +18,7 @@ class DataJenisBarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-jenis-barang.create');
     }
 
     /**

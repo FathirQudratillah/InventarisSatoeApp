@@ -18,7 +18,7 @@ class DataPenanggungJawabController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-penanggung-jawab.create');
     }
 
     /**

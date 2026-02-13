@@ -18,7 +18,7 @@ class DataBarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-barang.create');
     }
 
     /**
@@ -26,7 +26,14 @@ class DataBarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataBarang;
+        $akun->kode_barang = $request->kode_barang;
+        $akun->id_ruang = $request->id_ruang;
+        $akun->id_jenis_barang = $request->id_jenis_barang;
+        $akun->kondisi_barang = $request->kondisi_barang;
+        $akun->keterangan = $request->keterangan;
+        $akun->save();
+        return redirect('data-akun.index');
     }
 
     /**

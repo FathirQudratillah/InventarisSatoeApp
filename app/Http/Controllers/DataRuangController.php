@@ -18,7 +18,7 @@ class DataRuangController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-ruang.create');
     }
 
     /**
