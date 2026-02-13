@@ -31,7 +31,7 @@ class DataAkunController extends Controller
         $akun->username = $request->username;
         $akun->password = $request->password;
         $akun->save();
-        return redirect('data-akun.index');
+        return redirect()->route('data-akun.index');
     }
 
     public function destroy($id){

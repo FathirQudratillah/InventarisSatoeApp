@@ -29,11 +29,12 @@ class DataBarangController extends Controller
         $akun = new DataBarang;
         $akun->kode_barang = $request->kode_barang;
         $akun->id_ruang = $request->id_ruang;
-        $akun->id_jenis_barang = $request->id_jenis_barang;
+        $akun->jenis_barang = $request->jenis_barang;
         $akun->kondisi_barang = $request->kondisi_barang;
+        $akun->tahun_perolehan = $request->tahun_perolehan;
         $akun->keterangan = $request->keterangan;
         $akun->save();
-        return redirect('data-akun.index');
+        return redirect()->route('data-barang.index');
     }
 
     /**
