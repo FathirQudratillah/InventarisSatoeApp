@@ -24,4 +24,9 @@ class DataKelasController extends Controller
         $akun = DataKelas::All();
         return view('data-kelas.index', compact('akun'));
     }
+
+    public function create()
+    {
+        return view('data-kelas.create');
+    }
 }

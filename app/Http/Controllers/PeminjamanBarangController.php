@@ -18,7 +18,7 @@ class PeminjamanBarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('peminjaman-barang.create');
     }
 
     /**

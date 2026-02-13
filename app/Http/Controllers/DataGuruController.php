@@ -18,7 +18,7 @@ class DataGuruController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-guru.create');
     }
 
     /**

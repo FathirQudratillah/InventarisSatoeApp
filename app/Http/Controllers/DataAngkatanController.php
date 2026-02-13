@@ -18,7 +18,7 @@ class DataAngkatanController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-angkatan.create');
     }
 
     /**
@@ -26,7 +26,12 @@ class DataAngkatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $akun = new DataAngkatan;
+        $akun->angkatan = $request->angkatan;
+        $akun->tahun_masuk = $request->tahun_masuk;
+        $akun->tahun_lulus = $request->tahun_lulus;
+        $akun->save();
+        return redirect('data-angkatan.index');
     }
 
     /**

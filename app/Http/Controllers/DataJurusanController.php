@@ -18,7 +18,7 @@ class DataJurusanController extends Controller
      */
     public function create()
     {
-        //
+        return view('data-jurusan.create');
     }
 
     /**

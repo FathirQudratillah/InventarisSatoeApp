@@ -18,7 +18,7 @@ class DetailPeminjamanController extends Controller
      */
     public function create()
     {
-        //
+        return view('detail-peminjaman.create');
     }
 
     /**

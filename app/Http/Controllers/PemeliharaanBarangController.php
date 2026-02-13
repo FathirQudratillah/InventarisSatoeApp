@@ -18,7 +18,7 @@ class PemeliharaanBarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('pemeliharaan-barang.create');
     }
 
     /**
