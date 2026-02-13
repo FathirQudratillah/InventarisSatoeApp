@@ -14,6 +14,12 @@ class DataAkunController extends Controller
         return view('data-akun.index', compact('akuns'));
     }
 
+    public function create()
+    {
+        return view('data-akun.create');
+    }
+
+
     public function show($id)
     {
         //

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('peminjaman_barang', function (Blueprint $table) {
-            $table->char('id_peminjaman', 8)->primary();
+            $table->char('id_peminjaman', 13)->primary();
             $table->char('user_id', 10);
-            $table->char('data_admin', 18);
+            $table->char('data_admin', 10);
 
             $table->foreign('user_id')
             ->references('user_id')
@@ -22,8 +22,8 @@ return new class extends Migration
             ->cascadeOnDelete();
 
             $table->foreign('data_admin')
-            ->references('nip')
-            ->on('data_admin')
+            ->references('user_id')
+            ->on('data_akun')
             ->cascadeOnDelete();
 
             $table->string('status_peminjaman', 16);

@@ -33,6 +33,10 @@ class DatabaseSeeder extends Seeder
             DataKategoriBarangSeeder::class,
             DataJenisBarangSeeder::class,
             DataBarangSeeder::class,
+            PemeliharaanBarangSeeder::class,
+            PengajuanBarangSeeder::class,
+            PeminjamanBarangSeeder::class,
+            DetailPeminjamanSeeder::class,
 
 
         ]);

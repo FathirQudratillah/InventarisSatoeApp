@@ -1,9 +1,9 @@
  <!-- Sidebar -->
         <aside
             id="sidebar"
-            class="fixed inset-y-0 left-0 z-40 w-80 bg-gray-900 text-white
+            class="fixed inset-y-0 left-0 z-40 w-60 md:w-80 bg-gray-900 text-white
                 transform -translate-x-full transition-transform duration-300
-                md:relative md:translate-x-0 md:flex md:flex-col
+                lg:relative lg:translate-x-0 lg:flex lg:flex-col
                 h-screen overflow-y-auto"
                 style="scrollbar-width:none; -ms-overflow-style:none;"
                 >
@@ -12,7 +12,7 @@
             <div class="p-4 border-b border-gray-800">
                 <div class="flex items-center justify-between">
                     <img src="{{ asset('images/logo_notext.png') }}" alt="Logo" class="h-10 w-auto">
-                    <span class="text-xl font-bold">InventarisSatoeApp</span>
+                    <span class="text-l md:text-xl font-bold">InventarisSatoeApp</span>
                 </div>
             
 
@@ -40,8 +40,8 @@
                     </x-side-link>
 
                     <!-- Analytics Dropdown -->
-                    <div class="">
-                        <button class="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none" aria-expanded="true" aria-controls="analytics-dropdown">
+                    <div class="space-y-1">
+                        <button class="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none" aria-expanded="false" aria-controls="analytics-dropdown">
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -52,13 +52,13 @@
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <div class="space-y-1 pl-11" id="analytics-dropdown">
+                        <div class="{{ request()->is('data-*') ? '' : 'hidden' }} space-y-1 pl-11" id="analytics-dropdown">
                             <x-side-link href="{{ route('data-akun.index') }}" :active="request()->is('data-akun')">Data Akun</x-side-link>
                             <x-side-link href="{{ route('data-siswa.index') }}" :active="request()->is('data-siswa')">Data Siswa</x-side-link>
                             <x-side-link href="{{ route('data-kelas.index') }}" :active="request()->is('data-kelas')">Data Kelas</x-side-link>
                             <x-side-link href="{{ route('data-jurusan.index') }}" :active="request()->is('data-jurusan')">Data Jurusan</x-side-link>
                             <x-side-link href="{{ route('data-ruang.index') }}" :active="request()->is('data-ruang')">Data Ruang</x-side-link>
-                            <x-side-link href="{{ route('angkatan.index') }}" :active="request()->is('angkatan')">Data Angkatan</x-side-link>
+                            <x-side-link href="{{ route('data-angkatan.index') }}" :active="request()->is('data-angkatan')">Data Angkatan</x-side-link>
                             <x-side-link href="{{ route('data-guru.index') }}" :active="request()->is('data-guru')">Data Guru</x-side-link>
                             <x-side-link href="{{ route('data-admin.index') }}" :active="request()->is('data-admin')">Data Admin</x-side-link>
                             <x-side-link href="{{ route('data-barang.index') }}" :active="request()->is('data-barang')">Data Barang</x-side-link>
@@ -82,19 +82,18 @@
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
-                        <div class="hidden space-y-1 pl-11" id="team-dropdown">
-                            <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Peminjaman Barang
-                            </a>
-                            <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Detail Peminjaman
-                            </a>
-                            <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Pemeliharaan Barang
-                            </a>
-                            <a href="#" class="group flex items-center px-4 py-2 text-sm text-gray-300 rounded-md hover:bg-gray-700 hover:text-white">
-                                Pengajuan Barang
-                            </a>
+                        <div class="{{ request()->routeIs('detail-peminjaman.*') 
+                            || request()->routeIs('pemeliharaan-barang.*') 
+                            || request()->routeIs('pengajuan-barang.*') 
+                            || request()->routeIs('peminjaman-barang.*') 
+                                ? '' : 'hidden' }} space-y-1 pl-11" 
+                            id="team-dropdown">
+
+                            <x-side-link href="{{ route('detail-peminjaman.index') }}" :active="request()->is('detail-peminjaman')"> Detail Peminjaman</x-side-link>
+                            <x-side-link href="{{ route('pemeliharaan-barang.index') }}" :active="request()->is('pemeliharaan-barang')"> Pemeliharaan Barang</x-side-link>
+                            <x-side-link href="{{ route('pengajuan-barang.index') }}" :active="request()->is('pengajuan-barang')"> Pengajuan Barang</x-side-link>
+                            <x-side-link href="{{ route('peminjaman-barang.index') }}" :active="request()->is('peminjaman-barang')"> Peminjaman Barang</x-side-link>
+                          
                         </div>
                     </div>
 
@@ -139,7 +138,7 @@
         <div
         id="overlay"
         onclick="toggleSidebar()"
-        class="fixed inset-0 bg-black/50 z-30 hidden md:hidden">
+        class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden">
         </div>
 
 
@@ -156,7 +155,7 @@
         </header> --}}
 
         <!--Mobile-->
-        <aside class="md:hidden w-20 bg-gray-900 border-r border-gray-200">
+        <aside class="lg:hidden w-12 md:w-20 bg-gray-900 border-r border-gray-200">
             <div class="h-full flex flex-col items-center py-4">
                 <!-- Logo -->
                 <div class="p-2">
@@ -165,37 +164,40 @@
 
                 <!-- Navigation -->
                 <nav class="flex-1 w-full px-2 space-y-2 mt-6">
-                    <button onclick="toggleSidebar()" class="w-full p-3 flex justify-center rounded-lg bg-indigo-50 text-indigo-600">
+                    <button onclick="toggleSidebar()" class="{{ request()->is('data-*') ? 'bg-indigo-50 text-indigo-600' : ' text-gray-500 hover:bg-gray-50' }} w-full p-2 flex justify-center rounded-lg ">
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
                     </button>
 
-                    <button onclick="toggleSidebar()" class="w-full p-3 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
+                    <button onclick="toggleSidebar()" class="w-full p-2 flex justify-center rounded-lg {{ request()->routeIs('detail-peminjaman.*') 
+                            || request()->routeIs('pemeliharaan-barang.*') 
+                            || request()->routeIs('pengajuan-barang.*') 
+                            || request()->routeIs('peminjaman-barang.*') ? 'bg-indigo-50 text-indigo-600' : ' text-gray-500 hover:bg-gray-50' }}">
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
                     </button>
 
-                    <button onclick="toggleSidebar()" class="w-full p-3 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
+                    <button onclick="toggleSidebar()" class="w-full p-2 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
                     </button>
 
-                    <button onclick="toggleSidebar()" class="w-full p-3 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
+                    <button onclick="toggleSidebar()" class="w-full p-2 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                     </button>
 
-                    <button class="w-full p-3 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
+                    <button class="w-full p-2 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                     </button>
 
-                    <button class="w-full p-3 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
+                    <button class="w-full p-2 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                         </svg>

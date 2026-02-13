@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DetailPeminjaman extends Model
 {
+    use HasFactory;
     protected $table = 'detail_peminjaman';
     protected $fillable = ['id_detail', 
                             'kode_barang', 
