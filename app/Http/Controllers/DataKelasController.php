@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataAngkatan;
+use App\Models\DataJurusan;
 use App\Models\DataKelas;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -10,7 +12,14 @@ class DataKelasController extends Controller
 { 
     public function store(Request $request): RedirectResponse{
         $kelas = new DataKelas;
-        $kelas->id_kelas = $request->id_kelas;
+        if ($request->kelas != 'Alumni') {
+            $kelas->id_kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
+            
+        } else {
+            $kelas->id_kelas = $request->angkatan . $request->id_jurusan;
+            
+        }
+        
         $kelas->id_jurusan = $request->id_jurusan;
         $kelas->angkatan = $request->angkatan;
         $kelas->kelas = $request->kelas;
@@ -27,6 +36,8 @@ class DataKelasController extends Controller
 
     public function create()
     {
-        return view('data-kelas.create');
+        $angkatan = DataAngkatan::All();
+        $id_jurusan = DataJurusan::All();
+        return view('data-kelas.create', compact('id_jurusan', 'angkatan'));
     }
 }
