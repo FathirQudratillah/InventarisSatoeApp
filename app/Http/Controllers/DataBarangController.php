@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataBarang;
+use App\Models\DataJenisBarang;
+use App\Models\DataRuang;
 use Illuminate\Http\Request;
 
 class DataBarangController extends Controller
@@ -18,8 +20,9 @@ class DataBarangController extends Controller
      */
     public function create()
     {
-        $datas = DataBarang::All();
-        return view('data-barang.create', compact('datas'));
+        $jenis_barang = DataJenisBarang::All();
+        $id_ruang = DataRuang::All();
+        return view('data-barang.create', compact('jenis_barang', 'id_ruang'));
     }
 
     /**
