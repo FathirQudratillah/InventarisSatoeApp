@@ -20,7 +20,7 @@ class DataJenisBarangFactory extends Factory
         $kategori = DataKategoriBarang::inRandomOrder()->value('id_kategori');
         return [
             // PRIMARY KEY char(10)
-            'jenis_barang' => $kategori . '-' . $this->faker->unique()->lexify('???'),
+            'jenis_barang' => $kategori . '-' . strtoupper($this->faker->unique()->lexify('???')),
 
             // Ambil random dari tabel kategori
             'id_kategori' => $kategori,
