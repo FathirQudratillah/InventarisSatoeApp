@@ -57,7 +57,7 @@
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Barang</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Tahun Perolehan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kondisi Barang</th>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Keterangan</
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Keterangan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                         </tr>
                     </thead>
@@ -89,11 +89,7 @@
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $barang->keterangan }}
 
-                                <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $barang->kode_barang }}</td>
-                                <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $barang->id_ruang }}</td>
-                                <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $barang->jenis_barang }}</td>
-                                <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $barang->kondisi_barang }}</td>
-                                <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $barang->keterangan }}</td>
+                                
 
                                 <!-- Kolom Aksi -->
                                 <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">

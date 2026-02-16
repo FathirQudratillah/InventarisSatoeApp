@@ -61,8 +61,10 @@ class DataKategoriBarangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id_kategori)
     {
-        //
+        $kategori_barang = DataKategoriBarang::findOrFail($id_kategori);
+        $kategori_barang->delete();
+        return redirect()->route('data-kategori-barang.index');
     }
 }

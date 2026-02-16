@@ -19,8 +19,9 @@ class DataJenisBarangController extends Controller
      */
     public function create()
     {
-    $id_kategori = DataKategoriBarang::All();
-    return view('data-jenis-barang.edit', compact('jenis_barang', 'id_kategori'));
+        $jenis_barang = DataJenisBarang::All();
+        $id_kategori = DataKategoriBarang::All();
+        return view('data-jenis-barang.create', compact('jenis_barang', 'id_kategori'));
     }
 
     /**
@@ -48,11 +49,11 @@ class DataJenisBarangController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $jenis_barang)
-{
-    $jenis_barang = DataJenisBarang::findOrFail($jenis_barang);
-    $id_kategori = DataKategoriBarang::All();
-    return view('data-jenis-barang.create', compact('jenis_barang', 'id_kategori'));
-}
+    {
+        $jenis_barang = DataJenisBarang::findOrFail($jenis_barang);
+        $id_kategori = DataKategoriBarang::All();
+        return view('data-jenis-barang.edit', compact('jenis_barang', 'id_kategori'));
+    }
 
     /**
      * Update the specified resource in storage.
