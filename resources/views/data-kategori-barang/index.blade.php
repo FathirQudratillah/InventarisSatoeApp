@@ -17,8 +17,8 @@
                     <!-- Header -->
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">NIP</th>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">User ID</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Id_kategori</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
                         </tr>
                     </thead>
 

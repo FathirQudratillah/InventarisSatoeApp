@@ -28,6 +28,8 @@ class DataBarangFactory extends Factory
 
             'jenis_barang' => $jenis,
 
+            'nama_barang' => $this->faker->words(3, true),
+
             'kondisi_barang' => $this->faker->randomElement([
                 'Baik',
                 'Rusak',

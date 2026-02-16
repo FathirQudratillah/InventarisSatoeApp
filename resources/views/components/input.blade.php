@@ -1,4 +1,4 @@
-@props(['name'])
+@props(['name', 'value' => null])
 
 @php
     $label = ucwords(str_replace('_', ' ', $name));
@@ -11,7 +11,7 @@
 
     <input type="text"
            name="{{ $name }}"
-           value="{{ old($name) }}"
+           value="{{ old($name,$value) }}"
            placeholder="Masukkan {{ $label }}"
            class="w-full px-4 py-3 border border-gray-300 rounded-xl 
                   focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 

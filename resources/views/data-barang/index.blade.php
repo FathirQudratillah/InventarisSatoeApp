@@ -20,8 +20,11 @@
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kode Barang</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Id Ruang</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Jenis Barang</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Barang</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Tahun Perolehan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kondisi Barang</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Keterangan</th>
+
                         </tr>
                     </thead>
 
@@ -40,11 +43,18 @@
                                     {{ $barang->jenis_barang }}
                                 </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
+                                    {{ $barang->nama_barang }}
+                                </td>
+                                <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
+                                    {{ $barang->tahun_perolehan }}
+                                </td>
+                                <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $barang->kondisi_barang }}
                                 </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $barang->keterangan }}
                                 </td>
+                            
                             </tr>
                         @empty
                             <tr>

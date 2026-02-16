@@ -4,7 +4,7 @@
                 <p class="text-gray-600">Data Ruang</p>
                 <button class="px-2 py-1 md:px-4 md:py-2 bg-indigo-600 text-white rounded-lg  
                     hover:bg-indigo-700 transition duration-200">
-                    <a href="{{ route('data-akun.create') }}">Tambah Data</a>
+                    <a href="{{ route('data-ruang.create') }}">Tambah Data</a>
                 </button>
             </div>
     <div class="md:p-6">

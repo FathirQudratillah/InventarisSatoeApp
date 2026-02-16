@@ -4,7 +4,7 @@
                 <p class="text-gray-600">Data Jenis Barang</p>
                 <button class="px-2 py-1 md:px-4 md:py-2 bg-indigo-600 text-white rounded-lg  
                     hover:bg-indigo-700 transition duration-200">
-                    <a href="{{ route('data-akun.create') }}">Tambah Data</a>
+                    <a href="{{ route('data-jenis-barang.create') }}">Tambah Data</a>
                 </button>
             </div>
             <div class="md:p-6">
@@ -19,8 +19,6 @@
                         <tr>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Jenis Barang</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Barang</th>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Tahun Perolehan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Sumber</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Spesifikasi</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Keterangan</th>
@@ -37,13 +35,7 @@
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $jenis_barang->id_kategori }}
                                 </td>
-                                <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
-                                    {{ $jenis_barang->nama_barang }}
-                                </td>
                                 
-                                <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
-                                    {{ $jenis_barang->tahun_perolehan }}
-                                </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $jenis_barang->sumber }}
                                 </td>

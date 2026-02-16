@@ -4,6 +4,7 @@
     </x-slot:title>
     <x-select :datas="$jenis_barang" name="jenis_barang"></x-select>
     <x-select :datas="$id_ruang" name="id_ruang"></x-select>
+    <x-input name="nama_barang" />
     <x-select name="kondisi_barang">
         <option value="Baik">Baik</option>
         <option value="Rusak">Rusak</option>

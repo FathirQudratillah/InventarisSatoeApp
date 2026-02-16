@@ -72,9 +72,12 @@ class DataBarangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $kodeBarang)
     {
-        //
+        $barang = DataBarang::findOrFail($kodeBarang);
+        $jenis_barang = DataJenisBarang::All();
+        $id_ruang = DataRuang::All();
+        return view('data-barang.edit', compact('barang', 'jenis_barang', 'id_ruang'));
     }
 
     /**
