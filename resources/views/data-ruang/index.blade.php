@@ -1,12 +1,6 @@
 <x-layout>
     <x-slot:title>Data Ruang</x-slot:title>
 
-            <div class="mt-4 p-3 md:p-6 bg-white rounded-lg shadow-md flex justify-between items-center">
-                <p class="text-gray-600">Data Ruang</p>
-                <button class="px-2 py-1 md:px-4 md:py-2 bg-indigo-600 text-white rounded-lg  
-                    hover:bg-indigo-700 transition duration-200">
-                    <a href="{{ route('data-ruang.create') }}">Tambah Data</a>
-
         <div class="mt-4 p-3 md:p-6 bg-white rounded-lg shadow-md flex justify-between items-center">
             <p class="text-gray-600">Data Ruang</p>
 

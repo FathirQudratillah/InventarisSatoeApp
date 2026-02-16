@@ -3,7 +3,7 @@
         Data Jenis Barang
     </x-slot:title>
     <x-input name="jenis_barang" />
-    <x-select :datas="$kategori" name="kategori"></x-select>
+    <x-select :datas="$id_kategori" name="id_kategori"></x-select>
     <x-input name="sumber" />
     <x-input name="spesifikasi" />
     <x-input name="keterangan" />
