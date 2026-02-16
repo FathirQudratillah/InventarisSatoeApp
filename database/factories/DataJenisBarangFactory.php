@@ -25,7 +25,7 @@ class DataJenisBarangFactory extends Factory
             // Ambil random dari tabel kategori
             'id_kategori' => $kategori,
 
-            'nama_barang' => $this->faker->words(3, true),
+            
 
             
 

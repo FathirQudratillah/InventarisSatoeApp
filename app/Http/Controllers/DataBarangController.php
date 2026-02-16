@@ -78,7 +78,6 @@ class DataBarangController extends Controller
         $jenis_barang = DataJenisBarang::All();
         $id_ruang = DataRuang::All();
         return view('data-barang.edit', compact('barang', 'jenis_barang', 'id_ruang'));
-        
     }
 
     /**
