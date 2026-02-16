@@ -34,9 +34,15 @@ class DataAkunController extends Controller
         return redirect()->route('data-akun.index');
     }
 
-    public function destroy($id){
-        $siswa = DataAkun::find($id);
-        $siswa->delete();
-        return redirect('/');
+    public function destroy($user_id){
+        $akun = DataAkun::findOrFail($user_id);
+        $akun->delete();
+        return redirect()->route('data-akun.index');
+    }
+
+    public function edit(string $user_id)
+    {
+        $akun = DataAkun::findOrFail($user_id);
+        return view('data-akun.edit', compact('akun'));
     }
 }

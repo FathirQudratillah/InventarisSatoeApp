@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataJenisBarang;
 use Illuminate\Http\Request;
+use App\Models\DataKategoriBarang;
 
 class DataJenisBarangController extends Controller
 {
@@ -18,7 +19,8 @@ class DataJenisBarangController extends Controller
      */
     public function create()
     {
-        return view('data-jenis-barang.create');
+    $id_kategori = DataKategoriBarang::All();
+    return view('data-jenis-barang.edit', compact('jenis_barang', 'id_kategori'));
     }
 
     /**
@@ -26,12 +28,12 @@ class DataJenisBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new DataJenisBarang;
-        $akun->jenis_barang = $request->jenis_barang;
-        $akun->id_kategori = $request->id_kategori;
-        $akun->nama_barang = $request->nama_barang;
-        $akun->save();
-        return redirect()->route('data-jenisbarang.index');
+        $jenis_barang = new DataJenisBarang;
+        $jenis_barang->jenis_barang = $request->jenis_barang;
+        $jenis_barang->id_kategori = $request->id_kategori;
+        $jenis_barang->nama_barang = $request->nama_barang;
+        $jenis_barang->save();
+        return redirect()->route('data-jenis-barang.index');
     }
 
     /**
@@ -45,10 +47,12 @@ class DataJenisBarangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit(string $jenis_barang)
+{
+    $jenis_barang = DataJenisBarang::findOrFail($jenis_barang);
+    $id_kategori = DataKategoriBarang::All();
+    return view('data-jenis-barang.create', compact('jenis_barang', 'id_kategori'));
+}
 
     /**
      * Update the specified resource in storage.

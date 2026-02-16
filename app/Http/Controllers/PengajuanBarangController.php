@@ -34,7 +34,7 @@ class PengajuanBarangController extends Controller
         $akun->tanggal_pengajuan = $request->tanggal_pengajuan;
         $akun->jumlah_pengajuan = $request->jumlah_pengajuan;
         $akun->save();
-        return redirect()->route('data-pengajuanbarang.index');
+        return redirect()->route('data-pengajuan-barang.index');
     }
 
     /**
