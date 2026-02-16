@@ -31,7 +31,7 @@ class PemeliharaanBarangController extends Controller
         $akun->kode_barang = $request->kode_barang;
         $akun->id_pj = $request->id_pj;
         $akun->save();
-        return redirect()->route('data-pemeliharaanbarang.index');
+        return redirect()->route('data-pemeliharaan-barang.index');
     }
 
     /**

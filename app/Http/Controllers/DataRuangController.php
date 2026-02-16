@@ -26,13 +26,13 @@ class DataRuangController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new DataRuang;
-        $akun->id_ruang = $request->id_ruang;
-        $akun->nama_ruang = $request->nama_ruang;
-        $akun->jenis_ruang = $request->jenis_ruang;
-        $akun->kapasitas = $request->kapasitas;
-        $akun->lokasi = $request->lokasi;
-        $akun->save();
+        $ruang = new DataRuang;
+        $ruang->id_ruang = $request->id_ruang;
+        $ruang->nama_ruang = $request->nama_ruang;
+        $ruang->jenis_ruang = $request->jenis_ruang;
+        $ruang->kapasitas = $request->kapasitas;
+        $ruang->lokasi = $request->lokasi;
+        $ruang->save();
         return redirect()->route('data-ruang.index');
     }
 
@@ -47,9 +47,11 @@ class DataRuangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id_ruang)
     {
-        //
+        $ruang = DataRuang::findOrFail($id_ruang);
+        return view('data-ruang.edit', compact('ruang'));
+
     }
 
     /**

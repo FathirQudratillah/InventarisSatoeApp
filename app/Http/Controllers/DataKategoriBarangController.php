@@ -26,11 +26,11 @@ class DataKategoriBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new DataKategoriBarang;
-        $akun->id_kategori = $request->id_kategori;
-        $akun->kategori = $request->kategori;
-        $akun->save();
-        return redirect()->route('data-kategoribarang.index');
+        $kategori_barang = new DataKategoriBarang;
+        $kategori_barang->id_kategori = $request->id_kategori;
+        $kategori_barang->kategori = $request->kategori;
+        $kategori_barang->save();
+        return redirect()->route('data-kategori-barang.index');
     }
 
     /**
@@ -44,9 +44,10 @@ class DataKategoriBarangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id_kategori)
     {
-        //
+        $kategori_barang = DataKategoriBarang::findOrFail($id_kategori);
+        return view('data-kategori-barang.edit', compact('kategori_barang'));
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\DataSiswa;
 use Illuminate\Http\Request;
+use app\models\DataAkun;
+use app\models\DataKelas;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DataSiswaController extends Controller
@@ -15,7 +17,9 @@ class DataSiswaController extends Controller
 
      public function create()
     {
-        return view('data-siswa.create');
+        $user_id = DataAkun::all();
+        $id_kelas = DataKelas::all();
+        return view('data-siswa.create', compact('user_id', 'id_kelas'));
     }
 
     public function store(Request $request): RedirectResponse{
@@ -35,6 +39,14 @@ class DataSiswaController extends Controller
     public function destroy($id){
         $siswa = DataSiswa::find($id);
         $siswa->delete();
-        return redirect('/');
+        return redirect()->route('data-siswa.index');
+    }
+
+    public function edit(string $nis)
+    {
+        $siswa = DataSiswa::findOrFail($nis);
+        $user_id = DataAkun::all();
+        $id_kelas = DataKelas::all();
+        return view('data-siswa.edit', compact('siswa', 'user_id', 'id_kelas'));
     }
 }

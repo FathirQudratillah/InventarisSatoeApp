@@ -26,11 +26,11 @@ class DataAngkatanController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new DataAngkatan;
-        $akun->angkatan = $request->angkatan;
-        $akun->tahun_masuk = $request->tahun_masuk;
-        $akun->tahun_lulus = $request->tahun_lulus;
-        $akun->save();
+        $angkatan = new DataAngkatan;
+        $angkatan->angkatan = $request->angkatan;
+        $angkatan->tahun_masuk = $request->tahun_masuk;
+        $angkatan->tahun_lulus = $request->tahun_lulus;
+        $angkatan->save();
         return redirect()->route('data-angkatan.index');
     }
 
@@ -45,9 +45,10 @@ class DataAngkatanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $angkatan)
     {
-        //
+        $angkatan = DataAngkatan::findOrFail($angkatan);
+        return view('data-angkatan.edit', compact('angkatan'));
     }
 
     /**
@@ -55,14 +56,16 @@ class DataAngkatanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $angkatan)
     {
-        //
+        $angkatan = DataAngkatan::findOrFail($angkatan);
+        $angkatan->delete();
+        return redirect()->route('data-angkatan.index');
     }
 }

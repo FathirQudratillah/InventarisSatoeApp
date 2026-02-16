@@ -50,14 +50,14 @@ class DataBarangController extends Controller
         $kodeBarang = $jenis . '-' . $newNumber;
 
         
-        $akun = new DataBarang;
-        $akun->kode_barang = $kodeBarang;
-        $akun->id_ruang = $request->id_ruang;
-        $akun->jenis_barang = $request->jenis_barang;
-        $akun->kondisi_barang = $request->kondisi_barang;
-        $akun->tahun_perolehan = $request->tahun_perolehan;
-        $akun->keterangan = $request->keterangan;
-        $akun->save();
+        $barang = new DataBarang;
+        $barang->kode_barang = $kodeBarang;
+        $barang->id_ruang = $request->id_ruang;
+        $barang->jenis_barang = $request->jenis_barang;
+        $barang->kondisi_barang = $request->kondisi_barang;
+        $barang->tahun_perolehan = $request->tahun_perolehan;
+        $barang->keterangan = $request->keterangan;
+        $barang->save();
         return redirect()->route('data-barang.index');
     }
 
@@ -72,9 +72,13 @@ class DataBarangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $kodeBarang)
     {
-        //
+        $barang = DataBarang::findOrFail($kodeBarang);
+        $jenis_barang = DataJenisBarang::All();
+        $id_ruang = DataRuang::All();
+        return view('data-barang.edit', compact('barang', 'jenis_barang', 'id_ruang'));
+        
     }
 
     /**
@@ -82,14 +86,15 @@ class DataBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $kodeBarang)
     {
-        //
+        $barang = DataBarang::findOrFail($kodeBarang);
+        return view('data-barang.index', compact('barang'));
     }
 }
