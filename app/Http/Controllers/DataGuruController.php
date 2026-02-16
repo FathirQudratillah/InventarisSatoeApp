@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DataGuru;
 use Illuminate\Http\Request;
+use app\models\DataAkun;
 
 class DataGuruController extends Controller
 {
@@ -18,7 +19,8 @@ class DataGuruController extends Controller
      */
     public function create()
     {
-        return view('data-guru.create');
+        $user_id = DataAkun::all();
+        return view('data-guru.create', compact('user_id'));
     }
 
     /**
@@ -26,15 +28,15 @@ class DataGuruController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new DataGuru;
-        $akun->nip = $request->nip;
-        $akun->user_id = $request->user_id;
-        $akun->nama = $request->nama;
-        $akun->email = $request->email;
-        $akun->jenis_kelamin = $request->jenis_kelamin;
-        $akun->no_kontak = $request->no_kontak;
-        $akun->alamat = $request->alamat;
-        $akun->save();
+        $guru = new DataGuru;
+        $guru->nip = $request->nip;
+        $guru->user_id = $request->user_id;
+        $guru->nama = $request->nama;
+        $guru->email = $request->email;
+        $guru->jenis_kelamin = $request->jenis_kelamin;
+        $guru->no_kontak = $request->no_kontak;
+        $guru->alamat = $request->alamat;
+        $guru->save();
         return redirect()->route('data-guru.index');
 
     }
@@ -50,9 +52,11 @@ class DataGuruController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $nip)
     {
-        //
+        $guru = DataGuru::findOrFail($nip);
+        $user_id = DataAkun::all();
+        return view('data-guru.edit', compact('guru', 'user_id'));
     }
 
     /**

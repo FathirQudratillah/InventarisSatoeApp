@@ -26,14 +26,14 @@ class DataPenanggungJawabController extends Controller
      */
     public function store(Request $request)
     {
-        $akun= new DataPenanggungJawab;
-        $akun->id_pj = $request->id_pj;
-        $akun->nama = $request->nama;
-        $akun->nama_perusahaan = $request->nama_perusahaan;
-        $akun->alamat_perusahaan = $request->alamat_perusahaan;
-        $akun->no_kontak = $request->no_kontak;
-        $akun->save();
-        return redirect()->route('data-penanggungjawab-index');
+        $penanggung_jawab= new DataPenanggungJawab;
+        $penanggung_jawab->id_pj = $request->id_pj;
+        $penanggung_jawab->nama = $request->nama;
+        $penanggung_jawab->nama_perusahaan = $request->nama_perusahaan;
+        $penanggung_jawab->alamat_perusahaan = $request->alamat_perusahaan;
+        $penanggung_jawab->no_kontak = $request->no_kontak;
+        $penanggung_jawab->save();
+        return redirect()->route('data-penanggung-jawab.index');
 
     }
 
@@ -48,9 +48,10 @@ class DataPenanggungJawabController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id_pj)
     {
-        //
+        $penanggung_jawab = DataPenanggungJawab::findOrFail($id_pj);
+        return view('data-penanggung-jawab.edit', compact('penanggung_jawab'));
     }
 
     /**

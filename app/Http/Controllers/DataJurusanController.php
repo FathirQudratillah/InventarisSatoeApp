@@ -26,10 +26,10 @@ class DataJurusanController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new DataJurusan;
-        $akun->id_jurusan = $request->id_jurusan;
-        $akun->jurusan = $request->jurusan;
-        $akun->save();
+        $jurusan = new DataJurusan;
+        $jurusan->id_jurusan = $request->id_jurusan;
+        $jurusan->jurusan = $request->jurusan;
+        $jurusan->save();
         return redirect()->route('data-jurusan.index');
     }
 
@@ -44,9 +44,10 @@ class DataJurusanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id_jurusan)
     {
-        //
+        $jurusan = DataJurusan::findOrFail($id_jurusan);
+        return view('data-jurusan.edit', compact('jurusan'));
     }
 
     /**

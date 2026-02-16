@@ -31,7 +31,7 @@ class DetailPeminjamanController extends Controller
         $akun->kode_barang = $request->kode_barang;
         $akun->id_peminjaman = $request->id_peminjaman;
         $akun->save();
-        return redirect()->route('data-detailpeminjaman.index');
+        return redirect()->route('data-detail-peminjaman.index');
     }
 
     /**

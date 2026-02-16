@@ -31,7 +31,7 @@ class PeminjamanBarangController extends Controller
         $akun->user_id = $request->user_id;
         $akun->data_admin = $request->data_admin;
         $akun->save();
-        return redirect()->route('data-peminjamanbarang.index');
+        return redirect()->route('data-peminjaman-barang.index');
     }
 
     /**
