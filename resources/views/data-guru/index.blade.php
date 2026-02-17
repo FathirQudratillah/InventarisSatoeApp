@@ -45,7 +45,7 @@
         <div class="md:p-6">
             <h1 class="text-2xl font-bold mb-4">Data Guru</h1>
 
-            <div class="bg-white shadow rounded-lg overflow-visible">
+            <div class="bg-white shadow rounded-lg overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
 
                     <!-- Header -->

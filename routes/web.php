@@ -24,6 +24,15 @@ use App\Http\Controllers\DataPenanggungJawabController;
 Route::get('/', function () {
     return view('dashboard');
 });
+Route::get('/login', function () {
+    return view('login.index');
+})->name('login');
+Route::get('/signup', function () {
+    return view('signup.index');
+})->name('signup');
+Route::get('/berikutnya', function () {
+    return view('berikutnya.index');
+})->name('berikutnya');
 
 Route::resource('data-akun', DataAkunController::class);
 
