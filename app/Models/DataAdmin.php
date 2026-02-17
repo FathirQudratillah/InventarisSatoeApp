@@ -13,4 +13,9 @@ class DataAdmin extends Model
     protected $primaryKey = 'nip';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function akun()
+    {
+        return $this->belongsTo(DataAkun::class, 'user_id', 'user_id');
+    }
 }

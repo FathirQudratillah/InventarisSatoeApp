@@ -4,7 +4,7 @@
             <p class="text-gray-600">Data Jurusan</p>
 
             <!-- Tombol Tambah Data dengan Titik Tiga -->
-            <x-dropdown-c route="data-jurusan"></x-dropdown-c>
+            <x-dropdown type="create" route="data-jurusan"></x-dropdown-c>
         </div>
 
         <div class="md:p-6">

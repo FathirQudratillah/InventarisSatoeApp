@@ -1,4 +1,4 @@
-@props(['name', 'datas' => null, 'value' => null])
+@props(['name', 'datas' => null, 'value' => null, 'id' => null])
 
 @php
     $label = ucwords(str_replace('_', ' ', $name));
@@ -9,7 +9,7 @@
         {{ $label }}
     </label>
 
-    <select class="w-full px-4 py-3 border border-gray-300 rounded-xl 
+    <select id="{{ $id }}" class="w-full px-4 py-3 border border-gray-300 rounded-xl 
                   focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
                   transition duration-200 outline-none" name="{{ $name }}" id="{{ $name }}" required>
     <option value="">--Pilih--</option>

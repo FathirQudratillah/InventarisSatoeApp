@@ -15,7 +15,7 @@ class DataSiswa extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['nis', 'id_kelas', 'user_id', 'nama', 'email', 'jenis_kelamin', 'no_kontak', 'alamat'];
+    protected $fillable = ['nis', 'id_kelas', 'no_absen', 'user_id', 'nama', 'email', 'jenis_kelamin', 'no_kontak', 'alamat'];
     
     public function akun()
     {

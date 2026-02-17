@@ -23,6 +23,7 @@ class DataSiswaFactory extends Factory
             'nis' => $this->faker->unique()->numerify('##########'), // 10 digit
 
             'nama' => $this->faker->name(),
+            'no_absen' => $this->faker->numerify('##'),
 
             'email' => $this->faker->unique()->safeEmail(),
 
