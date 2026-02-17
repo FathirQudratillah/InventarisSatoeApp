@@ -15,7 +15,7 @@ return new class extends Migration
             $table->char('kode_barang', 10)->primary();
             $table->char('id_ruang', 5);
             $table->char('jenis_barang', 7);
-            $table->string('nama_barang', 100);
+            
             $table->string('kondisi_barang', 10);
             $table->integer('tahun_perolehan');
             $table->text('keterangan');
@@ -24,12 +24,14 @@ return new class extends Migration
             $table->foreign('id_ruang')
                 ->references('id_ruang')
                 ->on('data_ruang')
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
                 
 
             $table->foreign('jenis_barang')
                 ->references('jenis_barang')
                 ->on('data_jenis_barang')
+                ->cascadeOnUpdate()
                 ->cascadeOnDelete();
         });
     }

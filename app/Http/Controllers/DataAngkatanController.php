@@ -56,7 +56,19 @@ class DataAngkatanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $angkatan = DataAngkatan::findOrFail($id);
 
+        $request->validate([
+            'angkatan' => 'required',
+            'tahun_masuk' => 'required',
+            'tahun_lulus' => 'required',
+            
+        ]);
+        $angkatan->angkatan = $request->angkatan;
+        $angkatan->tahun_masuk = $request->tahun_masuk;
+        $angkatan->tahun_lulus = $request->tahun_lulus;
+        $angkatan->save();
+        return redirect()->route('data-angkatan.index');
     }
 
     /**

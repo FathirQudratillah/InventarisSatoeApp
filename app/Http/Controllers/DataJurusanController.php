@@ -55,14 +55,26 @@ class DataJurusanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $jurusan = DataJurusan::findOrFail($id);
+
+        $request->validate([
+            'id_jurusan' => 'required',
+            'jurusan' => 'required',
+        ]);
+
+        $jurusan->id_jurusan = $request->id_jurusan;
+        $jurusan->jurusan = $request->jurusan;
+        $jurusan->save();
+        return redirect()->route('data-jurusan.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id_jurusan)
     {
-        //
+        $jurusan = DataJurusan::findOrFail($id_jurusan);
+        $jurusan->delete();
+        return Redirect()->route('data-jurusan.index');
     }
 }

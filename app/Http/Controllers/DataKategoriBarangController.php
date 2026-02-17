@@ -55,7 +55,18 @@ class DataKategoriBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $kategori_barang = DataKategoriBarang::findOrFail($id);
+
+        $request->validate([
+            'id_kategori' => 'required',
+            'kategori' => 'required',
+            
+            
+        ]);
+         $kategori_barang->id_kategori = $request->id_kategori;
+        $kategori_barang->kategori = $request->kategori;
+        $kategori_barang->save();
+        return redirect()->route('data-kategori-barang.index');
     }
 
     /**

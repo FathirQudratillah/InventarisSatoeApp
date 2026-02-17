@@ -1,4 +1,4 @@
-<x-form action="{{ route('data-angkatan.update', $angkatan->user_id) }}">
+<x-form type="Edit" action="{{ route('data-angkatan.update', $angkatan->angkatan) }}">
     @method('PUT')
     <x-slot:title>
         Data Angkatan

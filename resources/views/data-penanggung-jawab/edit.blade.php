@@ -1,9 +1,12 @@
-<x-form action="{{ route('data-akun.update', $akun->user_id) }}">
+<x-form type="Edit" action="{{ route('data-penanggung-jawab.update', $penanggung_jawab->id_pj) }}">
     @method('PUT')
     <x-slot:title>
-        Data akun
+        Data Penanggung Jawab
     </x-slot:title>
-    <x-input name="username" :value="$akun->username"/>
-    <x-slot:button> <x-back-button href="{{ route('data-akun.index') }}"></x-back-button></x-slot:button>
+    <x-input name="nama" :value="$penanggung_jawab->nama"/>
+    <x-input name="nama_perusahaan" :value="$penanggung_jawab->nama_perusahaan"/>
+    <x-input name="alamat_perusahaan" :value="$penanggung_jawab->alamat_perusahaan"/>
+    <x-input name="no_kontak" :value="$penanggung_jawab->no_kontak"/>
+    <x-slot:button> <x-back-button href="{{ route('data-penanggung-jawab.index') }}"></x-back-button></x-slot:button>
         
 </x-form>

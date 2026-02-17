@@ -85,7 +85,22 @@ class DataBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $barang = DataBarang::findOrFail($id);
 
+        $request->validate([
+            'id_ruang' => 'required',
+           
+            'tahun_perolehan' => 'required',
+            'keterangan' => 'required',
+            
+        ]);
+        
+        $barang->id_ruang = $request->id_ruang;
+        $barang->kondisi_barang = $request->kondisi_barang;
+        $barang->tahun_perolehan = $request->tahun_perolehan;
+        $barang->keterangan = $request->keterangan;
+        $barang->save();
+        return redirect()->route('data-barang.index');
     }
 
     /**
@@ -94,6 +109,7 @@ class DataBarangController extends Controller
     public function destroy(string $kodeBarang)
     {
         $barang = DataBarang::findOrFail($kodeBarang);
-        return view('data-barang.index', compact('barang'));
+        $barang->delete();
+        return Redirect()->route('data-barang.index');
     }
 }
