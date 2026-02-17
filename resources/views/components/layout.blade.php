@@ -1,3 +1,5 @@
+@props(['type'=>null,'title'])
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +13,13 @@
 </head>
 <body>
     <div class="flex h-screen overflow-hidden">
-    <x-navbar></x-navbar>
+        @if ($type=='login')
+            
+        @elseif ($type=='signup')
+
+        @else
+        <x-navbar></x-navbar>
+        @endif
 
     <!-- Main Content -->
         <main class="flex-1 p-6 bg-gray-100 overflow-y-auto"

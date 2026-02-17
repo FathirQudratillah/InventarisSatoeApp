@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\DataSiswa;
 use Illuminate\Http\Request;
-use app\models\DataAkun;
-use app\models\DataKelas;
+use app\Models\DataAkun;
+use app\Models\DataKelas;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DataSiswaController extends Controller
