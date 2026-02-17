@@ -21,6 +21,7 @@ class DataAkunFactory extends Factory
             'user_id' => $this->faker->unique()->numerify('##########'),
             'username' => $this->faker->name(),
             'password' => Hash::make('password'),
+            'role' => $this->faker->randomElement(['siswa', 'guru']),
             
         ];
     }

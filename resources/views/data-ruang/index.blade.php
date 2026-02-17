@@ -5,7 +5,7 @@
             <p class="text-gray-600">Data Ruang</p>
 
             <!-- Tombol Tambah Data dengan Titik Tiga -->
-            <x-dropdown-c route="data-ruang"></x-dropdown-c>
+            <x-dropdown type="create" route="data-ruang"></x-dropdown-c>
         </div>
 
         <div class="md:p-6">

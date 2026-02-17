@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('data_siswa', function (Blueprint $table) {
             $table->char('nis', 10)->primary();
-            $table->char('id_kelas', 9);
             $table->char('user_id', 10)->unique();
+            $table->char('id_kelas', 9);
+            $table->char('no_absen', 2);
             $table->string('nama', 60);
             $table->string('email', 255)->unique();
             $table->string('jenis_kelamin', 9);

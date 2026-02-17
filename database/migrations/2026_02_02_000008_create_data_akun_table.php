@@ -15,6 +15,7 @@ return new class extends Migration
             $table->char('user_id', 10)->primary();
             $table->string('username', 32);
             $table->string('password');
+            $table->string('role');
             $table->timestamps();
         });
     }
