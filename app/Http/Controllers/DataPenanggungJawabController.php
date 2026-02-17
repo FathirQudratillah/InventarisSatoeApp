@@ -59,14 +59,31 @@ class DataPenanggungJawabController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $penanggung_jawab = DataPenanggungJawab::findOrFail($id);
+
+        $request->validate([
+            'nama' => 'required',
+            'nama_perusahaan' => 'required',
+            'alamat_perusahaan' => 'required',
+            'no_kontak' => 'required',
+            
+            
+        ]);
+        $penanggung_jawab->nama = $request->nama;
+        $penanggung_jawab->nama_perusahaan = $request->nama_perusahaan;
+        $penanggung_jawab->alamat_perusahaan = $request->alamat_perusahaan;
+        $penanggung_jawab->no_kontak = $request->no_kontak;
+        $penanggung_jawab->save();
+        return redirect()->route('data-penanggung-jawab.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id_pj)
     {
-        //
+        $penanggung_jawab = DataPenanggungJawab::findOrFail($id_pj);
+        $penanggung_jawab->delete();
+        return Redirect()->route('data-penanggung-jawab.index');
     }
 }

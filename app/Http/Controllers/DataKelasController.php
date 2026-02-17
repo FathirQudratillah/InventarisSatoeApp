@@ -54,22 +54,22 @@ class DataKelasController extends Controller
     {
         $kelas = DataKelas::findOrFail($id_kelas);
 
-        if ($request->kelas != 'Alumni') {
-            $kelas->id_kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
-        } else {
-            $kelas->id_kelas = $request->angkatan . $request->id_jurusan;
-        }
+        $request->validate([
+            'id_jurusan' => 'required',
+            'angkatan' => 'required',
+            'kelas' => 'required',
+            'subkelas' => 'required',
+        ]);
 
         $kelas->id_jurusan = $request->id_jurusan;
         $kelas->angkatan = $request->angkatan;
         $kelas->kelas = $request->kelas;
         $kelas->subkelas = $request->subkelas;
         $kelas->save();
-
         return redirect()->route('data-kelas.index');
     }
 
-    public function destroy(string $id_kelas): RedirectResponse
+    public function destroy(string $id_kelas)
     {
         $kelas = DataKelas::findOrFail($id_kelas);
         $kelas->delete();

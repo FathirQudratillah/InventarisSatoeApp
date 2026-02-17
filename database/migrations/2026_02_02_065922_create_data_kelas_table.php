@@ -22,12 +22,14 @@ return new class extends Migration
             $table->foreign('id_jurusan')
                   ->references('id_jurusan')
                   ->on('data_jurusan')
-                  ->cascadeOnDelete();
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
                   
             $table->foreign('angkatan')
                 ->references('angkatan')
                 ->on('data_angkatan')
-                ->cascadeOnDelete();
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

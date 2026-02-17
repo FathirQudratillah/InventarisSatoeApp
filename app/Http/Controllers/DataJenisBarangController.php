@@ -33,6 +33,9 @@ class DataJenisBarangController extends Controller
         $jenis_barang->jenis_barang = $request->jenis_barang;
         $jenis_barang->id_kategori = $request->id_kategori;
         $jenis_barang->nama_barang = $request->nama_barang;
+        $jenis_barang->sumber = $request->sumber;
+        $jenis_barang->spesifikasi = $request->spesifikasi;
+        $jenis_barang->keterangan = $request->keterangan;
         $jenis_barang->save();
         return redirect()->route('data-jenis-barang.index');
     }
@@ -60,14 +63,31 @@ class DataJenisBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $jenis_barang = DataJenisBarang::findOrFail($id);
+
+        $request->validate([
+            'nama_barang' => 'required',
+            'sumber' => 'required',
+            'spesifikasi' => 'required',
+            'keterangan' => 'required',
+            
+        ]);
+        
+        $jenis_barang->nama_barang = $request->nama_barang;
+        $jenis_barang->sumber = $request->sumber;
+        $jenis_barang->spesifikasi = $request->spesifikasi;
+        $jenis_barang->keterangan = $request->keterangan;
+        $jenis_barang->save();
+        return redirect()->route('data-jenis-barang.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $jenis_barang)
     {
-        //
+        $jenis_barang = DataJenisBarang::findOrFail($jenis_barang);
+        $jenis_barang->delete();
+        return Redirect()->route('data-jenis-barang.index');
     }
 }

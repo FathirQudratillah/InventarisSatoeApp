@@ -13,7 +13,7 @@ class DataBarang extends Model
                             'id_ruang', 
                             'id_kategori',
                             'jenis_barang',
-                             'nama_barang', 
+                            
                             'kondisi_barang',
                             'tahun_perolehan',
                             'keterangan',

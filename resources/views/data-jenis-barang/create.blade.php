@@ -4,6 +4,7 @@
     </x-slot:title>
     <x-input name="jenis_barang" />
     <x-select :datas="$id_kategori" name="id_kategori"></x-select>
+    <x-input name="nama_barang" />
     <x-input name="sumber" />
     <x-input name="spesifikasi" />
     <x-input name="keterangan" />
