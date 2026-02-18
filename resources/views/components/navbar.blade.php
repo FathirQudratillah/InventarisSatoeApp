@@ -61,23 +61,16 @@
                      </button>
                      <div class="{{ request()->is('data-*') ? '' : 'hidden' }} space-y-1 pl-11" id="analytics-dropdown">
                          <x-side-link href="{{ route('data-akun.index') }}" :active="request()->is('data-akun')">Data Akun</x-side-link>
-                         <x-side-link href="{{ route('data-siswa.index') }}" :active="request()->is('data-siswa')">Data Siswa</x-side-link>
+                         
                          <x-side-link href="{{ route('data-kelas.index') }}" :active="request()->is('data-kelas')">Data Kelas</x-side-link>
-                         <x-side-link href="{{ route('data-jurusan.index') }}" :active="request()->is('data-jurusan')">Data
-                             Jurusan</x-side-link>
+                         <x-side-link href="{{ route('data-jurusan.index') }}" :active="request()->is('data-jurusan')">DataJurusan</x-side-link>
                          <x-side-link href="{{ route('data-ruang.index') }}" :active="request()->is('data-ruang')">Data Ruang</x-side-link>
-                         <x-side-link href="{{ route('data-angkatan.index') }}" :active="request()->is('data-angkatan')">Data
-                             Angkatan</x-side-link>
-                         <x-side-link href="{{ route('data-guru.index') }}" :active="request()->is('data-guru')">Data Guru</x-side-link>
-                         <x-side-link href="{{ route('data-admin.index') }}" :active="request()->is('data-admin')">Data Admin</x-side-link>
-                         <x-side-link href="{{ route('data-barang.index') }}" :active="request()->is('data-barang')">Data
-                             Barang</x-side-link>
-                         <x-side-link href="{{ route('data-jenis-barang.index') }}" :active="request()->is('data-jenis-barang')">Data Jenis
-                             Barang</x-side-link>
-                         <x-side-link href="{{ route('data-kategori-barang.index') }}" :active="request()->is('data-kategori-barang')">Data Kategori
-                             Barang</x-side-link>
-                         <x-side-link href="{{ route('data-penanggung-jawab.index') }}" :active="request()->is('data-penanggung-jawab')">Data
-                             Penanggung Jawab</x-side-link>
+                         <x-side-link href="{{ route('data-angkatan.index') }}" :active="request()->is('data-angkatan')">DataAngkatan</x-side-link>
+                         
+                         <x-side-link href="{{ route('data-barang.index') }}" :active="request()->is('data-barang')">DataBarang</x-side-link>
+                         <x-side-link href="{{ route('data-jenis-barang.index') }}" :active="request()->is('data-jenis-barang')">Data JenisBarang</x-side-link>
+                         <x-side-link href="{{ route('data-kategori-barang.index') }}" :active="request()->is('data-kategori-barang')">Data KategoriBarang</x-side-link>
+                         <x-side-link href="{{ route('data-penanggung-jawab.index') }}" :active="request()->is('data-penanggung-jawab')">DataPenanggung Jawab</x-side-link>
 
                      </div>
                  </div>
@@ -123,27 +116,7 @@
                      </div>
                  </div>
 
-                 <!-- Projects -->
-                 <a href="{{ route('login') }}"
-                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
-                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                     </svg>
-                     Login
-                 </a>
-
-                 <!-- Calendar -->
-                 <a href="{{ route('signup') }}"
-                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
-                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                     </svg>
-                     Signup
-                 </a>
+                 
 
                  <!-- Documents -->
                  <a href="#"
@@ -159,17 +132,58 @@
          </nav>
 
          <!-- User Profile -->
-         <div class="mt-auto p-4 border-t border-gray-800 ">
-             <div class="flex items-center">
-                 <img class="h-8 w-8 rounded-full"
-                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                     alt="">
-                 <div class="ml-3">
-                     <p class="text-sm font-medium text-white">Tom Cook</p>
-                     <p class="text-xs text-gray-400">View profile</p>
-                 </div>
-             </div>
-         </div>
+         <div 
+            x-data="{ open: false }" 
+            class="mt-auto p-4 border-t border-gray-800 relative"
+        >
+            <div 
+                @click="open = !open"
+                class="flex items-center cursor-pointer"
+            >
+                <img class="h-8 w-8 rounded-full"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&w=256&h=256&q=80"
+                    alt="">
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-white">
+                        {{ auth()->user()->username }}
+                    </p>
+                    <p class="text-xs text-gray-400">{{ auth()->user()->user_id }}</p>
+                </div>
+            </div>
+
+            <!-- Dropdown -->
+            <div 
+                x-show="open"
+                @click.outside="open = false"
+                x-transition
+                class="absolute bottom-full mb-2 w-50 bg-gray-600 rounded-md shadow-lg overflow-hidden"
+            >
+                <a href="{{ route('data-akun.show', auth()->user()->user_id) }}"
+                class="flex items-center px-4 py-2 text-sm text-blue-400 hover:bg-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+
+                    Detail
+                </a>
+
+                <form method="POST" action="/logout">
+                    @csrf
+                    <button 
+                        type="submit"
+                        class="w-full flex items-center text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-800"
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                        </svg>
+
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+
  </aside>
 
  <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden">

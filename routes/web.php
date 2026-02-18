@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\DataAkun;
-use App\Models\DataKelas;
-use App\Models\DataSiswa;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataAkunController;
 use App\Http\Controllers\DataGuruController;
@@ -21,18 +19,15 @@ use App\Http\Controllers\DataKategoriBarangController;
 use App\Http\Controllers\PemeliharaanBarangController;
 use App\Http\Controllers\DataPenanggungJawabController;
 
-Route::get('/', function () {
+Route::get('/', function () { 
     return view('dashboard');
-});
-Route::get('/login', function () {
-    return view('login.index');
-})->name('login');
-Route::get('/signup', function () {
-    return view('signup.index');
-})->name('signup');
-Route::get('/berikutnya', function () {
-    return view('berikutnya.index');
-})->name('berikutnya');
+    })->middleware('auth');
+
+Route::get('/login',[AuthController::class, 'loginForm'])->name('login');
+
+Route::post('/login',[AuthController::class, 'login']);
+
+Route::post('/logout',[AuthController::class, 'logout'])->middleware('auth');
 
 Route::resource('data-akun', DataAkunController::class);
 

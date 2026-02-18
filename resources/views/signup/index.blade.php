@@ -1,7 +1,7 @@
-<x-layout type="login" title="Daftar Siswa">
+<x-layout type="signup" title=" Sign up">
 
     <!-- Tombol Kembali -->
-    <a href="{{ url('/') }}"
+    <a href="/login"
         class="fixed top-4 left-4 flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:text-white transition-all duration-150 z-50">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -26,17 +26,13 @@
         <!-- Judul -->
         <div class="mb-7">
             <h1 class="text-2xl font-bold text-white">Lengkapi Data Diri</h1>
-            <p class="text-sm text-gray-400 mt-1">Isi data siswa Anda dengan lengkap</p>
+            <p class="text-sm text-gray-400 mt-1">Isi data anda dengan lengkap</p>
         </div>
 
         <!-- Form -->
-        <form method="POST" action="{{ route('signup') }}" class="space-y-4">
+        <form method="POST" action="{{ route('data-akun.store') }}" class="space-y-4 form-group">
             @csrf
-
-            <input type="hidden" name="user_id" value="{{ auth()->id() }}" />
-
-
-                        <!-- Username -->
+            <!-- Username -->
             <div>
                 <label for="username" class="block text-sm font-medium text-gray-300 mb-1.5">Username</label>
                 <div class="relative">
@@ -91,50 +87,30 @@
                 @enderror
             </div>
 
-            <!-- NIS -->
+            
             <div>
-                <label for="nis" class="block text-sm font-medium text-gray-300 mb-1.5">NIS</label>
-                <input type="text" id="nis" name="nis" value="{{ old('nis') }}"
-                    placeholder="Masukkan NIS (10 digit)" maxlength="10" required autofocus
-                    class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('nis') ? 'border-red-500' : '' }}">
-                @error('nis')
+                <label for="role" class="block text-sm font-medium text-gray-300 mb-1.5">Role</label>
+                <select id="role" name="role" required
+                    class="role w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('role') ? 'border-red-500' : '' }}">
+                    <option value="" disabled {{ old('role') ? '' : 'selected' }}>Pilih</option>
+                    <option value="siswa" {{ old('role') == 'siswa' ? 'selected' : '' }}>Siswa
+                    </option>
+                    <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru
+                    </option>
+                </select>
+                @error('role')
                     <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
                 @enderror
             </div>
-
-            <!-- Nama -->
-            <div>
-                <label for="nama" class="block text-sm font-medium text-gray-300 mb-1.5">Nama Lengkap</label>
-                <input type="text" id="nama" name="nama" value="{{ old('nama') }}"
-                    placeholder="Masukkan nama lengkap" maxlength="60" required
-                    class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('nama') ? 'border-red-500' : '' }}">
-                @error('nama')
-                    <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="no_absen" class="block text-sm font-medium text-gray-300 mb-1.5">Nomor Absen</label>
-                <input type="text" id="nama" name="nama" value="{{ old('no_absen') }}"
-                    placeholder="Masukkan Nomor Absen" maxlength="60" required
-                    class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('no_absen') ? 'border-red-500' : '' }}">
-                @error('no_absen')
-                    <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Kelas -->
-            <div>
-                <label for="kelas" class="block text-sm font-medium text-gray-300 mb-1.5">Kelas</label>
-                <input type="text" id="kelas" name="kelas" value="{{ old('kelas') }}"
-                    placeholder="Contoh: XI RPL 1" required
-                    class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('kelas') ? 'border-red-500' : '' }}">
-                @error('kelas')
-                    <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Jenis Kelamin -->
+        
+            <x-signup.input class="siswaField hidden" name="nis" max="10" />
+            <x-signup.input class="nipField hidden" name="nip" max="10" />
+            <x-signup.select class="siswaField hidden"  name="id_kelas" :datas="$kelas"></x-signup.select>
+            <x-signup.input class="siswaField hidden"  name="no_absen" max="2" />
+            <x-signup.input  name="nama" max="60" />
+            
+            
+            
             <div>
                 <label for="jenis_kelamin" class="block text-sm font-medium text-gray-300 mb-1.5">Jenis Kelamin</label>
                 <select id="jenis_kelamin" name="jenis_kelamin" required
@@ -149,39 +125,11 @@
                     <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
                 @enderror
             </div>
-
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}"
-                    placeholder="Masukkan email" required
-                    class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('email') ? 'border-red-500' : '' }}">
-                @error('email')
-                    <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- No Kontak -->
-            <div>
-                <label for="no_kontak" class="block text-sm font-medium text-gray-300 mb-1.5">No. Kontak</label>
-                <input type="text" id="no_kontak" name="no_kontak" value="{{ old('no_kontak') }}"
-                    placeholder="Contoh: 08123456789" maxlength="13" required
-                    class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('no_kontak') ? 'border-red-500' : '' }}">
-                @error('no_kontak')
-                    <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Alamat -->
-            <div>
-                <label for="alamat" class="block text-sm font-medium text-gray-300 mb-1.5">Alamat</label>
-                <textarea id="alamat" name="alamat" rows="2" required placeholder="Masukkan alamat lengkap"
-                    class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 resize-none {{ $errors->has('alamat') ? 'border-red-500' : '' }}">{{ old('alamat') }}</textarea>
-                @error('alamat')
-                    <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
-                @enderror
-            </div>
-
+         
+            <x-signup.input type="email" name="email" max="255" />
+            <x-signup.input name="no_kontak" max="13" />
+            <x-signup.input name="alamat" max="255" />
+            
             <!-- Tombol -->
             <button type="submit"
                 class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-lg shadow-sm transition-all duration-150 hover:shadow-lg hover:shadow-indigo-500/20 active:scale-[0.99]">
@@ -201,3 +149,74 @@
     </div>
 
 </x-layout>
+<script>
+    const roleSelect = document.querySelector('.role');
+
+    const siswaFields = document.querySelectorAll('.siswaField');
+    const nipField = document.querySelector('.nipField');
+
+    const nis = document.getElementById('nis');
+    const id_kelas = document.getElementById('id_kelas');
+    const no_absen = document.getElementById('no_absen');
+    const nip = document.getElementById('nip');
+
+    function toggleSiswaFields() {
+        if (roleSelect.value === 'siswa') {
+
+            // tampilkan semua field siswa
+            siswaFields.forEach(field => {
+                field.classList.remove('hidden');
+            });
+
+            nis.setAttribute('required', true);
+            id_kelas.setAttribute('required', true);
+            no_absen.setAttribute('required', true);
+
+            // sembunyikan nip
+            if (nipField) {
+                nipField.classList.add('hidden');
+                nip.removeAttribute('required');
+            }
+
+        } else if (roleSelect.value === 'guru') {
+
+            // sembunyikan semua field siswa
+            siswaFields.forEach(field => {
+                field.classList.add('hidden');
+            });
+
+            nis.removeAttribute('required');
+            id_kelas.removeAttribute('required');
+            no_absen.removeAttribute('required');
+
+            // tampilkan nip
+            if (nipField) {
+                nipField.classList.remove('hidden');
+                nip.setAttribute('required', true);
+            }
+
+        } else {
+
+            // default sembunyikan semua
+            siswaFields.forEach(field => {
+                field.classList.add('hidden');
+            });
+
+            if (nipField) {
+                nipField.classList.add('hidden');
+            }
+
+            nis.removeAttribute('required');
+            id_kelas.removeAttribute('required');
+            no_absen.removeAttribute('required');
+            if (nip) nip.removeAttribute('required');
+        }
+    }
+
+    roleSelect.addEventListener('change', toggleSiswaFields);
+    document.addEventListener('DOMContentLoaded', toggleSiswaFields);
+</script>
+
+
+
+

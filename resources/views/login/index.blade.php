@@ -1,13 +1,5 @@
-<x-layout type="login" title=" ">
+<x-layout type="login" title="Login">
 
-        <!-- Tombol Kembali -->
-        <a href="{{ url('/') }}"
-            class="fixed top-4 left-4 flex mx-auto items-center gap-2 px-3 py-2 text-sm font-medium text-gray-400 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:text-white transition-all duration-150 z-50">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Kembali
-        </a>
 
         <div class="w-full max-w-md mx-auto bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl px-8 py-10">
 
@@ -30,7 +22,7 @@
             </div>
 
             <!-- Form -->
-            <form method="POST" action="{{ route('login') }}" class="space-y-5">
+            <form method="POST" action="/login" class="space-y-5">
                 @csrf
 
                 <!-- Username -->
@@ -103,7 +95,7 @@
                 </button>
 
                 <!-- Tombol SignUp -->
-                <a href="{{ route('signup') }}"
+                <a href="{{ route('data-akun.create') }}"
                     class="block w-full py-2.5 px-4 text-center bg-gray-700 hover:bg-gray-600 text-white text-sm font-semibold rounded-lg border border-gray-600 transition-all duration-150 hover:border-gray-500 active:scale-[0.99]">
                     Daftar Akun Baru
                 </a>

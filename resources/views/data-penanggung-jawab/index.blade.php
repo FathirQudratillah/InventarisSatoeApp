@@ -10,7 +10,7 @@
         <div class="md:p-6">
             <h1 class="text-2xl font-bold mb-4">Data Penanggung Jawab</h1>
 
-            <div class="bg-white shadow rounded-lg overflow-x-auto">
+            <div class="bg-white shadow rounded-lg overflow-x-auto no-scrollbar" >
                 <table class="min-w-full divide-y divide-gray-200">
 
                     <!-- Header -->
@@ -21,7 +21,7 @@
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Perusahaan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Alamat Perusahaan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">No Kontak</th>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase"></th>
                         </tr>
                     </thead>
 
@@ -37,7 +37,9 @@
 
                                 <!-- Kolom Aksi -->
                                 <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">
-                                    <x-dropdown route="data-penanggung-jawab" :id="$penanggung_jawab->id_pj"></x-dropdown> 
+                                    <div class="flex items-center justify-end">
+                                        <x-dropdown route="data-penanggung-jawab" :id="$penanggung_jawab->id_pj"></x-dropdown> 
+                                    </div>
                                 </td>
                             </tr>
                         @empty
