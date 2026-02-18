@@ -28,15 +28,4 @@
     <x-slot:button> <x-back-button href="{{ route('data-akun.index') }}"></x-back-button></x-slot:button>
         
 </x-form>
-<script>
-    const roleSelect = document.getElementById('role');
-    const siswaField = document.getElementById('siswaField');
 
-    roleSelect.addEventListener('change', function () {
-        if (this.value === 'siswa') {
-            siswaField.classList.remove('hidden');
-        } else {
-            siswaField.classList.add('hidden');
-        }
-    });
-</script>

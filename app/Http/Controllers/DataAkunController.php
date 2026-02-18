@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataAkun;
 use App\Models\DataKelas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DataAkunController extends Controller
@@ -17,8 +18,8 @@ class DataAkunController extends Controller
 
     public function create()
     {
-        $id_kelas = DataKelas::All();
-        return view('data-akun.create', compact('id_kelas'));
+        $kelas = DataKelas::All();
+        return view('signup.index', compact('kelas'));
     }
 
 
@@ -59,7 +60,7 @@ class DataAkunController extends Controller
         $akun = DataAkun::create([
             'user_id' => $user_id,
             'username' => $request->username,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'role' => $role,
         ]);
 
@@ -90,7 +91,7 @@ class DataAkunController extends Controller
             ]);
         }
 
-        return redirect()->route('data-akun.index');
+        return redirect()->route('login');
     }
 
 
