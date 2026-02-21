@@ -1,39 +1,44 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Dashboardontroller;
-use App\Http\Controllers\Auth\AuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\DataAkunController;
-use App\Http\Controllers\Admin\DataGuruController;
 use App\Http\Controllers\Admin\DataAdminController;
+use App\Http\Controllers\Admin\DataAkunController;
+use App\Http\Controllers\Admin\DataAngkatanController;
+use App\Http\Controllers\Admin\DataBarangController;
+use App\Http\Controllers\Admin\DataGuruController;
+use App\Http\Controllers\Admin\DataJenisBarangController;
+use App\Http\Controllers\Admin\DataJurusanController;
+use App\Http\Controllers\Admin\DataKategoriBarangController;
 use App\Http\Controllers\Admin\DataKelasController;
+use App\Http\Controllers\Admin\DataPenanggungJawabController;
 use App\Http\Controllers\Admin\DataRuangController;
 use App\Http\Controllers\Admin\DataSiswaController;
-use App\Http\Controllers\Admin\DataBarangController;
-use App\Http\Controllers\Admin\DataJurusanController;
-use App\Http\Controllers\Admin\DataAngkatanController;
-use App\Http\Controllers\Admin\DataJenisBarangController;
-use App\Http\Controllers\Admin\PengajuanBarangController;
 use App\Http\Controllers\Admin\DetailPeminjamanController;
-use App\Http\Controllers\Admin\PeminjamanBarangController;
-use App\Http\Controllers\Admin\DataKategoriBarangController;
 use App\Http\Controllers\Admin\PemeliharaanBarangController;
-use App\Http\Controllers\Admin\DataPenanggungJawabController;
+use App\Http\Controllers\Admin\PeminjamanBarangController;
+use App\Http\Controllers\Admin\PengajuanBarangController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Route;
 
 
-Route::get('/login',[AuthController::class, 'loginForm'])->name('login');
 
-Route::post('/login',[AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+
+Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::resource('register', RegisterController::class);
 
+Route::get('/admin', [DashboardController::class, 'index']); // admin
+Route::get('/siswa', [DashboardController::class, 'siswa']); // siswa
+Route::get('/guru', [DashboardController::class, 'guru']);//guru
+
 
 
 Route::middleware(['auth'])
-    ->group(function(){
-        Route::get('/', [Dashboardontroller::class, 'index'])->name('dashboard');
+    ->group(function () {
 
         Route::get('/detail', [AuthController::class, 'show'])->name('detail');
 
@@ -44,11 +49,10 @@ Route::middleware(['auth'])
         Route::get('/ubah', [DataAkunController::class, 'ubah'])->name('ubah');
 
         Route::put('/ubah-password', [DataAkunController::class, 'ubahPassword'])->name('ubah-password');
-
     });
 
 Route::middleware(['auth', 'role:admin'])
-    ->group(function() {
+    ->group(function () {
 
         Route::resource('data-kelas', DataKelasController::class);
 
@@ -80,9 +84,3 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::resource('data-penanggung-jawab', DataPenanggungJawabController::class);
     });
-
-
-
-
-
-
