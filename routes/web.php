@@ -1,62 +1,86 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DataAkunController;
-use App\Http\Controllers\DataGuruController;
-use App\Http\Controllers\DataAdminController;
-use App\Http\Controllers\DataKelasController;
-use App\Http\Controllers\DataRuangController;
-use App\Http\Controllers\DataSiswaController;
-use App\Http\Controllers\DataBarangController;
-use App\Http\Controllers\DataJurusanController;
-use App\Http\Controllers\DataAngkatanController;
-use App\Http\Controllers\DataJenisBarangController;
-use App\Http\Controllers\PengajuanBarangController;
-use App\Http\Controllers\DetailPeminjamanController;
-use App\Http\Controllers\PeminjamanBarangController;
-use App\Http\Controllers\DataKategoriBarangController;
-use App\Http\Controllers\PemeliharaanBarangController;
-use App\Http\Controllers\DataPenanggungJawabController;
+use App\Http\Controllers\Admin\DataAkunController;
+use App\Http\Controllers\Admin\DataGuruController;
+use App\Http\Controllers\Admin\DataAdminController;
+use App\Http\Controllers\Admin\DataKelasController;
+use App\Http\Controllers\Admin\DataRuangController;
+use App\Http\Controllers\Admin\DataSiswaController;
+use App\Http\Controllers\Admin\DataBarangController;
+use App\Http\Controllers\Admin\DataJurusanController;
+use App\Http\Controllers\Admin\DataAngkatanController;
+use App\Http\Controllers\Admin\DataJenisBarangController;
+use App\Http\Controllers\Admin\PengajuanBarangController;
+use App\Http\Controllers\Admin\DetailPeminjamanController;
+use App\Http\Controllers\Admin\PeminjamanBarangController;
+use App\Http\Controllers\Admin\DataKategoriBarangController;
+use App\Http\Controllers\Admin\PemeliharaanBarangController;
+use App\Http\Controllers\Admin\DataPenanggungJawabController;
+use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('/', function () { 
-    return view('dashboard');
-    })->middleware('auth');
 
 Route::get('/login',[AuthController::class, 'loginForm'])->name('login');
 
 Route::post('/login',[AuthController::class, 'login']);
 
-Route::post('/logout',[AuthController::class, 'logout'])->middleware('auth');
 
-Route::resource('data-akun', DataAkunController::class);
+Route::resource('register', RegisterController::class);
 
-Route::resource('data-kelas', DataKelasController::class);
 
-Route::resource('data-siswa', DataSiswaController::class);
 
-Route::resource('data-guru', DataGuruController::class);
+Route::middleware(['auth'])
+    ->group(function(){
+        Route::get('/', function () {
+            return view('dashboard');
+        })->name('dashboard');
 
-Route::resource('data-jurusan', DataJurusanController::class);
+        Route::get('/detail', [AuthController::class, 'show'])->name('detail');
 
-Route::resource('data-angkatan', DataAngkatanController::class);
+        Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::resource('data-admin', DataAdminController::class);
+        Route::resource('data-akun', DataAkunController::class);
 
-Route::resource('data-ruang', DataRuangController::class);
+        Route::get('/ubah', [DataAkunController::class, 'ubah'])->name('ubah');
 
-Route::resource('data-barang', DataBarangController::class);
+        Route::put('/ubah-password', [DataAkunController::class, 'ubahPassword'])->name('ubah-password');
 
-Route::resource('data-kategori-barang', DataKategoriBarangController::class);
+    });
 
-Route::resource('data-jenis-barang', DataJenisBarangController::class);
+Route::middleware(['auth', 'role:admin'])
+    ->group(function() {
 
-Route::resource('peminjaman-barang', PeminjamanBarangController::class);
+        Route::resource('data-kelas', DataKelasController::class);
 
-Route::resource('pemeliharaan-barang', PemeliharaanBarangController::class);
+        Route::resource('data-siswa', DataSiswaController::class);
 
-Route::resource('detail-peminjaman', DetailPeminjamanController::class);
+        Route::resource('data-guru', DataGuruController::class);
 
-Route::resource('pengajuan-barang', PengajuanBarangController::class);
+        Route::resource('data-jurusan', DataJurusanController::class);
 
-Route::resource('data-penanggung-jawab', DataPenanggungJawabController::class);
+        Route::resource('data-angkatan', DataAngkatanController::class);
+
+        Route::resource('data-admin', DataAdminController::class);
+
+        Route::resource('data-ruang', DataRuangController::class);
+
+        Route::resource('data-barang', DataBarangController::class);
+
+        Route::resource('data-kategori-barang', DataKategoriBarangController::class);
+
+        Route::resource('data-jenis-barang', DataJenisBarangController::class);
+
+        Route::resource('peminjaman-barang', PeminjamanBarangController::class);
+
+        Route::resource('pemeliharaan-barang', PemeliharaanBarangController::class);
+
+        Route::resource('detail-peminjaman', DetailPeminjamanController::class);
+
+        Route::resource('pengajuan-barang', PengajuanBarangController::class);
+
+        Route::resource('data-penanggung-jawab', DataPenanggungJawabController::class);
+    });
+
+
+

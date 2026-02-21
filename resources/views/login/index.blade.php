@@ -95,7 +95,7 @@
                 </button>
 
                 <!-- Tombol SignUp -->
-                <a href="{{ route('data-akun.create') }}"
+                <a href="{{ route('register.create') }}"
                     class="block w-full py-2.5 px-4 text-center bg-gray-700 hover:bg-gray-600 text-white text-sm font-semibold rounded-lg border border-gray-600 transition-all duration-150 hover:border-gray-500 active:scale-[0.99]">
                     Daftar Akun Baru
                 </a>

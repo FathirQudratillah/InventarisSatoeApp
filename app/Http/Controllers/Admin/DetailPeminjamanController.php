@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
-use App\Models\PemeliharaanBarang;
+use App\Models\DetailPeminjaman;
 use Illuminate\Http\Request;
 
-class PemeliharaanBarangController extends Controller
+class DetailPeminjamanController extends Controller
 {
     public function index()
     {
-        $pemeliharaanBarangs = PemeliharaanBarang::All();
-        return view('pemeliharaan-barang.index', compact('pemeliharaanBarangs'));
+        $detailPeminjamans = DetailPeminjaman::All();
+        return view('detail-peminjaman.index', compact('detailPeminjamans'));
     }
 
     /**
@@ -18,7 +19,7 @@ class PemeliharaanBarangController extends Controller
      */
     public function create()
     {
-        return view('pemeliharaan-barang.create');
+        return view('detail-peminjaman.create');
     }
 
     /**
@@ -26,12 +27,12 @@ class PemeliharaanBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new PemeliharaanBarang;
-        $akun->id_pemeliiharaan = $request->id_pemeliharaan;
+        $akun = new DetailPeminjaman;
+        $akun->id_detail = $request->id_detail;
         $akun->kode_barang = $request->kode_barang;
-        $akun->id_pj = $request->id_pj;
+        $akun->id_peminjaman = $request->id_peminjaman;
         $akun->save();
-        return redirect()->route('data-pemeliharaan-barang.index');
+        return redirect()->route('data-detail-peminjaman.index');
     }
 
     /**

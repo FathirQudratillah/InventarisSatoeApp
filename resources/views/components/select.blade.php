@@ -1,7 +1,7 @@
-@props(['name', 'datas' => null, 'value' => null, 'id' => null])
+@props(['name', 'datas' => null, 'value' => null, 'id' => null, 'field' => null, 'output' => null])
 
 @php
-    $label = ucwords(str_replace('_', ' ', $name));
+    $label = ucwords(str_replace('_', ' ', $field ?? $name));
 @endphp
 
 <div>
@@ -20,7 +20,7 @@
                 value="{{ $data->$name }}"
                 {{ old($name, $value) == $data->$name ? 'selected' : '' }}
             >
-                {{ $data->$name }}
+                {{ $data->$output ?? $data->$name }}
             </option>
         @endforeach
     @else

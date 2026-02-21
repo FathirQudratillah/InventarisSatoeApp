@@ -2,7 +2,7 @@
  <aside id="sidebar"
      class="fixed inset-y-0 left-0 z-40 w-60 md:w-80 bg-gray-900 text-white
                 transform -translate-x-full transition-transform duration-300
-                lg:relative lg:translate-x-0 lg:flex lg:flex-col
+                lg:relative lg:translate-x-0 flex flex-col
                 h-screen overflow-y-auto"
      style="scrollbar-width:none; -ms-overflow-style:none;">
 
@@ -12,6 +12,7 @@
              <img src="{{ asset('images/logo_notext.png') }}" alt="Logo" class="h-10 w-auto">
              <span class="text-l md:text-xl font-bold">InventarisSatoeApp</span>
          </div>
+     </div>
 
 
          <!-- Search Bar -->
@@ -25,6 +26,7 @@
                     </div>
                 </div>
             </div> --}}
+    
 
          <nav class="mt-5 px-2 flex-1 overflow-y-auto pb-28">
              <!-- Main Navigation -->
@@ -39,17 +41,20 @@
                      Dashboard
                  </x-side-link>
 
+                 @unless (auth()->user()->role != 'admin')
+                     
+                 
+
                  <!-- Analytics Dropdown -->
                  <div class="space-y-1">
                      <button
                          class="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none"
                          aria-expanded="false" aria-controls="analytics-dropdown">
                          <div class="flex items-center">
-                             <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                 viewBox="0 0 24 24" stroke="currentColor">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                             </svg>
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                                </svg>
+
                              Data Master
                          </div>
                          <svg class="ml-2 h-5 w-5 transform transition-transform duration-200"
@@ -81,11 +86,10 @@
                          class="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none"
                          aria-expanded="false" aria-controls="team-dropdown">
                          <div class="flex items-center">
-                             <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                 viewBox="0 0 24 24" stroke="currentColor">
-                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                             </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                                </svg>
+
                              Data Transaksi
                          </div>
                          <svg class="ml-2 h-5 w-5 transform transition-transform duration-200"
@@ -115,18 +119,18 @@
 
                      </div>
                  </div>
-
+                 @endunless
                  
 
                  <!-- Documents -->
-                 <a href="#"
+                 <a href="{{ route('pemeliharaan-barang.create') }}"
                      class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
                      <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor">
                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                      </svg>
-                     Documents
+                     Pemeliharaan Barang
                  </a>
              </div>
          </nav>
@@ -140,9 +144,10 @@
                 @click="open = !open"
                 class="flex items-center cursor-pointer"
             >
-                <img class="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&w=256&h=256&q=80"
-                    alt="">
+                <button class="w-8 h-8 rounded-full overflow-hidden">
+                 <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                     alt="User" class="w-full h-full object-cover">
+                </button>
                 <div class="ml-3">
                     <p class="text-sm font-medium text-white">
                         {{ auth()->user()->username }}
@@ -158,7 +163,7 @@
                 x-transition
                 class="absolute bottom-full mb-2 w-50 bg-gray-600 rounded-md shadow-lg overflow-hidden"
             >
-                <a href="{{ route('data-akun.show', auth()->user()->user_id) }}"
+                <a href="/detail"
                 class="flex items-center px-4 py-2 text-sm text-blue-400 hover:bg-gray-800">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -212,8 +217,10 @@
 
          <!-- Navigation -->
          <nav class="flex-1 w-full px-2 space-y-2 mt-6">
+            
+             
              <button onclick="toggleSidebar()"
-                 class="{{ request()->is('data-*') ? 'bg-indigo-50 text-indigo-600' : ' text-gray-500 hover:bg-gray-50' }} w-full p-2 flex justify-center rounded-lg ">
+                 class=" w-full p-2 flex justify-center rounded-lg {{ request()->is('/') ? 'bg-indigo-50 text-indigo-600' : ' text-gray-500 hover:bg-gray-50' }}">
                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -221,8 +228,19 @@
                  </svg>
              </button>
 
+              @unless (auth()->user()->role != 'admin')
              <button onclick="toggleSidebar()"
-                 class="w-full p-2 flex justify-center rounded-lg {{ request()->routeIs('detail-peminjaman.*') ||
+                 class="w-full p-2 flex justify-center rounded-lg {{ request()->is('data-*') ? 'bg-indigo-50 text-indigo-600' : ' text-gray-500 hover:bg-gray-50' }}">
+                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                 </svg>
+             </button>
+             
+
+             <button onclick="toggleSidebar()"
+                 class="w-full p-2 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50 {{ request()->routeIs('detail-peminjaman.*') ||
                  request()->routeIs('pemeliharaan-barang.*') ||
                  request()->routeIs('pengajuan-barang.*') ||
                  request()->routeIs('peminjaman-barang.*')
@@ -231,20 +249,12 @@
                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                 </svg>
-             </button>
-
-             <button onclick="toggleSidebar()"
-                 class="w-full p-2 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
-                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                     stroke="currentColor">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                          d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                  </svg>
              </button>
+             @endunless
 
-             <button onclick="toggleSidebar()"
+             {{-- <button onclick="toggleSidebar()"
                  class="w-full p-2 flex justify-center rounded-lg text-gray-500 hover:bg-gray-50">
                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor">
@@ -267,15 +277,55 @@
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                          d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                  </svg>
-             </button>
+             </button> --}}
          </nav>
 
          <!-- User Profile -->
-         <div class="mt-auto pb-4">
-             <button class="w-12 h-12 rounded-full overflow-hidden">
+         <div 
+            x-data="{ open: false }" 
+            class="mt-auto p-4 border-t border-gray-800 relative"
+        >
+            <div 
+                @click="open = !open"
+                class="flex items-center cursor-pointer"
+            >
+                <button class="w-8 h-8 rounded-full overflow-hidden">
                  <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                      alt="User" class="w-full h-full object-cover">
-             </button>
-         </div>
+                </button>
+            
+            </div>
+
+            <!-- Dropdown -->
+            <div 
+                x-show="open"
+                @click.outside="open = false"
+                x-transition
+                class="absolute bottom-full mb-2 w-50 bg-gray-800 rounded-md shadow-lg overflow-hidden"
+            >
+                <a href="/detail"
+                class="flex items-center px-4 py-2 text-sm text-blue-400 hover:bg-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+
+                    Detail
+                </a>
+
+                <form method="POST" action="/logout">
+                    @csrf
+                    <button 
+                        type="submit"
+                        class="w-full flex items-center text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-800"
+                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+                        </svg>
+
+                        Logout
+                    </button>
+                </form>
+            </div>
      </div>
  </aside>

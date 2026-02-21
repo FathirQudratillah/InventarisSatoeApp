@@ -1,15 +1,15 @@
-@props(['name', 'value' => null])
+@props(['name', 'value' => null, 'col' => null, 'field' => null, 'type' => null])
 
 @php
-    $label = ucwords(str_replace('_', ' ', $name));
+    $label = ucwords(str_replace('_', ' ', $field ?? $name));
 @endphp
 
-<div>
+<div class="{{ $col ?? '' }}">
     <label class="block text-sm font-semibold text-gray-700 mb-2">
         {{ $label }}
     </label>
 
-    <input type="text"
+    <input type="{{ $type }}"
            name="{{ $name }}"
            value="{{ old($name,$value) }}"
            placeholder="Masukkan {{ $label }}"
