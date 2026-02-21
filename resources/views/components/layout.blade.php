@@ -21,7 +21,7 @@
 
         <!-- Main Content -->
         <main class="flex-1 p-6 {{ in_array($type, ['login','signup']) ? 'bg-gray-900' : 'bg-gray-100' }} overflow-y-auto" style="scrollbar-width:none; -ms-overflow-style:none;">
-            @unless (in_array($type, ['login', 'signup']))  
+            @unless (in_array($type, ['login', 'signup', 'dashboard']))  
             <br class="block md:hidden">           
                 <x-header>{{ $title }}</x-header>
             @endunless

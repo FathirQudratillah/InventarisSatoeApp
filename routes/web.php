@@ -29,6 +29,9 @@ Route::post('/login',[AuthController::class, 'login']);
 
 Route::resource('register', RegisterController::class);
 
+Route::post('/cart/add/{kode_barang}', [PeminjamanBarangController::class, 'add']);
+Route::post('/cart/remove/{kode_barang}', [PeminjamanBarangController::class, 'remove']);
+
 
 
 Route::middleware(['auth'])

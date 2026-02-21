@@ -1,5 +1,5 @@
-<x-layout>
-    <x-slot:title></x-slot:title>
+<x-layout type="dashboard">
+    <x-slot:title>Dashboard</x-slot:title>
 
     {{-- Header Sambutan --}}
     @php
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-
+    
     {{-- Welcome Toast --}}
     <div id="welcomeToast"
         class="fixed top-6 right-6 bg-slate-100 border border-slate-300 shadow-xl rounded-2xl p-5 w-80 z-50 transform translate-x-96 opacity-0 transition-all duration-500">
