@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\DataAngkatan;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 
 class DataAngkatanSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class DataAngkatanSeeder extends Seeder
             $tahunLulus = $tahunMasuk + 3;
 
             DataAngkatan::updateOrCreate(
-                ['angkatan' => $i],
+                ['angkatan' => str_pad($i, 2, '0', STR_PAD_LEFT)],
                 [
                     'tahun_masuk' => $tahunMasuk,
                     'tahun_lulus' => $tahunLulus,

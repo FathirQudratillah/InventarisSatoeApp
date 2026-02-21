@@ -8,7 +8,7 @@ use App\Models\DataJurusan;
 use App\Models\DataAngkatan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 
 class DataAkunSeeder extends Seeder
 {
@@ -23,6 +23,7 @@ class DataAkunSeeder extends Seeder
                 'user_id' => 'SI' . DataAngkatan::inRandomOrder()->value('angkatan') . DataJurusan::inRandomOrder()->value('id_jurusan') . DataKelas::inRandomOrder()->value('subkelas') .  str_pad($number, 2, '0', STR_PAD_LEFT),
                 'username' => fake()->name(),
                 'password' => Hash::make('password'),
+                'role' => 'siswa',
             ];
         })->create();
 
@@ -32,6 +33,7 @@ class DataAkunSeeder extends Seeder
                 'user_id' => 'GU' . fake()->unique()->numerify('########'),
                 'username' => fake()->name(),
                 'password' => Hash::make('password'),
+                'role' => 'guru',
             ];
         })->create();
 
@@ -40,6 +42,7 @@ class DataAkunSeeder extends Seeder
                 'user_id' => 'ADMIN' . fake()->unique()->numerify('#####'),
                 'username' => fake()->name(),
                 'password' => Hash::make('password'),
+                'role' => 'admin',
             ];
         })->create();
     }

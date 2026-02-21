@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
-use App\Models\PeminjamanBarang;
+use App\Models\PengajuanBarang;
 use Illuminate\Http\Request;
 
-class PeminjamanBarangController extends Controller
+class PengajuanBarangController extends Controller
 {
-   public function index()
+    public function index()
     {
-        $peminjamanBarangs = PeminjamanBarang::All();
-        return view('peminjaman-barang.index', compact('peminjamanBarangs'));
+        $pengajuanBarangs = PengajuanBarang::All();
+        return view('pengajuan-barang.index', compact('pengajuanBarangs'));
     }
 
     /**
@@ -18,7 +19,7 @@ class PeminjamanBarangController extends Controller
      */
     public function create()
     {
-        return view('peminjaman-barang.create');
+        return view('pengajuan-barang.create');
     }
 
     /**
@@ -26,12 +27,15 @@ class PeminjamanBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new PeminjamanBarang;
-        $akun->id_peminjaman = $request->id_peminjaman;
+        $akun = new PengajuanBarang;
+        $akun->id_pengajuan = $request->id_pengajuan;
         $akun->user_id = $request->user_id;
-        $akun->data_admin = $request->data_admin;
+        $akun->nama_barang = $request->nama_barang;
+        $akun->status_pengajuan = $request->status_pengajuan;
+        $akun->tanggal_pengajuan = $request->tanggal_pengajuan;
+        $akun->jumlah_pengajuan = $request->jumlah_pengajuan;
         $akun->save();
-        return redirect()->route('data-peminjaman-barang.index');
+        return redirect()->route('data-pengajuan-barang.index');
     }
 
     /**

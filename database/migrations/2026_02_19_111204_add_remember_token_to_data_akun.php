@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_angkatan', function (Blueprint $table) {
-            $table->string('angkatan')->primary();
-            $table->integer('tahun_masuk', 4);
-            $table->integer('tahun_lulus', 4);
-            $table->timestamps();
+        Schema::table('data_akun', function (Blueprint $table) {
+            $table->rememberToken();
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_angkatan');
+        Schema::table('data_akun', function (Blueprint $table) {
+            //
+        });
     }
 };
