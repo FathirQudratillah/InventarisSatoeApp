@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-
+use App\Models\DataBarang;
 use App\Models\PeminjamanBarang;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,8 @@ class PeminjamanBarangController extends Controller
      */
     public function create()
     {
-        return view('peminjaman-barang.create');
+        $kode_barangs = DataBarang::all();
+        return view('peminjaman-barang.create', compact('kode_barangs'));
     }
 
     /**
@@ -65,5 +66,43 @@ class PeminjamanBarangController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function add($kode)
+    {
+        $barang = DataBarang::findOrFail($kode);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$kode])) {
+            $cart[$kode]['qty']++;
+        } else {
+            $cart[$kode] = [
+                'nama' => $barang->dataBarang->nama_barang,
+                'qty' => 1
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return back();
+    }
+
+    public function remove($kode)
+    {
+        $barang = DataBarang::findOrFail($kode);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$kode])) {
+            $cart[$kode]['qty']--;
+            if ($cart[$kode]['qty'] <= 0) {
+                unset($cart[$kode]);
+            }
+            session()->put('cart', $cart);
+        }
+
+
+        return back();
     }
 }

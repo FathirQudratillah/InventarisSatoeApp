@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\DataJenisBarang;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class DataBarang extends Model
 {
@@ -22,4 +23,9 @@ class DataBarang extends Model
     protected $primaryKey = 'kode_barang';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function dataBarang()
+    {
+        return $this->belongsTo(DataJenisBarang::class, 'jenis_barang', 'jenis_barang');
+    }
 }
