@@ -206,11 +206,11 @@
                     'bg-orange-100 text-orange-600',
                 ];
                 $rankLabels = ['#1', '#2', '#3'];
+                $rankEmoji = ['', '', ''];
             @endphp
 
             @forelse($topBarang as $index => $item)
-                {{ $barang?->nama_barang ?? 'Nama tidak tersedia' }}
-                {{ ucfirst($barang?->kondisi_barang ?? '-') }}
+                @php $barang = $allBarang[$item->kode_barang] ?? null; @endphp
                 <div
                     class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 flex flex-col items-center text-center hover:shadow-md transition-shadow">
                     <div
@@ -233,15 +233,18 @@
                             </svg>
                         @endif
                     </div>
+                    <span class="text-lg mb-1">{{ $rankEmoji[$index] }}</span>
                     <span
                         class="text-xs font-bold {{ $badges[$index] }} px-2 py-0.5 rounded-full mb-3">{{ $rankLabels[$index] }}</span>
                     <span class="text-xs font-mono font-semibold text-slate-400 mb-1">{{ $item->kode_barang }}</span>
                     <h3 class="text-sm font-bold text-slate-800 mb-1 leading-snug">
-                        {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}</h3>
+                        {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}
+                    </h3>
                     <p class="text-xs text-slate-400 mb-3">Kondisi: {{ ucfirst($barang->kondisi_barang ?? '-') }}</p>
                     <span
-                        class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold {{ $badges[$index] }}">{{ $item->total_dipinjam }}×
-                        dipinjam</span>
+                        class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold {{ $badges[$index] }}">
+                        {{ $item->total_dipinjam }}× dipinjam
+                    </span>
                 </div>
             @empty
                 <div class="col-span-3 text-center text-slate-400 py-10">Belum ada data peminjaman.</div>

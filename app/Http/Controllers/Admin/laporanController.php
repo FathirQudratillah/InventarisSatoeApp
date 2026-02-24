@@ -52,11 +52,7 @@ class laporanController extends Controller
             ->latest('tanggal_peminjaman')
             ->get();
 
-        $data = PeminjamanBarang::with(['barang', 'peminjam'])
-            ->whereMonth('tanggal_peminjaman', $bulan)
-            ->whereYear('tanggal_peminjaman', $tahun)
-            ->latest('tanggal_peminjaman')
-            ->get();
+        
 
         $namaBulan = Carbon::create()->month($bulan)->locale('id')->translatedFormat('F');
 
