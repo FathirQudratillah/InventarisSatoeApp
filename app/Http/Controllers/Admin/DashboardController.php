@@ -44,7 +44,6 @@ class DashboardController extends Controller
         $barangData = $this->getBarangData();
         $dataGuru   = $this->getDataGuru();
 
-        // getDataGuru me-override key yang relevan dari getBarangData
         return view('dashboard.guru', array_merge($barangData, $dataGuru));
     }
 
@@ -74,10 +73,18 @@ class DashboardController extends Controller
 
     private function getLatestData()
     {
+        $pemeliharaanTerbaru = PemeliharaanBarang::latest()->take(4)->get();
+
+        // Buat map kode_barang => id untuk tombol cetak di dashboard
+        $barangIdMap = DataBarang::whereIn(
+            'kode_barang',
+            $pemeliharaanTerbaru->pluck('kode_barang')->filter()->unique()
+        );
         return [
             'peminjamanTerbaru'   => PeminjamanBarang::latest()->take(5)->get(),
             'pengajuanTerbaru'    => PengajuanBarang::latest()->take(4)->get(),
-            'pemeliharaanTerbaru' => PemeliharaanBarang::latest()->take(4)->get(),
+            'pemeliharaanTerbaru' => $pemeliharaanTerbaru,
+            'barangIdMap'         => $barangIdMap,
         ];
     }
 
@@ -99,7 +106,6 @@ class DashboardController extends Controller
             ->get()
             ->keyBy('kode_barang');
 
-        // Stok-based availability
         $barangTersedia      = $allBarang->filter(fn($b) => $b->stok > 0)->values();
         $barangTidakTersedia = $allBarang->filter(fn($b) => $b->stok <= 0)->values();
 
@@ -177,7 +183,6 @@ class DashboardController extends Controller
     {
         $userId = auth()->user()->user_id;
 
-        // ── 1.a Stat milik guru sendiri (untuk banner profile) ────
         $peminjamanAktifGuru = PeminjamanBarang::where('user_id', $userId)
             ->where('status_peminjaman', 'dipinjam')->count();
 
@@ -189,7 +194,6 @@ class DashboardController extends Controller
 
         $totalRiwayatGuru = PeminjamanBarang::where('user_id', $userId)->count();
 
-        // ── 1.b Top 3 barang sering dipinjam khusus guru ini ─────
         $topBarangGuruRaw = DB::table('detail_peminjaman')
             ->join('peminjaman_barang', 'peminjaman_barang.id_peminjaman', '=', 'detail_peminjaman.id_peminjaman')
             ->where('peminjaman_barang.user_id', $userId)
@@ -198,17 +202,9 @@ class DashboardController extends Controller
             ->orderByDesc('total_dipinjam')
             ->get();
 
-        // ── 1.c Barang sedang dipinjam pengguna (semua user) ──────
-        // Diambil dari allBarang stok <= 0 (sudah di-override di bawah)
+        $logAktivitasGuru    = PeminjamanBarang::latest()->take(20)->get();
+        $pengembalianTerbaru = PeminjamanBarang::where('status_peminjaman', 'dikembalikan')->latest()->take(10)->get();
 
-        // ── 1.d Log aktivitas semua pengguna (bisa dipantau guru) ─
-        $logAktivitasGuru = PeminjamanBarang::latest()->take(20)->get();
-
-        // ── 1.e Pengembalian terbaru semua pengguna ───────────────
-        $pengembalianTerbaru = PeminjamanBarang::where('status_peminjaman', 'dikembalikan')
-            ->latest()->take(10)->get();
-
-        // ── 5.a allBarang untuk lookup nama + stok-based filter ───
         $allBarang = DataBarang::join(
             'data_jenis_barang',
             'data_barang.jenis_barang',
@@ -218,29 +214,19 @@ class DashboardController extends Controller
             ->select('data_barang.*', 'data_jenis_barang.nama_barang')
             ->get()->keyBy('kode_barang');
 
-        // Stok-based: tersedia = stok > 0, tidak tersedia = stok <= 0
         $barangTersedia      = $allBarang->filter(fn($b) => $b->stok > 0)->values();
         $barangTidakTersedia = $allBarang->filter(fn($b) => $b->stok <= 0)->values();
 
         return [
-            // 1.a — stat guru sendiri
             'peminjamanAktifGuru'  => $peminjamanAktifGuru,
             'pengembalianGuru'     => $pengembalianGuru,
             'pengajuanGuru'        => $pengajuanGuru,
             'totalRiwayatGuru'     => $totalRiwayatGuru,
-
-            // 1.b — top barang per guru (override getBarangData)
             'topBarang'            => $topBarangGuruRaw->take(3),
             'barangSeringDipinjam' => $topBarangGuruRaw->take(10),
             'topBarangRaw'         => $topBarangGuruRaw,
-
-            // 1.d — log aktivitas semua user
             'logAktivitasGuru'     => $logAktivitasGuru,
-
-            // 1.e — pengembalian semua user
             'pengembalianTerbaru'  => $pengembalianTerbaru,
-
-            // 5.a — stok-based (override getBarangData)
             'barangTersedia'       => $barangTersedia,
             'barangTidakTersedia'  => $barangTidakTersedia,
             'allBarang'            => $allBarang,

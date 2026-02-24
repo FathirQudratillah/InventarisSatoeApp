@@ -209,7 +209,8 @@
             @endphp
 
             @forelse($topBarang as $index => $item)
-                @php $barang = $allBarang[$item->kode_barang] ?? null; @endphp
+                {{ $barang?->nama_barang ?? 'Nama tidak tersedia' }}
+                {{ ucfirst($barang?->kondisi_barang ?? '-') }}
                 <div
                     class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 flex flex-col items-center text-center hover:shadow-md transition-shadow">
                     <div
@@ -298,7 +299,7 @@
                 </div>
                 <span class="text-xs text-slate-400">Semua aktivitas</span>
             </div>
-            <div class="divide-y divide-slate-300 max-h-96 overflow-y-auto">
+            <div class="divide-y divide-slate-300 max-h-[420px] overflow-y-auto">
                 {{-- Gabungkan peminjaman + pengajuan + pemeliharaan sebagai log --}}
                 @forelse($peminjamanTerbaru as $item)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-slate-200 transition">
@@ -459,7 +460,7 @@
                     class="ml-auto bg-green-100 text-green-700 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $barangTersedia->count() }}
                     barang</span>
             </div>
-            <div class="divide-y divide-slate-300 max-h-72 overflow-y-auto">
+            <div class="divide-y divide-slate-300 max-h-[420px] overflow-y-auto">
                 @forelse($barangTersedia as $barang)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 transition">
                         <div
