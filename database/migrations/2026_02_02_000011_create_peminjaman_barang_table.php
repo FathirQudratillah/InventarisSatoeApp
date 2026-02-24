@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('peminjaman_barang', function (Blueprint $table) {
             $table->char('id_peminjaman', 13)->primary();
             $table->char('user_id', 10);
-            $table->char('data_admin', 10);
+            $table->char('data_admin', 10)->nullable();
 
             $table->foreign('user_id')
             ->references('user_id')

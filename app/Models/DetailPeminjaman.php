@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\PeminjamanBarang;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class DetailPeminjaman extends Model
 {
@@ -20,4 +21,12 @@ class DetailPeminjaman extends Model
     protected $primaryKey = 'id_detail';
     public $incrementing = false;
     protected $keyType = 'string';
-}
+
+    public function peminjaman(){
+        return $this->belongsTo(PeminjamanBarang::class, 'id_peminjaman', 'id_peminjaman');
+    }
+
+    public function barang(){
+        return $this->belongsTo(DataBarang::class, 'kode_barang', 'kode_barang');
+    }
+    }
