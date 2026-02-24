@@ -15,13 +15,12 @@ use App\Models\DataJenisBarang;
 use App\Models\DataKategoriBarang;
 use App\Models\DataPenanggungJawab;
 use App\Models\DataAngkatan;
+use App\Models\DetailPeminjaman;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    // ─────────────────────────────────────────────────────────────
-    // PUBLIC ROUTES
-    // ─────────────────────────────────────────────────────────────
+  
 
     public function index()
     {
@@ -110,6 +109,8 @@ class DashboardController extends Controller
         $barangTersedia      = $allBarang->filter(fn($b) => $b->stok > 0)->values();
         $barangTidakTersedia = $allBarang->filter(fn($b) => $b->stok <= 0)->values();
 
+        $requestPeminjaman = PeminjamanBarang::with('detail')->where('status_peminjaman', 'Pending')->latest()->get();
+
         return [
             'topBarang'            => $topBarangRaw->take(3),
             'barangSeringDipinjam' => $topBarangRaw->take(10),
@@ -117,6 +118,7 @@ class DashboardController extends Controller
             'barangTidakTersedia'  => $barangTidakTersedia,
             'allBarang'            => $allBarang,
             'topBarangRaw'         => $topBarangRaw,
+            'requestPeminjaman'         => $requestPeminjaman,
         ];
     }
 

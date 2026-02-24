@@ -13,9 +13,12 @@
            name="{{ $name }}"
            value="{{ old($name,$value) }}"
            placeholder="Masukkan {{ $label }}"
-           class="w-full px-4 py-3 border border-gray-300 rounded-xl 
+           class="w-full px-4 py-3 border  rounded-xl 
                   focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
-                  transition duration-200 outline-none"
+                  transition duration-200 outline-none 
+                  {{$errors->has($name) 
+                ? 'border-red-500 focus:ring-red-500' 
+                : 'border-gray-300 focus:border-indigo-500'}}"
            required>
 
     @error($name)

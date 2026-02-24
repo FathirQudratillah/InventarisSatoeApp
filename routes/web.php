@@ -32,8 +32,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::resource('register', RegisterController::class);
 
-Route::post('/cart/add/{kode_barang}', [PeminjamanBarangController::class, 'add']);
-Route::post('/cart/remove/{kode_barang}', [PeminjamanBarangController::class, 'remove']);
+
 
 Route::middleware(['auth'])
     ->group(function () {
@@ -41,7 +40,11 @@ Route::middleware(['auth'])
         Route::get('/siswa', [DashboardController::class, 'siswa']); // siswa
         Route::get('/guru', [DashboardController::class, 'guru']); //guru
 
-        Route::get('/detail', [AuthController::class, 'show'])->name('detail');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); // admin
+    Route::get('/siswa', [DashboardController::class, 'siswa']); // siswa
+    Route::get('/guru', [DashboardController::class, 'guru']); //guru
+
+    Route::get('/detail', [AuthController::class, 'show'])->name('detail');
 
         Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -111,4 +114,6 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('pengajuan-barang', PengajuanBarangController::class);
 
         Route::resource('data-penanggung-jawab', DataPenanggungJawabController::class);
+
+        route::get('/peminjaman/{id}/accept', [PeminjamanBarangController::class, 'accept'])->name('peminjaman-barang.accept');
     });

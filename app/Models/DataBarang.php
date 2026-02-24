@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\DataJenisBarang;
+use App\Models\DetailPeminjaman;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,5 +28,10 @@ class DataBarang extends Model
     public function dataBarang()
     {
         return $this->belongsTo(DataJenisBarang::class, 'jenis_barang', 'jenis_barang');
+    }
+
+    public function detail()
+    {
+        return $this->hasMany(DetailPeminjaman::class, 'kode_barang', 'kode_barang');
     }
 }

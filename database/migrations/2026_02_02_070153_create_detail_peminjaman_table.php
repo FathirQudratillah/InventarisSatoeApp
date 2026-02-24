@@ -26,8 +26,8 @@ return new class extends Migration
             ->on('peminjaman_barang')
             ->cascadeOnDelete();
             
-            $table->string('kondisi_sebelum', 5);
-            $table->string('kondisi_sesudah', 5);
+            $table->string('kondisi_sebelum');
+            $table->string('kondisi_sesudah')->nullable();
             $table->timestamps();
         });
     }

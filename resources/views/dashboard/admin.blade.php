@@ -1,5 +1,6 @@
 <x-layout type="dashboard">
     <x-slot:title>Dashboard</x-slot:title>
+
     {{-- Header Sambutan --}}
     @php
         $jakartaTime = \Carbon\Carbon::now('Asia/Jakarta');
@@ -46,7 +47,7 @@
             </div>
         </div>
     </div>
-
+    
     {{-- Welcome Toast --}}
     <div id="welcomeToast"
         class="fixed top-6 right-6 bg-slate-100 border border-slate-300 shadow-xl rounded-2xl p-5 w-80 z-50 transform translate-x-96 opacity-0 transition-all duration-500">
@@ -146,6 +147,49 @@
         </div>
     </div>
 
+    {{-- 1.c Request Peminjaman --}}
+    <div class="mb-8">
+        <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-300">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
+                    <h2 class="text-base font-semibold text-slate-800">Permintaan Peminjaman Barang</h2>
+                </div>
+                <span class="ml-auto bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                    {{ $requestPeminjaman->count() }} barang
+                </span>
+            </div>
+            <div class="divide-y divide-slate-300 max-h-80 overflow-y-auto">
+                @forelse($requestPeminjaman as $barang)
+                    <div class="flex items-center gap-3 px-6 py-3 hover:bg-blue-50 transition">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                            </svg>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-mono text-slate-400">{{ $barang->id_peminjaman }}</p>
+                            @foreach ($barang->detail as $detail)
+                                
+                            <p class="text-sm font-medium text-slate-800 truncate">
+                                {{ $detail->kode_barang ?? 'Nama tidak tersedia' }}</p>
+                             @endforeach
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <a href="{{ route('peminjaman-barang.accept', $barang->id_peminjaman) }}"
+                                class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-600 hover:bg-green-300 font-medium">Accept</a>
+                            <p class="text-xs text-slate-400 mt-0.5">{{ ucfirst($barang->status_peminjaman) }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-slate-400 py-10 text-sm">Tidak ada barang yang sedang dipinjam.</div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
     {{-- 1.b TOP 3 BARANG TERPOPULER --}}
     <div class="mb-8">
         <h2 class="text-lg font-semibold text-slate-800 mb-4">Top 3 Barang Paling Sering Dipinjam</h2>
@@ -214,11 +258,11 @@
                     <h2 class="text-base font-semibold text-slate-800">Daftar Barang Sedang Dipinjam Pengguna</h2>
                 </div>
                 <span class="ml-auto bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                    {{ $barangTidakTersedia->count() }} barang
+                    {{ $requestPeminjaman->count() }} barang
                 </span>
             </div>
-            <div class="divide-y divide-slate-300 max-h-[420px] overflow-y-auto">
-                @forelse($barangTidakTersedia as $barang)
+            <div class="divide-y divide-slate-300 max-h-80 overflow-y-auto">
+                @forelse($requestPeminjaman as $barang)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-blue-50 transition">
                         <div
                             class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
