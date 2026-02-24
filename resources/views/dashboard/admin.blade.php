@@ -1,6 +1,5 @@
 <x-layout type="dashboard">
     <x-slot:title>Dashboard</x-slot:title>
-
     {{-- Header Sambutan --}}
     @php
         $jakartaTime = \Carbon\Carbon::now('Asia/Jakarta');
@@ -47,7 +46,7 @@
             </div>
         </div>
     </div>
-    
+
     {{-- Welcome Toast --}}
     <div id="welcomeToast"
         class="fixed top-6 right-6 bg-slate-100 border border-slate-300 shadow-xl rounded-2xl p-5 w-80 z-50 transform translate-x-96 opacity-0 transition-all duration-500">
@@ -166,7 +165,8 @@
             @endphp
 
             @forelse($topBarang as $index => $item)
-                @php $barang = $allBarang[$item->kode_barang] ?? null; @endphp
+                {{ $barang?->nama_barang ?? 'Nama tidak tersedia' }}
+                {{ ucfirst($barang?->kondisi_barang ?? '-') }}
                 <div
                     class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 flex flex-col items-center text-center hover:shadow-md transition-shadow">
                     <div
@@ -217,7 +217,7 @@
                     {{ $barangTidakTersedia->count() }} barang
                 </span>
             </div>
-            <div class="divide-y divide-slate-300 max-h-80 overflow-y-auto">
+            <div class="divide-y divide-slate-300 max-h-[420px] overflow-y-auto">
                 @forelse($barangTidakTersedia as $barang)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-blue-50 transition">
                         <div
@@ -255,7 +255,7 @@
                 </div>
                 <span class="text-xs text-slate-400">Semua aktivitas</span>
             </div>
-            <div class="divide-y divide-slate-300 max-h-96 overflow-y-auto">
+            <div class="divide-y divide-slate-300 max-h-[420px] overflow-y-auto">
                 {{-- Gabungkan peminjaman + pengajuan + pemeliharaan sebagai log --}}
                 @forelse($peminjamanTerbaru as $item)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-slate-200 transition">
@@ -416,7 +416,7 @@
                     class="ml-auto bg-green-100 text-green-700 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $barangTersedia->count() }}
                     barang</span>
             </div>
-            <div class="divide-y divide-slate-300 max-h-72 overflow-y-auto">
+            <div class="divide-y divide-slate-300 max-h-[420px] overflow-y-auto">
                 @forelse($barangTersedia as $barang)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 transition">
                         <div
