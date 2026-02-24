@@ -15,7 +15,6 @@ use App\Models\DataJenisBarang;
 use App\Models\DataKategoriBarang;
 use App\Models\DataPenanggungJawab;
 use App\Models\DataAngkatan;
-use App\Models\DetailPeminjaman;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
