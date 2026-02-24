@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\Dashboardontroller;
 use App\Http\Controllers\Admin\DataAdminController;
 use App\Http\Controllers\Admin\DataAkunController;
 use App\Http\Controllers\Admin\DataAngkatanController;
@@ -21,6 +20,8 @@ use App\Http\Controllers\Admin\PengajuanBarangController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\laporanController;
+
 
 
 
@@ -33,14 +34,12 @@ Route::resource('register', RegisterController::class);
 
 Route::post('/cart/add/{kode_barang}', [PeminjamanBarangController::class, 'add']);
 Route::post('/cart/remove/{kode_barang}', [PeminjamanBarangController::class, 'remove']);
-Route::get('/admin', [DashboardController::class, 'index']); // admin
-Route::get('/siswa', [DashboardController::class, 'siswa']); // siswa
-Route::get('/guru', [DashboardController::class, 'guru']);//guru
-
-
 
 Route::middleware(['auth'])
     ->group(function () {
+        Route::get('/', [DashboardController::class, 'index']); // admin
+        Route::get('/siswa', [DashboardController::class, 'siswa']); // siswa
+        Route::get('/guru', [DashboardController::class, 'guru']); //guru
 
         Route::get('/detail', [AuthController::class, 'show'])->name('detail');
 
@@ -53,6 +52,33 @@ Route::middleware(['auth'])
         Route::put('/ubah-password', [DataAkunController::class, 'ubahPassword'])->name('ubah-password');
     });
 
+Route::get('/laporan/peminjaman/cetak', [laporanController::class, 'cetakPeminjaman'])
+    ->name('laporan.peminjaman.cetak');
+
+Route::get('/laporan/pemeliharaan/cetak', [laporanController::class, 'cetakPemeliharaan'])
+    ->name('laporan.pemeliharaan.cetak');
+
+Route::get('/laporan/pengajuan/cetak', [laporanController::class, 'cetakPengajuan'])
+    ->name('laporan.pengajuan.cetak');
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/laporan', [laporanController::class, 'index'])
+        ->name('laporan.index');
+
+    Route::get('/laporan/peminjaman', [laporanController::class, 'peminjaman'])
+        ->name('laporan.laporan-peminjaman');
+
+    Route::get('/laporan/pemeliharaan', [laporanController::class, 'pemeliharaan'])
+        ->name('laporan.laporan-pemeliharaan');
+
+    Route::get('/laporan/pengembalian', [laporanController::class, 'pengembalian'])
+        ->name('laporan.laporan-pengembalian');
+
+    Route::get('/laporan/pengajuan', [laporanController::class, 'pengajuan'])
+        ->name('laporan.laporan-pengajuan');
+});
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
 
