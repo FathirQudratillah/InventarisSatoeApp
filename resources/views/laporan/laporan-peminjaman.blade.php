@@ -9,14 +9,14 @@
 
 <body>
     <div class="max-w-7xl mx-auto px-6 py-10 space-y-8">
+
         {{-- HERO HEADER --}}
-        <div class="rounded-3xl p-8 text-white shadow-lg bg-gradient-to-r from-blue-600 to-indigo-600">
+        <div class="rounded-3xl p-8 text-white shadow-lg bg-gray-900">
             <div class="flex justify-between items-center">
                 <div>
                     <h1 class="text-3xl font-bold">Laporan Peminjaman</h1>
                     <p class="opacity-80">Periode {{ $namaBulan }} {{ $tahun }}</p>
                 </div>
-
                 <a href="{{ route('laporan.index') }}"
                     class="bg-white/20 hover:bg-white/30 backdrop-blur px-5 py-2 rounded-xl">
                     Kembali
@@ -24,35 +24,28 @@
             </div>
         </div>
 
-
         {{-- SUMMARY CARD --}}
         <div class="grid md:grid-cols-3 gap-6">
-
             <div class="bg-white p-6 rounded-2xl shadow">
                 <p class="text-gray-400 text-sm">Total Transaksi</p>
                 <h2 class="text-3xl font-bold text-gray-800">{{ $data->count() }}</h2>
             </div>
-
             <div class="bg-white p-6 rounded-2xl shadow">
                 <p class="text-gray-400 text-sm">Dipinjam</p>
                 <h2 class="text-3xl font-bold text-yellow-500">
-                    {{ $data->where('status', 'dipinjam')->count() }}
+                    {{ $data->where('status_peminjaman', 'Dipinjam')->count() }}
                 </h2>
             </div>
-
             <div class="bg-white p-6 rounded-2xl shadow">
                 <p class="text-gray-400 text-sm">Selesai</p>
                 <h2 class="text-3xl font-bold text-green-500">
-                    {{ $data->where('status', '!=', 'dipinjam')->count() }}
+                    {{ $data->where('status_peminjaman', 'Dikembalikan')->count() }}
                 </h2>
             </div>
-
         </div>
-
 
         {{-- FILTER --}}
         <div class="bg-white p-6 rounded-2xl shadow flex flex-col md:flex-row gap-4 items-end">
-
             <form method="GET" action="{{ route('laporan.laporan-peminjaman') }}"
                 class="flex flex-col md:flex-row gap-4 w-full">
 
@@ -71,7 +64,8 @@
         '11' => 'November',
         '12' => 'Desember',
     ] as $k => $v)
-                        <option value="{{ $k }}" {{ $namaBulan == $k ? 'selected' : '' }}>{{ $v }}
+                        <option value="{{ $k }}" {{ $bulan == $k ? 'selected' : '' }}>
+                            {{ $v }}
                         </option>
                     @endforeach
                 </select>
@@ -87,7 +81,7 @@
                     Filter
                 </button>
 
-                <a href="{{ route('laporan.peminjaman.cetak', ['bulan' => $namaBulan, 'tahun' => $tahun]) }}"
+                <a href="{{ route('laporan.peminjaman.cetak', ['bulan' => $bulan, 'tahun' => $tahun]) }}"
                     class="bg-red-600 text-white px-6 py-2 rounded-xl shadow hover:bg-red-700">
                     Cetak PDF
                 </a>
@@ -95,48 +89,51 @@
             </form>
         </div>
 
-
         {{-- TABLE --}}
         <div class="bg-white rounded-3xl shadow overflow-hidden">
-
             <div class="px-8 py-6 border-b">
                 <h3 class="font-semibold text-gray-700">Daftar Peminjaman</h3>
             </div>
 
             @if ($data->count())
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead class="bg-gray-50 text-gray-500">
                             <tr>
                                 <th class="px-8 py-4 text-left">No</th>
-                                <th class="px-8 py-4 text-left">Tanggal</th>
-                                <th class="px-8 py-4 text-left">Barang</th>
-                                <th class="px-8 py-4 text-left">Peminjam</th>
-                                <th class="px-8 py-4 text-left">Jumlah</th>
+                                <th class="px-8 py-4 text-left">ID Peminjaman</th>
+                                <th class="px-8 py-4 text-left">Tanggal Pinjam</th>
+                                <th class="px-8 py-4 text-left">Barang Dipinjam</th>
+                                <th class="px-8 py-4 text-left">User ID Peminjam</th>
+                                <th class="px-8 py-4 text-left">Tanggal Kembali</th>
                                 <th class="px-8 py-4 text-left">Status</th>
                             </tr>
                         </thead>
-
                         <tbody class="divide-y">
                             @foreach ($data as $i => $item)
                                 <tr class="hover:bg-blue-50 transition">
                                     <td class="px-8 py-4">{{ $i + 1 }}</td>
+                                    <td class="px-8 py-4">{{ $item->id_peminjaman }}</td>
                                     <td class="px-8 py-4">
                                         {{ \Carbon\Carbon::parse($item->tanggal_peminjaman)->format('d M Y') }}
                                     </td>
                                     <td class="px-8 py-4 font-semibold">
-                                        {{ $item->barang->nama_barang ?? '-' }}
+                                        @forelse ($item->detail as $detail)
+                                            -
+                                            {{ $detail->barang->dataBarang->nama_barang ?? $detail->kode_barang }}<br>
+                                        @empty
+                                            -
+                                        @endforelse
                                     </td>
+                                    <td class="px-8 py-4">{{ $item->user_id }}</td>
                                     <td class="px-8 py-4">
-                                        {{ $item->peminjam->nama ?? '-' }}
+                                        {{ \Carbon\Carbon::parse($item->tanggal_pengembalian)->format('d M Y') }}
                                     </td>
-                                    <td class="px-8 py-4">{{ $item->jumlah }}</td>
                                     <td class="px-8 py-4">
                                         <span
                                             class="px-3 py-1 rounded-full text-xs font-semibold
-                                {{ $item->status == 'dipinjam' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700' }}">
-                                            {{ ucfirst($item->status) }}
+                                            {{ $item->status_peminjaman == 'Dipinjam' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700' }}">
+                                            {{ $item->status_peminjaman }}
                                         </span>
                                     </td>
                                 </tr>
@@ -148,12 +145,10 @@
                 <div class="py-20 text-center text-gray-400">
                     Tidak ada data
                 </div>
-
             @endif
         </div>
 
     </div>
-
 </body>
 
 </html>

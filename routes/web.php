@@ -23,15 +23,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 
-
-
-
 Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
 
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::resource('register', RegisterController::class);
-
 
 
 Route::middleware(['auth'])
@@ -48,13 +44,9 @@ Route::middleware(['auth'])
         Route::put('/ubah-password', [DataAkunController::class, 'ubahPassword'])->name('ubah-password');
     });
 
-
-
-
-
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
-        Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard.admin'); // admin
+        Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard.admin');
 
         Route::resource('data-kelas', DataKelasController::class);
 
@@ -86,7 +78,7 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::resource('data-penanggung-jawab', DataPenanggungJawabController::class);
 
-        route::get('/peminjaman/{id}/accept', [PeminjamanBarangController::class, 'accept'])
+        Route::get('/peminjaman/{id}/accept', [PeminjamanBarangController::class, 'accept'])
             ->name('peminjaman-barang.accept');
 
         Route::get('/laporan', [laporanController::class, 'index'])
@@ -116,18 +108,17 @@ Route::middleware(['auth', 'role:admin'])
 
 Route::middleware(['auth', 'role:siswa'])
     ->group(function () {
-        Route::get('/siswa', [DashboardController::class, 'siswa'])->name('dashboard.siswa'); // siswa
+        Route::get('/siswa', [DashboardController::class, 'siswa'])->name('dashboard.siswa');
 
-        Route::get('/siswa/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('siswa.peminjaman-barang.create');
-        Route::post('/siswa/peminjaman-barang.store', [PeminjamanBarangController::class, 'store'])->name('siswa.peminjaman-barang.store');
+        Route::get('/siswa/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])->name('siswa.peminjaman-barang.create');
+        Route::post('/siswa/peminjaman-barang/store', [PeminjamanBarangController::class, 'store'])->name('siswa.peminjaman-barang.store');
     });
 
-Route::middleware(['auth', 'role:guru'])
-    ->group(function () {
-        Route::get('/guru', [DashboardController::class, 'guru'])->name('dashboard.guru'); //guru
-
-    Route::get('/guru/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('guru.peminjaman-barang.create');
-
-        Route::resource('pengajuan-barang', PengajuanBarangController::class)
-            ->only('create', 'store');
-    });
+Route::prefix('guru')->name('guru.')->group(function () {
+    Route::get('/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])
+        ->name('peminjaman-barang.create');
+    Route::post('/peminjaman-barang', [PeminjamanBarangController::class, 'store'])
+        ->name('peminjaman-barang.store');
+    Route::post('/peminjaman-barang/{id}/cancel', [PeminjamanBarangController::class, 'cancel'])
+        ->name('peminjaman-barang.cancel');
+});

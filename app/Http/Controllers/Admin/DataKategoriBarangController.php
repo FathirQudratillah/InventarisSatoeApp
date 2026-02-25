@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataKategoriBarang;
@@ -27,11 +28,16 @@ class DataKategoriBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $kategori_barang = new DataKategoriBarang;
-        $kategori_barang->id_kategori = $request->id_kategori;
-        $kategori_barang->kategori = $request->kategori;
-        $kategori_barang->save();
-        return redirect()->route('data-kategori-barang.index');
+        try {
+            $kategori_barang = new DataKategoriBarang;
+            $kategori_barang->id_kategori = $request->id_kategori;
+            $kategori_barang->kategori = $request->kategori;
+            $kategori_barang->save();
+
+            return redirect()->route('data-kategori-barang.index')->with('success', 'Data kategori barang berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data kategori barang!')->withInput();
+        }
     }
 
     /**
@@ -56,18 +62,22 @@ class DataKategoriBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $kategori_barang = DataKategoriBarang::findOrFail($id);
+        try {
+            $kategori_barang = DataKategoriBarang::findOrFail($id);
 
-        $request->validate([
-            'id_kategori' => 'required',
-            'kategori' => 'required',
-            
-            
-        ]);
-         $kategori_barang->id_kategori = $request->id_kategori;
-        $kategori_barang->kategori = $request->kategori;
-        $kategori_barang->save();
-        return redirect()->route('data-kategori-barang.index');
+            $request->validate([
+                'id_kategori' => 'required',
+                'kategori' => 'required',
+            ]);
+
+            $kategori_barang->id_kategori = $request->id_kategori;
+            $kategori_barang->kategori = $request->kategori;
+            $kategori_barang->save();
+
+            return redirect()->route('data-kategori-barang.index')->with('success', 'Data kategori barang berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data kategori barang!')->withInput();
+        }
     }
 
     /**
@@ -75,8 +85,12 @@ class DataKategoriBarangController extends Controller
      */
     public function destroy(string $id_kategori)
     {
-        $kategori_barang = DataKategoriBarang::findOrFail($id_kategori);
-        $kategori_barang->delete();
-        return redirect()->route('data-kategori-barang.index');
+        try {
+            $kategori_barang = DataKategoriBarang::findOrFail($id_kategori);
+            $kategori_barang->delete();
+            return redirect()->route('data-kategori-barang.index')->with('success', 'Data kategori barang berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data kategori barang!');
+        }
     }
 }

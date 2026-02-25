@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataAngkatan;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DataKelasController extends Controller
-{ 
+{
     public function index()
     {
         $akun = DataKelas::all();
@@ -26,21 +27,25 @@ class DataKelasController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $kelas = new DataKelas;
+        try {
+            $kelas = new DataKelas;
 
-        if ($request->kelas != 'Alumni') {
-            $kelas->id_kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
-        } else {
-            $kelas->id_kelas = $request->angkatan . $request->id_jurusan;
+            if ($request->kelas != 'Alumni') {
+                $kelas->id_kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
+            } else {
+                $kelas->id_kelas = $request->angkatan . $request->id_jurusan;
+            }
+
+            $kelas->id_jurusan = $request->id_jurusan;
+            $kelas->angkatan = $request->angkatan;
+            $kelas->kelas = $request->kelas;
+            $kelas->subkelas = $request->subkelas;
+            $kelas->save();
+
+            return redirect()->route('data-kelas.index')->with('success', 'Data kelas berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data kelas!')->withInput();
         }
-
-        $kelas->id_jurusan = $request->id_jurusan;
-        $kelas->angkatan = $request->angkatan;
-        $kelas->kelas = $request->kelas;
-        $kelas->subkelas = $request->subkelas;
-        $kelas->save();
-
-        return redirect()->route('data-kelas.index');
     }
 
     public function edit(string $id_kelas)
@@ -53,28 +58,37 @@ class DataKelasController extends Controller
 
     public function update(Request $request, string $id_kelas): RedirectResponse
     {
-        $kelas = DataKelas::findOrFail($id_kelas);
+        try {
+            $kelas = DataKelas::findOrFail($id_kelas);
 
-        $request->validate([
-            'id_jurusan' => 'required',
-            'angkatan' => 'required',
-            'kelas' => 'required',
-            'subkelas' => 'required',
-        ]);
+            $request->validate([
+                'id_jurusan' => 'required',
+                'angkatan' => 'required',
+                'kelas' => 'required',
+                'subkelas' => 'required',
+            ]);
 
-        $kelas->id_jurusan = $request->id_jurusan;
-        $kelas->angkatan = $request->angkatan;
-        $kelas->kelas = $request->kelas;
-        $kelas->subkelas = $request->subkelas;
-        $kelas->save();
-        return redirect()->route('data-kelas.index');
+            $kelas->id_jurusan = $request->id_jurusan;
+            $kelas->angkatan = $request->angkatan;
+            $kelas->kelas = $request->kelas;
+            $kelas->subkelas = $request->subkelas;
+            $kelas->save();
+
+            return redirect()->route('data-kelas.index')->with('success', 'Data kelas berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data kelas!')->withInput();
+        }
     }
 
     public function destroy(string $id_kelas)
     {
-        $kelas = DataKelas::findOrFail($id_kelas);
-        $kelas->delete();
+        try {
+            $kelas = DataKelas::findOrFail($id_kelas);
+            $kelas->delete();
 
-        return redirect()->route('data-kelas.index');
+            return redirect()->route('data-kelas.index')->with('success', 'Data kelas berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data kelas!');
+        }
     }
 }

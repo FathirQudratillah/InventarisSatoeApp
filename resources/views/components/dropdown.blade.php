@@ -1,16 +1,16 @@
-@props(['type' => null, 'route' => null, 'id'=> null])
+@props(['type' => null, 'route' => null, 'id' => null])
 
 <div class="relative inline-block text-left">
     @unless ($type == 'profile')
-    <!-- Tombol Titik Tiga -->
-    <button type="button" onclick="toggleDropdown(this)"
-        class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-600 transition duration-200 focus:outline-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <circle cx="12" cy="5" r="2" />
-            <circle cx="12" cy="12" r="2" />
-            <circle cx="12" cy="19" r="2" />
-        </svg>
-    </button>
+        <!-- Tombol Titik Tiga -->
+        <button type="button" onclick="toggleDropdown(this)"
+            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-600 transition duration-200 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="5" r="2" />
+                <circle cx="12" cy="12" r="2" />
+                <circle cx="12" cy="19" r="2" />
+            </svg>
+        </button>
     @endunless
 
     <!-- Dropdown Pop Up -->
@@ -64,7 +64,6 @@
                         </div>
                     </a>
                 </li>
-
             @elseif ($type == 'profile')
                 <!-- Detail -->
                 <li>
@@ -90,30 +89,30 @@
                     </a>
                 </li>
 
+                <li class="border-t border-gray-100 mx-2"></li>
+
+                <!-- Logout -->
                 <li>
-                    <a href="/logout"
-                        class="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                        <span class="flex items-center justify-center w-7 h-7 rounded-md bg-blue-100 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="w-4 h-4">
-
-                                <!-- Bentuk mata -->
-                                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z" />
-
-                                <!-- Bola mata -->
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-
-                        </span>
-                        <div>
-                            <p class="font-medium text-sm">Logout</p>
-                            <p class="text-xs text-gray-400">Logout {{ ucwords(str_replace('-', ' ', $route)) }}</p>
-                        </div>
-                    </a>
+                    <form action="{{ route('logout') }}" method="POST" id="logout-form-profile">
+                        @csrf
+                        <button type="button" onclick="confirmLogout()"
+                            class="flex items-center gap-3 w-full px-4 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                            <span class="flex items-center justify-center w-7 h-7 rounded-md bg-red-100 text-red-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                    <polyline points="16 17 21 12 16 7"></polyline>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                </svg>
+                            </span>
+                            <div class="text-left">
+                                <p class="font-medium text-sm">Logout</p>
+                                <p class="text-xs text-gray-400">Keluar dari akun</p>
+                            </div>
+                        </button>
+                    </form>
                 </li>
-
-                
             @else
                 <!-- Edit -->
                 <li>
@@ -164,3 +163,11 @@
     </div>
 
 </div>
+
+<script>
+    function confirmLogout() {
+        if (confirm('Apakah Anda yakin ingin logout?')) {
+            document.getElementById('logout-form-profile').submit();
+        }
+    }
+</script>
