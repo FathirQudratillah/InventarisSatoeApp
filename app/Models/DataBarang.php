@@ -25,7 +25,7 @@ class DataBarang extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function dataBarang()
+    public function jenis()
     {
         return $this->belongsTo(DataJenisBarang::class, 'jenis_barang', 'jenis_barang');
     }

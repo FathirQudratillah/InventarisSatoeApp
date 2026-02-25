@@ -79,15 +79,12 @@
         </div>
 
         {{-- Stat Mini Siswa --}}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-5">
             <div class="bg-white/10 rounded-xl px-4 py-3 text-center">
                 <p class="text-xl font-bold text-white">{{ $peminjamanAktifSiswa }}</p>
                 <p class="text-xs text-indigo-200 mt-0.5">Dipinjam</p>
             </div>
-            <div class="bg-white/10 rounded-xl px-4 py-3 text-center">
-                <p class="text-xl font-bold text-white">{{ $pengajuanSiswa }}</p>
-                <p class="text-xs text-indigo-200 mt-0.5">Pengajuan</p>
-            </div>
+
             <div class="bg-white/10 rounded-xl px-4 py-3 text-center">
                 <p class="text-xl font-bold text-white">{{ $pengembalianSiswa }}</p>
                 <p class="text-xs text-indigo-200 mt-0.5">Dikembalikan</p>
@@ -119,12 +116,11 @@
             @endphp
 
             @forelse($topBarang as $index => $item)
-                @php $barang = $allBarang[$item->kode_barang] ?? null; @endphp
                 <div
                     class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 flex flex-col items-center text-center hover:shadow-md transition-shadow">
                     <div
                         class="w-16 h-16 rounded-full bg-gradient-to-br {{ $gradients[$index] }} flex items-center justify-center shadow-md mb-2">
-                        @php $namaBarang = strtolower($barang->nama_barang ?? ''); @endphp
+                        @php $namaBarang = strtolower($item->jenis->kategori->id_kategori ?? ''); @endphp
                         @if (str_contains($namaBarang, 'laptop') || str_contains($namaBarang, 'komputer') || str_contains($namaBarang, 'pc'))
                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -147,12 +143,12 @@
                         class="text-xs font-bold {{ $badges[$index] }} px-2 py-0.5 rounded-full mb-3">{{ $rankLabels[$index] }}</span>
                     <span class="text-xs font-mono font-semibold text-slate-400 mb-1">{{ $item->kode_barang }}</span>
                     <h3 class="text-sm font-bold text-slate-800 mb-1 leading-snug">
-                        {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}
+                        {{ $item->jenis->nama_barang ?? 'Nama tidak tersedia' }}
                     </h3>
-                    <p class="text-xs text-slate-400 mb-3">Kondisi: {{ ucfirst($barang->kondisi_barang ?? '-') }}</p>
+                    <p class="text-xs text-slate-400 mb-3">Kondisi: {{ ucfirst($item->kondisi_barang ?? '-') }}</p>
                     <span
                         class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold {{ $badges[$index] }}">
-                        {{ $item->total_dipinjam }}× dipinjam
+                        {{ $item->detail_count }}× dipinjam
                     </span>
                 </div>
             @empty
@@ -162,42 +158,61 @@
     </div>
 
     {{-- 1.c DAFTAR BARANG SEDANG DIPINJAM PENGGUNA --}}
-    <div class="mb-8">
-        <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-300">
-                <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
-                    <h2 class="text-base font-semibold text-slate-800">Daftar Barang Sedang Dipinjam Pengguna</h2>
-                </div>
-                <span class="ml-auto bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                    {{ $barangTidakTersedia->count() }} barang
-                </span>
-            </div>
-            <div class="divide-y divide-slate-300 max-h-80 overflow-y-auto">
-                @forelse($barangTidakTersedia as $barang)
-                    <div class="flex items-center gap-3 px-6 py-3 hover:bg-blue-50 transition">
-                        <div
-                            class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                            </svg>
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-xs font-mono text-slate-400">{{ $barang->kode_barang }}</p>
-                            <p class="text-sm font-medium text-slate-800 truncate">
-                                {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}</p>
-                        </div>
-                        <div class="text-right flex-shrink-0">
-                            <span
-                                class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600 font-medium">Dipinjam</span>
-                            <p class="text-xs text-slate-400 mt-0.5">{{ ucfirst($barang->kondisi_barang) }}</p>
-                        </div>
+    <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 mb-6">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-base font-semibold text-slate-800">Detail Peminjaman Aktif Kamu</h2>
+            <a href="{{ route('peminjaman-barang.index') }}"
+                class="text-xs text-indigo-500 hover:text-indigo-700 font-medium">Lihat semua →</a>
+        </div>
+        <div class="space-y-3">
+            @forelse($peminjamanTerbaru as $item)
+                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-200 transition-colors duration-150">
+                    <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                        <span
+                            class="text-indigo-600 text-xs font-bold">{{ strtoupper(substr(auth()->user()->username, 0, 2)) }}</span>
                     </div>
-                @empty
-                    <div class="text-center text-slate-400 py-10 text-sm">Tidak ada barang yang sedang dipinjam.</div>
-                @endforelse
-            </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-slate-800 truncate">{{ $item->id_peminjaman }}</p>
+                        <p class="text-xs text-slate-400">Kembali: {{ $item->tanggal_pengembalian ?? '-' }}</p>
+                        @if ($item->peminjamanDetail && $item->peminjamanDetail->count())
+                            <p class="text-xs text-slate-400">
+                                Barang: {{ $item->peminjamanDetail->pluck('kode_barang')->implode(', ') }}
+                            </p>
+                        @endif
+                    </div>
+                    <div class="text-right flex-shrink-0">
+                        <span
+                            class="inline-block text-xs px-2 py-1 rounded-full font-medium
+                                {{ $item->status_peminjaman === 'dipinjam'
+                                    ? 'bg-red-100 text-red-600'
+                                    : ($item->status_peminjaman === 'dikembalikan'
+                                        ? 'bg-green-100 text-green-600'
+                                        : 'bg-yellow-100 text-yellow-600') }}">
+
+                            @if ($item->status_peminjaman === 'dipinjam')
+                                <a href="{{ route('peminjaman-barang.back', $item->id_peminjaman) }}"
+                                    >
+                                    Kembalikan
+                                </a>
+                            @else
+                                {{ ucfirst($item->status_peminjaman) }}
+                            @endif
+
+                        </span>
+                        <p class="text-xs text-slate-400 mt-1">{{ $item->created_at?->diffForHumans() }}</p>
+                    </div>
+
+                </div>
+            @empty
+                <div class="text-center py-10">
+                    <svg class="w-10 h-10 text-slate-300 mx-auto mb-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <p class="text-sm text-slate-400">Kamu belum memiliki peminjaman aktif</p>
+                </div>
+            @endforelse
         </div>
     </div>
 
@@ -212,7 +227,7 @@
                 <span class="text-xs text-slate-400">Aktivitas terbaru milikmu</span>
             </div>
             <div class="divide-y divide-slate-300 max-h-96 overflow-y-auto">
-                @forelse($logAktivitasSiswa as $item)
+                @forelse($peminjamanTerbaru as $item)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-slate-200 transition">
                         <div
                             class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0 text-xs font-bold">
@@ -311,7 +326,7 @@
                         <div class="min-w-0 flex-1">
                             <p class="text-xs font-mono text-slate-400">{{ $barang->kode_barang }}</p>
                             <p class="text-sm font-medium text-slate-800 truncate">
-                                {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}</p>
+                                {{ $barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}</p>
                         </div>
                         <div class="text-right flex-shrink-0">
                             <span class="text-xs text-slate-400">{{ ucfirst($barang->kondisi_barang) }}</span>
@@ -345,7 +360,7 @@
                         <div class="min-w-0 flex-1">
                             <p class="text-xs font-mono text-slate-400">{{ $barang->kode_barang }}</p>
                             <p class="text-sm font-medium text-slate-800 truncate">
-                                {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}</p>
+                                {{ $barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}</p>
                         </div>
                         <span
                             class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 flex-shrink-0 font-medium">Dipinjam</span>
@@ -358,52 +373,6 @@
     </div>
 
     {{-- PEMINJAMAN AKTIF SISWA (detail) --}}
-    <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 mb-6">
-        <div class="flex items-center justify-between mb-5">
-            <h2 class="text-base font-semibold text-slate-800">Detail Peminjaman Aktif Kamu</h2>
-            <a href="{{ route('peminjaman-barang.index') }}"
-                class="text-xs text-indigo-500 hover:text-indigo-700 font-medium">Lihat semua →</a>
-        </div>
-        <div class="space-y-3">
-            @forelse($peminjamanTerbaru as $item)
-                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-200 transition-colors duration-150">
-                    <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
-                        <span
-                            class="text-indigo-600 text-xs font-bold">{{ strtoupper(substr(auth()->user()->username, 0, 2)) }}</span>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-slate-800 truncate">{{ $item->id_peminjaman }}</p>
-                        <p class="text-xs text-slate-400">Kembali: {{ $item->tanggal_pengembalian ?? '-' }}</p>
-                        @if ($item->peminjamanDetail && $item->peminjamanDetail->count())
-                            <p class="text-xs text-slate-400">
-                                Barang: {{ $item->peminjamanDetail->pluck('kode_barang')->implode(', ') }}
-                            </p>
-                        @endif
-                    </div>
-                    <div class="text-right flex-shrink-0">
-                        <span
-                            class="inline-block text-xs px-2 py-1 rounded-full font-medium
-                            {{ $item->status_peminjaman === 'dipinjam'
-                                ? 'bg-blue-100 text-blue-600'
-                                : ($item->status_peminjaman === 'dikembalikan'
-                                    ? 'bg-green-100 text-green-600'
-                                    : 'bg-yellow-100 text-yellow-600') }}">
-                            {{ ucfirst($item->status_peminjaman) }}
-                        </span>
-                        <p class="text-xs text-slate-400 mt-1">{{ $item->created_at?->diffForHumans() }}</p>
-                    </div>
-                </div>
-            @empty
-                <div class="text-center py-10">
-                    <svg class="w-10 h-10 text-slate-300 mx-auto mb-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    <p class="text-sm text-slate-400">Kamu belum memiliki peminjaman aktif</p>
-                </div>
-            @endforelse
-        </div>
-    </div>
+
 
 </x-layout>
