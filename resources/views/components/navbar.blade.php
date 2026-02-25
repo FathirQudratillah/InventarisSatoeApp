@@ -146,7 +146,7 @@
             {{-- GURU ONLY --}}
             @if (auth()->user()->role == 'guru')
                 {{-- FIX: route pengajuan-barang.create -> guru.pengajuan-barang.create --}}
-                <a href="{{ route('guru.pengajuan-barang.create') }}"
+                <a href="{{ route('pengajuan-barang.create') }}"
                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
