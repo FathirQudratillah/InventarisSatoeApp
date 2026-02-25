@@ -124,6 +124,7 @@ Route::middleware(['auth', 'role:guru'])
         Route::get('/guru', [DashboardController::class, 'guru'])->name('dashboard.guru'); //guru
 
         Route::get('/guru/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('guru.peminjaman-barang.create');
+        Route::get('/guru/peminjaman-barang.store', [PeminjamanBarangController::class, 'store'])->name('guru.peminjaman-barang.store');
 
         Route::resource('pengajuan-barang', PengajuanBarangController::class)
             ->only('create', 'store');

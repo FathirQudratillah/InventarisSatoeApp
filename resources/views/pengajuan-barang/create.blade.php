@@ -1,5 +1,4 @@
-<x-layout>
-    <x-slot:title>Pengajuan Barang</x-slot:title>
+
 
     <x-form action="{{ route('pengajuan-barang.store') }}">
         <x-slot:title>
@@ -23,4 +22,4 @@
         </x-slot:button>
     </x-form>
 
-</x-layout>
+
