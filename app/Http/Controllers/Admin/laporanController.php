@@ -43,7 +43,6 @@ class laporanController extends Controller
     // Peminjaman
     public function peminjaman(Request $request)
     {
-
         $bulan = (int) request('bulan', now()->month);
         $tahun = (int) request('tahun', now()->year);
 
@@ -72,6 +71,7 @@ class laporanController extends Controller
 
         return view('laporan.laporan-pengajuan', compact('data', 'bulan', 'tahun', 'namaBulan'));
     }
+
     // Pemeliharaan
     public function pemeliharaan(Request $request)
     {
@@ -84,14 +84,14 @@ class laporanController extends Controller
             ->latest('tanggal_pemeliharaan')
             ->get();
 
-        $namaBulan = Carbon::create()->month($bulan)->translatedFormat('F');
+        $namaBulan = Carbon::create()->month($bulan)->locale('id')->translatedFormat('F');
 
         return view('laporan.laporan-pemeliharaan', [
-            'data' => $data,
-            'bulan' => $bulan,
-            'tahun' => $tahun,
+            'data'      => $data,
+            'bulan'     => $bulan,
+            'tahun'     => $tahun,
             'namaBulan' => $namaBulan,
-            'jenis' => 'pemeliharaan'
+            'jenis'     => 'pemeliharaan'
         ]);
     }
 
@@ -131,8 +131,9 @@ class laporanController extends Controller
 
         $namaFile = 'laporan-peminjaman-' . strtolower($namaBulan) . '-' . $tahun . '-Inventaris-Smk Negeri 1 Kota Bekasi.pdf';
 
-        return $pdf->setPaper('a4', 'potrait')->stream($namaFile);
+        return $pdf->setPaper('a4', 'portrait')->stream($namaFile);
     }
+
     // Cetak Pemeliharaan Barang
     public function cetakPemeliharaan(Request $request)
     {
@@ -170,10 +171,12 @@ class laporanController extends Controller
         $namaFile = 'laporan-pemeliharaan-' . strtolower($namaBulan) . '-' . $tahun . '-inventaris-satoe.pdf';
         return $pdf->setPaper('a4', 'portrait')->stream($namaFile);
     }
+
     // Cetak Pengajuan Barang
-    public function cetakPengajuan($bulan, $tahun)
+    public function cetakPengajuan(Request $request)
     {
-        $bulan = str_pad($bulan, 2, '0', STR_PAD_LEFT);
+        $bulan = str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
+        $tahun = $request->tahun;
 
         $namaBulanList = [
             '01' => 'Januari',

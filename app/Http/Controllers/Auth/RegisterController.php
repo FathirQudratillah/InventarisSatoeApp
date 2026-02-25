@@ -48,13 +48,14 @@ class RegisterController extends Controller
         $kode = str_pad($lastNumber + 1, 8, '0', STR_PAD_LEFT);
 
 
-        $kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
-        $checkKelas = DataKelas::findOrFail($kelas);
-        $no_absen = str_pad($request->no_absen, 2, '0', STR_PAD_LEFT);
 
-        DB::transaction(function () use ($request, $role, $checkKelas, $no_absen, $kode) {
+
+        DB::transaction(function () use ($request, $role, $kode) {
             // Generate user_id
             if ($role === 'siswa') {
+                $kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
+                $checkKelas = DataKelas::findOrFail($kelas);
+                $no_absen = str_pad($request->no_absen, 2, '0', STR_PAD_LEFT);
                 $user_id = 'SI' . $checkKelas->id_kelas . $no_absen;
             } else {
                 $user_id = 'GU' . $kode;
