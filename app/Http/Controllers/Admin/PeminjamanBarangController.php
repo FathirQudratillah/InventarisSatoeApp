@@ -95,39 +95,32 @@ class PeminjamanBarangController extends Controller
     {
         $peminjaman = PeminjamanBarang::findOrFail($id);
         $peminjaman->data_admin = auth()->user()->user_id;
-        $peminjaman->status_peminjaman = 'Dipinjam';
+        $peminjaman->status_peminjaman = 'dipinjam';
+        $peminjaman->save();
+
+        return back();
+    }
+    
+    public function back(string $id)
+    {
+        $peminjaman = PeminjamanBarang::findOrFail($id);
+        $peminjaman->status_peminjaman = 'dikembalikan?';
         $peminjaman->save();
 
         return back();
     }
 
+    public function kembalikan(string $id)
+    {
+        $peminjaman = PeminjamanBarang::findOrFail($id);
+        $peminjaman->status_peminjaman = 'dikembalikan';
+        $peminjaman->save();
+
+        return back();
+    }
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(string $id)
-    {
-        $peminjaman = PeminjamanBarang::findOrFail($id);
-        $peminjaman->status_peminjaman = 'Dipinjam';
-        $peminjaman->save();
-
-        return back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 
     public function add($kode)
     {

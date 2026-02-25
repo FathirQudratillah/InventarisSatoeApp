@@ -25,4 +25,9 @@ class PeminjamanBarang extends Model
     public function detail(){
         return $this->hasMany(DetailPeminjaman::class, 'id_peminjaman', 'id_peminjaman');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(DataAkun::class, 'user_id', 'user_id');
+    }
 }

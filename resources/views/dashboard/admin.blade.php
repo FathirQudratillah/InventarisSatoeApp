@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    
+
     {{-- Welcome Toast --}}
     <div id="welcomeToast"
         class="fixed top-6 right-6 bg-slate-100 border border-slate-300 shadow-xl rounded-2xl p-5 w-80 z-50 transform translate-x-96 opacity-0 transition-all duration-500">
@@ -147,6 +147,7 @@
         </div>
     </div>
 
+    @if ($requestPeminjaman->count() > 0)
     {{-- 1.c Request Peminjaman --}}
     <div class="mb-8">
         <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
@@ -172,10 +173,9 @@
                         <div class="min-w-0 flex-1">
                             <p class="text-xs font-mono text-slate-400">{{ $barang->id_peminjaman }}</p>
                             @foreach ($barang->detail as $detail)
-                                
-                            <p class="text-sm font-medium text-slate-800 truncate">
-                                {{ $detail->kode_barang ?? 'Nama tidak tersedia' }}</p>
-                             @endforeach
+                                <p class="text-sm font-medium text-slate-800 truncate">
+                                    {{ $detail->kode_barang ?? 'Nama tidak tersedia' }}</p>
+                            @endforeach
                         </div>
                         <div class="text-right flex-shrink-0">
                             <a href="{{ route('peminjaman-barang.accept', $barang->id_peminjaman) }}"
@@ -189,6 +189,51 @@
             </div>
         </div>
     </div>
+    @endif
+
+    @if ($requestPengembalian->count() > 0)
+    {{-- 1.c Request Pengembalian --}}
+    <div class="mb-8">
+        <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-300">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                    <h2 class="text-base font-semibold text-slate-800">Permintaan Pengembalian Barang</h2>
+                </div>
+                <span class="ml-auto bg-red-100 text-red-700 text-xs font-bold px-2.5 py-0.5 rounded-full">
+                    {{ $requestPengembalian->count() }} barang
+                </span>
+            </div>
+            <div class="divide-y divide-slate-300 max-h-80 overflow-y-auto">
+                @forelse($requestPengembalian as $barang)
+                    <div class="flex items-center gap-3 px-6 py-3 hover:bg-red-50 transition">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600 flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                            </svg>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-mono text-slate-400">{{ $barang->id_peminjaman }}</p>
+                            @foreach ($barang->detail as $detail)
+                                <p class="text-sm font-medium text-slate-800 truncate">
+                                    {{ $detail->kode_barang ?? 'Nama tidak tersedia' }}</p>
+                            @endforeach
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <a href="{{ route('peminjaman-barang.kembalikan', $barang->id_peminjaman) }}"
+                                class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 hover:bg-red-300 font-medium">Accept</a>
+                            <p class="text-xs text-slate-400 mt-0.5">{{ ucfirst($barang->status_peminjaman) }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-slate-400 py-10 text-sm">Tidak ada barang yang sedang dipinjam.</div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+    @endif
 
     {{-- 1.b TOP 3 BARANG TERPOPULER --}}
     <div class="mb-8">
@@ -210,24 +255,26 @@
             @endphp
 
             @forelse($topBarang as $index => $item)
-                @php $barang = $allBarang[$item->kode_barang] ?? null; @endphp
                 <div
                     class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 flex flex-col items-center text-center hover:shadow-md transition-shadow">
                     <div
                         class="w-16 h-16 rounded-full bg-gradient-to-br {{ $gradients[$index] }} flex items-center justify-center shadow-md mb-2">
-                        @php $namaBarang = strtolower($barang->nama_barang ?? ''); @endphp
+                        @php $namaBarang = strtolower($item->jenis->kategori ?? ''); @endphp
                         @if (str_contains($namaBarang, 'laptop') || str_contains($namaBarang, 'komputer') || str_contains($namaBarang, 'pc'))
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                     d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                         @elseif(str_contains($namaBarang, 'proyektor') || str_contains($namaBarang, 'projector'))
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                     d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.893L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
                             </svg>
                         @else
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                     d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" />
                             </svg>
@@ -238,12 +285,12 @@
                         class="text-xs font-bold {{ $badges[$index] }} px-2 py-0.5 rounded-full mb-3">{{ $rankLabels[$index] }}</span>
                     <span class="text-xs font-mono font-semibold text-slate-400 mb-1">{{ $item->kode_barang }}</span>
                     <h3 class="text-sm font-bold text-slate-800 mb-1 leading-snug">
-                        {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}
+                        {{ $item->jenis->nama_barang ?? 'Nama tidak tersedia' }}
                     </h3>
-                    <p class="text-xs text-slate-400 mb-3">Kondisi: {{ ucfirst($barang->kondisi_barang ?? '-') }}</p>
+                    <p class="text-xs text-slate-400 mb-3">Kondisi: {{ ucfirst($item->kondisi_barang ?? '-') }}</p>
                     <span
                         class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold {{ $badges[$index] }}">
-                        {{ $item->total_dipinjam }}× dipinjam
+                        {{ $item->detail_count }}× dipinjam
                     </span>
                 </div>
             @empty
@@ -261,11 +308,11 @@
                     <h2 class="text-base font-semibold text-slate-800">Daftar Barang Sedang Dipinjam Pengguna</h2>
                 </div>
                 <span class="ml-auto bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                    {{ $requestPeminjaman->count() }} barang
+                    {{ $barangTidakTersedia->count() }} barang
                 </span>
             </div>
             <div class="divide-y divide-slate-300 max-h-80 overflow-y-auto">
-                @forelse($requestPeminjaman as $barang)
+                @forelse($barangTidakTersedia as $barang)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-blue-50 transition">
                         <div
                             class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
@@ -276,8 +323,10 @@
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-xs font-mono text-slate-400">{{ $barang->kode_barang }}</p>
-                            <p class="text-sm font-medium text-slate-800 truncate">
-                                {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}</p>
+                            @foreach ($barang->detail as $detail)
+                                <p class="text-sm font-medium text-slate-800 truncate">
+                                    {{ $detail->barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}</p>
+                            @endforeach
                         </div>
                         <div class="text-right flex-shrink-0">
                             <span
@@ -425,33 +474,7 @@
         </div>
     </div>
 
-    {{-- BARANG SERING DIPINJAM (TOP 10) --}}
-    <div class="mb-8">
-        <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-300">
-                <h2 class="text-base font-semibold text-slate-800">Barang Sering Dipinjam</h2>
-                <span class="text-xs text-slate-400">Top 10</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 p-5">
-                @forelse($barangSeringDipinjam as $index => $item)
-                    @php $barang = $allBarang[$item->kode_barang] ?? null; @endphp
-                    <div
-                        class="bg-slate-200 rounded-xl p-3 flex flex-col items-center text-center hover:bg-blue-50 transition group">
-                        <div
-                            class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold mb-2 group-hover:bg-blue-200 transition">
-                            #{{ $index + 1 }}
-                        </div>
-                        <p class="text-xs font-mono text-slate-400 mb-0.5">{{ $item->kode_barang }}</p>
-                        <p class="text-xs font-semibold text-slate-800 leading-tight mb-2">
-                            {{ Str::limit($barang->nama_barang ?? '-', 20) }}</p>
-                        <span class="text-xs font-bold text-blue-600">{{ $item->total_dipinjam }}× dipinjam</span>
-                    </div>
-                @empty
-                    <div class="col-span-5 text-center text-slate-400 py-8">Belum ada data.</div>
-                @endforelse
-            </div>
-        </div>
-    </div>
+    
 
     {{-- BARANG TERSEDIA & TIDAK TERSEDIA (5.a) --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -476,10 +499,9 @@
                         <div class="min-w-0 flex-1">
                             <p class="text-xs font-mono text-slate-400">{{ $barang->kode_barang }}</p>
                             <p class="text-sm font-medium text-slate-800 truncate">
-                                {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}</p>
+                                {{ $barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}</p>
                         </div>
-                        <span
-                            class="text-xs text-slate-400 flex-shrink-0">{{ ucfirst($barang->kondisi_barang) }}</span>
+                       
                     </div>
                 @empty
                     <div class="text-center text-slate-400 py-10 text-sm">Semua barang sedang dipinjam.</div>
@@ -508,7 +530,7 @@
                         <div class="min-w-0 flex-1">
                             <p class="text-xs font-mono text-slate-400">{{ $barang->kode_barang }}</p>
                             <p class="text-sm font-medium text-slate-800 truncate">
-                                {{ $barang->nama_barang ?? 'Nama tidak tersedia' }}</p>
+                                {{ $barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}</p>
                         </div>
                         <span
                             class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 flex-shrink-0 font-medium">Dipinjam</span>

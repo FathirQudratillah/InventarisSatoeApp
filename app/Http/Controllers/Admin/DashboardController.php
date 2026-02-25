@@ -15,6 +15,7 @@ use App\Models\DataJenisBarang;
 use App\Models\DataKategoriBarang;
 use App\Models\DataPenanggungJawab;
 use App\Models\DataAngkatan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -50,74 +51,103 @@ class DashboardController extends Controller
     // SHARED HELPERS
     // ─────────────────────────────────────────────────────────────
 
+    
+
     private function getStats()
     {
-        return [
-            'totalBarang'          => DataBarang::count(),
-            'peminjamanAktif'      => PeminjamanBarang::where('status_peminjaman', 'dipinjam')->count(),
-            'pengajuanPending'     => PengajuanBarang::where('status_pengajuan', 'pending')->count(),
-            'pemeliharaan'         => PemeliharaanBarang::count(),
-            'totalRuang'           => DataRuang::count(),
-            'peminjaman'           => PeminjamanBarang::count(),
-            'pengajuan'            => PengajuanBarang::count(),
-            'totalJurusan'         => DataJurusan::count(),
-            'totalAkun'            => DataAkun::count(),
-            'totalKelas'           => DataKelas::count(),
-            'totalJenisBarang'     => DataJenisBarang::count(),
-            'totalKategoriBarang'  => DataKategoriBarang::count(),
-            'totalPenanggungJawab' => DataPenanggungJawab::count(),
-            'totalAngkatan'        => DataAngkatan::count(),
-        ];
+        return Cache::remember('admin_dashboard_stats', 60, function () {
+
+            $peminjamanStats = PeminjamanBarang::selectRaw("
+            COUNT(*) as total,
+            SUM(CASE WHEN status_peminjaman = 'dipinjam' THEN 1 ELSE 0 END) as aktif
+        ")->first();
+
+            $pengajuanStats = PengajuanBarang::selectRaw("
+            COUNT(*) as total,
+            SUM(CASE WHEN status_pengajuan = 'pending' THEN 1 ELSE 0 END) as pending
+        ")->first();
+
+            return [
+                'totalBarang'          => DataBarang::count(),
+                'peminjaman'           => $peminjamanStats->total,
+                'peminjamanAktif'      => $peminjamanStats->aktif,
+                'pengajuan'            => $pengajuanStats->total,
+                'pengajuanPending'     => $pengajuanStats->pending,
+                'pemeliharaan'         => PemeliharaanBarang::count(),
+                'totalRuang'           => DataRuang::count(),
+                'totalJurusan'         => DataJurusan::count(),
+                'totalAkun'            => DataAkun::count(),
+                'totalKelas'           => DataKelas::count(),
+                'totalJenisBarang'     => DataJenisBarang::count(),
+                'totalKategoriBarang'  => DataKategoriBarang::count(),
+                'totalPenanggungJawab' => DataPenanggungJawab::count(),
+                'totalAngkatan'        => DataAngkatan::count(),
+            ];
+        });
     }
 
     private function getLatestData()
     {
-        $pemeliharaanTerbaru = PemeliharaanBarang::latest()->take(4)->get();
 
-        // Buat map kode_barang => id untuk tombol cetak di dashboard
-        $barangIdMap = DataBarang::whereIn(
-            'kode_barang',
-            $pemeliharaanTerbaru->pluck('kode_barang')->filter()->unique()
-        );
         return [
             'peminjamanTerbaru'   => PeminjamanBarang::latest()->take(5)->get(),
             'pengajuanTerbaru'    => PengajuanBarang::latest()->take(4)->get(),
-            'pemeliharaanTerbaru' => $pemeliharaanTerbaru,
-            'barangIdMap'         => $barangIdMap,
+            'pemeliharaanTerbaru' => PemeliharaanBarang::latest()->take(4)->get(),
+            
         ];
     }
 
     private function getBarangData()
     {
-        $topBarangRaw = DB::table('detail_peminjaman')
-            ->select('kode_barang', DB::raw('COUNT(*) as total_dipinjam'))
-            ->groupBy('kode_barang')
-            ->orderByDesc('total_dipinjam')
+        $barang = DataBarang::withCount([
+            'detail as dipinjam_count' => function ($q) {
+                $q->whereHas('peminjaman', function ($sub) {
+                    $sub->where('status_peminjaman', 'dipinjam');
+                });
+            }
+        ])->with('jenis')->get();
+
+        $barangTersedia = $barang->where('dipinjam_count', 0);
+        $barangTidakTersedia = $barang->where('dipinjam_count', '>', 0);
+
+
+
+        $topBarangRaw = DataBarang::withCount(['detail as detail_count' => function ($query) {
+            $query->whereHas('peminjaman', function ($q) {
+                $q->where('status_peminjaman', '!=', 'Pending');
+            });
+        }])
+            ->whereHas('detail.peminjaman', function ($query) {
+                $query->where('status_peminjaman', '!=', 'Pending');
+            })
+            ->with('jenis.kategori')
+            ->orderByDesc('detail_count')
+            ->limit(3)
             ->get();
 
-        $allBarang = DataBarang::join(
-            'data_jenis_barang',
-            'data_barang.jenis_barang',
-            '=',
-            'data_jenis_barang.jenis_barang'
-        )
-            ->select('data_barang.*', 'data_jenis_barang.nama_barang')
-            ->get()
-            ->keyBy('kode_barang');
+        $requestPeminjaman = PeminjamanBarang::with([
+            'user',
+            'detail.barang.jenis'
+        ])
+            ->where('status_peminjaman', 'Pending')
+            ->latest()
+            ->get();
 
-        $barangTersedia      = $allBarang->filter(fn($b) => $b->stok > 0)->values();
-        $barangTidakTersedia = $allBarang->filter(fn($b) => $b->stok <= 0)->values();
-
-        $requestPeminjaman = PeminjamanBarang::with('detail')->where('status_peminjaman', 'Pending')->latest()->get();
+        $requestPengembalian = PeminjamanBarang::with([
+            'user',
+            'detail.barang.jenis'
+        ])
+            ->where('status_peminjaman', 'dikembalikan?')
+            ->latest()
+            ->get();
 
         return [
-            'topBarang'            => $topBarangRaw->take(3),
-            'barangSeringDipinjam' => $topBarangRaw->take(10),
+            'topBarang'            => $topBarangRaw,
             'barangTersedia'       => $barangTersedia,
             'barangTidakTersedia'  => $barangTidakTersedia,
-            'allBarang'            => $allBarang,
-            'topBarangRaw'         => $topBarangRaw,
-            'requestPeminjaman'         => $requestPeminjaman,
+            
+            'requestPeminjaman'    => $requestPeminjaman,
+            'requestPengembalian'    => $requestPengembalian,
         ];
     }
 
@@ -127,50 +157,25 @@ class DashboardController extends Controller
 
     private function getDataSiswa()
     {
-        $userId = auth()->user()->user_id;
-
-        $peminjamanAktifDetailSiswa = PeminjamanBarang::where('user_id', $userId)
-            ->where('status_peminjaman', 'dipinjam')
-            ->latest()->get()
-            ->map(function ($peminjaman) {
-                $peminjaman->detail_barang = DB::table('detail_peminjaman')
-                    ->join('data_barang', 'detail_peminjaman.kode_barang', '=', 'data_barang.kode_barang')
-                    ->join('data_jenis_barang', 'data_barang.jenis_barang', '=', 'data_jenis_barang.jenis_barang')
-                    ->where('detail_peminjaman.id_peminjaman', $peminjaman->id_peminjaman)
-                    ->select('detail_peminjaman.kode_barang', 'data_jenis_barang.nama_barang', 'data_barang.kondisi_barang')
-                    ->get();
-                return $peminjaman;
-            });
-
-        $topBarangSiswaRaw = DB::table('detail_peminjaman')
-            ->join('peminjaman_barang', 'peminjaman_barang.id_peminjaman', '=', 'detail_peminjaman.id_peminjaman')
-            ->where('peminjaman_barang.user_id', $userId)
-            ->select('detail_peminjaman.kode_barang', DB::raw('COUNT(*) as total_dipinjam'))
-            ->groupBy('detail_peminjaman.kode_barang')
-            ->orderByDesc('total_dipinjam')
-            ->get();
-
-        $allBarang = DataBarang::join('data_jenis_barang', 'data_barang.jenis_barang', '=', 'data_jenis_barang.jenis_barang')
-            ->select('data_barang.*', 'data_jenis_barang.nama_barang')
-            ->get()->keyBy('kode_barang');
-
-        $barangTersedia      = $allBarang->filter(fn($b) => $b->stok > 0)->values();
-        $barangTidakTersedia = $allBarang->filter(fn($b) => $b->stok <= 0)->values();
+        $userId = auth()->id();
 
         return [
-            'peminjamanAktifDetailSiswa' => $peminjamanAktifDetailSiswa,
-            'peminjamanAktifSiswa'       => $peminjamanAktifDetailSiswa->count(),
-            'pengembalianSiswa'          => PeminjamanBarang::where('user_id', $userId)->where('status_peminjaman', 'dikembalikan')->count(),
-            'pengajuanSiswa'             => PengajuanBarang::where('user_id', $userId)->where('status_pengajuan', 'pending')->count(),
-            'totalRiwayatSiswa'          => PeminjamanBarang::where('user_id', $userId)->count(),
-            'peminjamanTerbaru'          => PeminjamanBarang::where('user_id', $userId)->latest()->take(10)->get(),
-            'logAktivitasSiswa'          => PeminjamanBarang::where('user_id', $userId)->latest()->take(20)->get(),
-            'topBarang'                  => $topBarangSiswaRaw->take(3),
-            'barangSeringDipinjam'       => $topBarangSiswaRaw->take(10),
-            'topBarangRaw'               => $topBarangSiswaRaw,
-            'barangTersedia'             => $barangTersedia,
-            'barangTidakTersedia'        => $barangTidakTersedia,
-            'allBarang'                  => $allBarang,
+            'peminjamanAktifSiswa' => PeminjamanBarang::where('user_id', $userId)
+                ->where('status_peminjaman', 'dipinjam')
+                ->count(),
+
+            'pengembalianSiswa' => PeminjamanBarang::where('user_id', $userId)
+                ->where('status_peminjaman', 'dikembalikan')
+                ->count(),
+
+
+            'totalRiwayatSiswa' => PeminjamanBarang::where('user_id', $userId)->count(),
+
+            'peminjamanTerbaru' => PeminjamanBarang::with('detail.barang.jenis')
+                ->where('user_id', $userId)
+                ->latest()
+                ->limit(10)
+                ->get(),
         ];
     }
 
@@ -180,55 +185,26 @@ class DashboardController extends Controller
 
     private function getDataGuru()
     {
-        $userId = auth()->user()->user_id;
 
-        $peminjamanAktifGuru = PeminjamanBarang::where('user_id', $userId)
-            ->where('status_peminjaman', 'dipinjam')->count();
-
-        $pengembalianGuru = PeminjamanBarang::where('user_id', $userId)
-            ->where('status_peminjaman', 'dikembalikan')->count();
-
-        $pengajuanGuru = PengajuanBarang::where('user_id', $userId)
-            ->where('status_pengajuan', 'pending')->count();
-
-        $totalRiwayatGuru = PeminjamanBarang::where('user_id', $userId)->count();
-
-        $topBarangGuruRaw = DB::table('detail_peminjaman')
-            ->join('peminjaman_barang', 'peminjaman_barang.id_peminjaman', '=', 'detail_peminjaman.id_peminjaman')
-            ->where('peminjaman_barang.user_id', $userId)
-            ->select('detail_peminjaman.kode_barang', DB::raw('COUNT(*) as total_dipinjam'))
-            ->groupBy('detail_peminjaman.kode_barang')
-            ->orderByDesc('total_dipinjam')
-            ->get();
-
-        $logAktivitasGuru    = PeminjamanBarang::latest()->take(20)->get();
-        $pengembalianTerbaru = PeminjamanBarang::where('status_peminjaman', 'dikembalikan')->latest()->take(10)->get();
-
-        $allBarang = DataBarang::join(
-            'data_jenis_barang',
-            'data_barang.jenis_barang',
-            '=',
-            'data_jenis_barang.jenis_barang'
-        )
-            ->select('data_barang.*', 'data_jenis_barang.nama_barang')
-            ->get()->keyBy('kode_barang');
-
-        $barangTersedia      = $allBarang->filter(fn($b) => $b->stok > 0)->values();
-        $barangTidakTersedia = $allBarang->filter(fn($b) => $b->stok <= 0)->values();
+        $userId = auth()->id();
 
         return [
-            'peminjamanAktifGuru'  => $peminjamanAktifGuru,
-            'pengembalianGuru'     => $pengembalianGuru,
-            'pengajuanGuru'        => $pengajuanGuru,
-            'totalRiwayatGuru'     => $totalRiwayatGuru,
-            'topBarang'            => $topBarangGuruRaw->take(3),
-            'barangSeringDipinjam' => $topBarangGuruRaw->take(10),
-            'topBarangRaw'         => $topBarangGuruRaw,
-            'logAktivitasGuru'     => $logAktivitasGuru,
-            'pengembalianTerbaru'  => $pengembalianTerbaru,
-            'barangTersedia'       => $barangTersedia,
-            'barangTidakTersedia'  => $barangTidakTersedia,
-            'allBarang'            => $allBarang,
+            'peminjamanAktifGuru' => PeminjamanBarang::where('user_id', $userId)
+                ->where('status_peminjaman', 'dipinjam')
+                ->count(),
+
+            'pengembalianGuru' => PeminjamanBarang::where('user_id', $userId)
+                ->where('status_peminjaman', 'dikembalikan')
+                ->count(),
+
+
+            'totalRiwayatGuru' => PeminjamanBarang::where('user_id', $userId)->count(),
+
+            'peminjamanTerbaru' => PeminjamanBarang::with('detail.barang.jenis')
+                ->where('user_id', $userId)
+                ->latest()
+                ->limit(10)
+                ->get(),
         ];
     }
 }

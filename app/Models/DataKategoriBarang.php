@@ -17,4 +17,10 @@ class DataKategoriBarang extends Model
     protected $primaryKey = 'id_kategori';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function jenis()
+    {
+        return $this->hasMany(DataJenisBarang::class, 'id_kategori', 'id_kategori');
+    }
+
 }
