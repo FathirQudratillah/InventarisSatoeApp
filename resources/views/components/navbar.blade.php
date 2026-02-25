@@ -1,9 +1,9 @@
  <!-- Sidebar -->
  <aside id="sidebar"
      class="fixed inset-y-0 left-0 z-40 w-60 md:w-80 bg-gray-900 text-white
-                transform -translate-x-full transition-transform duration-300
-                lg:relative lg:translate-x-0 flex flex-col
-                h-screen overflow-y-auto"
+           transform -translate-x-full transition-transform duration-300
+           lg:relative lg:translate-x-0 flex flex-col
+           h-screen overflow-y-auto no-scrollbar"
      style="scrollbar-width:none; -ms-overflow-style:none;">
 
 
@@ -165,19 +165,9 @@
                      </svg>
                      Lihat Laporan
                  </a>
+         </div>
+     </nav>
 
-                 <a href="{{ route('peminjaman-barang.create') }}"
-                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
-                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                     </svg>
-                     Peminjaman Barang
-                 </a>
-             </div>
-         </nav>
-            
 
      <!-- User Profile -->
      <div x-data="{ open: false }" class="mt-auto p-4 border-t border-gray-800 relative">

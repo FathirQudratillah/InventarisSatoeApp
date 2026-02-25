@@ -11,13 +11,12 @@
     <div class="max-w-7xl mx-auto px-6 py-10 space-y-8">
 
         {{-- HERO HEADER --}}
-        <div class="rounded-3xl p-8 text-white shadow-lg bg-gradient-to-r from-green-600 to-teal-600">
+        <div class="rounded-3xl p-8 text-white shadow-lg bg-gray-900">
             <div class="flex justify-between items-center">
                 <div>
                     <h1 class="text-3xl font-bold">Laporan Pengajuan</h1>
                     <p class="opacity-80">Periode {{ $namaBulan }} {{ $tahun }}</p>
                 </div>
-
                 <a href="{{ route('laporan.index') }}"
                     class="bg-white/20 hover:bg-white/30 backdrop-blur px-5 py-2 rounded-xl">
                     Kembali
@@ -31,18 +30,16 @@
                 <p class="text-gray-400 text-sm">Total Pengajuan</p>
                 <h2 class="text-3xl font-bold text-gray-800">{{ $data->count() }}</h2>
             </div>
-
             <div class="bg-white p-6 rounded-2xl shadow">
                 <p class="text-gray-400 text-sm">Disetujui</p>
                 <h2 class="text-3xl font-bold text-green-500">
-                    {{ $data->where('status', 'disetujui')->count() }}
+                    {{ $data->where('status_pengajuan', 'Disetujui')->count() }}
                 </h2>
             </div>
-
             <div class="bg-white p-6 rounded-2xl shadow">
                 <p class="text-gray-400 text-sm">Ditolak / Pending</p>
                 <h2 class="text-3xl font-bold text-red-500">
-                    {{ $data->where('status', '!=', 'disetujui')->count() }}
+                    {{ $data->where('status_pengajuan', '!=', 'Disetujui')->count() }}
                 </h2>
             </div>
         </div>
@@ -67,7 +64,9 @@
         '11' => 'November',
         '12' => 'Desember',
     ] as $k => $v)
-                        <option value="{{ $k }}" {{ $namaBulan == $k ? 'selected' : '' }}>{{ $v }}
+                        {{-- FIX: bandingkan $bulan bukan $namaBulan --}}
+                        <option value="{{ $k }}" {{ $bulan == $k ? 'selected' : '' }}>
+                            {{ $v }}
                         </option>
                     @endforeach
                 </select>
@@ -83,7 +82,8 @@
                     Filter
                 </button>
 
-                <a href="{{ route('laporan.pengajuan.cetak', ['bulan' => $namaBulan, 'tahun' => $tahun]) }}"
+                {{-- FIX: kirim $bulan (angka) bukan $namaBulan (string) --}}
+                <a href="{{ route('laporan.pengajuan.cetak', ['bulan' => $bulan, 'tahun' => $tahun]) }}"
                     class="bg-red-600 text-white px-6 py-2 rounded-xl shadow hover:bg-red-700">
                     Cetak PDF
                 </a>
@@ -103,29 +103,30 @@
                         <thead class="bg-gray-50 text-gray-500">
                             <tr>
                                 <th class="px-8 py-4 text-left">No</th>
+                                <th class="px-8 py-4 text-left">ID Pengajuan</th>
                                 <th class="px-8 py-4 text-left">Tanggal</th>
-                                <th class="px-8 py-4 text-left">Nama Pengaju</th>
-                                <th class="px-8 py-4 text-left">Keperluan</th>
+                                <th class="px-8 py-4 text-left">Nama Barang</th>
+                                <th class="px-8 py-4 text-left">User ID Pengaju</th>
+                                <th class="px-8 py-4 text-left">Jumlah</th>
                                 <th class="px-8 py-4 text-left">Status</th>
                             </tr>
                         </thead>
-
                         <tbody class="divide-y">
                             @foreach ($data as $i => $item)
                                 <tr class="hover:bg-green-50 transition">
                                     <td class="px-8 py-4">{{ $i + 1 }}</td>
+                                    <td class="px-8 py-4">{{ $item->id_pengajuan }}</td>
                                     <td class="px-8 py-4">
                                         {{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->format('d M Y') }}
                                     </td>
-                                    <td class="px-8 py-4 font-semibold">
-                                        {{ $item->pengaju->nama ?? '-' }}
-                                    </td>
-                                    <td class="px-8 py-4">{{ $item->keperluan ?? '-' }}</td>
+                                    <td class="px-8 py-4 font-semibold">{{ $item->nama_barang }}</td>
+                                    <td class="px-8 py-4">{{ $item->user_id }}</td>
+                                    <td class="px-8 py-4">{{ $item->jumlah_pengajuan }}</td>
                                     <td class="px-8 py-4">
                                         <span
                                             class="px-3 py-1 rounded-full text-xs font-semibold
-                                            {{ $item->status == 'disetujui' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                            {{ ucfirst($item->status) ?? 'Pending' }}
+                                            {{ $item->status_pengajuan == 'Disetujui' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
+                                            {{ $item->status_pengajuan ?? 'Pending' }}
                                         </span>
                                     </td>
                                 </tr>

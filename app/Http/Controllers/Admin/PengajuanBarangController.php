@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+
 use App\Models\DataJenisBarang;
 use App\Models\DataRuang;
-
 use App\Models\PengajuanBarang;
 use Illuminate\Http\Request;
 
@@ -20,7 +20,6 @@ class PengajuanBarangController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-
     public function create()
     {
         $jenis_barang = DataJenisBarang::all();
@@ -28,7 +27,6 @@ class PengajuanBarangController extends Controller
 
         return view('pengajuan-barang.create', compact('jenis_barang', 'id_ruang'));
     }
-
     /**
      * Store a newly created resource in storage.
      */

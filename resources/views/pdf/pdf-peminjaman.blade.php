@@ -4,86 +4,136 @@
 <head>
     <meta charset="utf-8">
     <title>Laporan Peminjaman Barang</title>
-
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            color: #111;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            color: #111;
+            padding: 20px 24px;
+        }
+
+        /* KOP */
         .kop {
             display: flex;
             align-items: center;
             border-bottom: 3px solid #111;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        .logo {
-            width: 70px;
-            margin-right: 15px;
-        }
-
-        .logo-center {
-            width: 40px;
-            height: 40px;
-            display: block;
-            justify-content: center;
-            margin: 0 auto 6px auto;
+        .kop-logo {
+            width: 65px;
+            margin-right: 12px;
         }
 
         .kop-text {
             text-align: center;
             flex: 1;
+            line-height: 1.5;
         }
 
-        .kop-text h1 {
-            margin: 0;
-            font-size: 18px;
+        .kop-text .instansi {
+            font-size: 9px;
             text-transform: uppercase;
         }
 
-        .kop-text h2 {
-            margin: 3px 0;
-            font-size: 14px;
+        .kop-text .nama-sekolah {
+            font-size: 17px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
-        .kop-text p {
-            margin: 0;
+        .kop-text .alamat {
+            font-size: 8.5px;
+        }
+
+        /* JUDUL */
+        .judul {
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: underline;
+            text-transform: uppercase;
+            margin: 12px 0 4px 0;
+        }
+
+        .periode {
+            text-align: center;
             font-size: 11px;
+            margin-bottom: 12px;
         }
 
+        /* TABEL */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            font-size: 9.5px;
+        }
+
+        .kop {
+            border-bottom: 3px solid #111;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .kop-logo {
+            width: 65px;
+            display: block;
+            margin: 0 auto 6px auto;
+        }
+
+        .kop-text {
+            text-align: center;
+            line-height: 1.5;
         }
 
         th {
-            background: #f3f4f6;
+            background: #f0f0f0;
             border: 1px solid #333;
-            padding: 6px;
-            text-align: left;
+            padding: 4px 5px;
+            text-align: center;
             font-weight: bold;
         }
 
         td {
             border: 1px solid #333;
-            padding: 6px;
+            padding: 4px 5px;
+            vertical-align: middle;
+            text-align: center;
         }
 
+        td.left {
+            text-align: left;
+        }
+
+        td.ttd {
+            height: 28px;
+        }
+
+        /* SUMMARY */
         .summary {
-            margin-top: 20px;
+            margin-top: 12px;
+            font-size: 11px;
             font-weight: bold;
         }
 
+        /* TANDA TANGAN */
         .signature {
-            margin-top: 60px;
+            margin-top: 40px;
             text-align: right;
-            margin-right: 40px;
+            margin-right: 30px;
+            font-size: 11px;
+            line-height: 1.6;
         }
 
+        /* NO DATA */
         .no-data {
             text-align: center;
             padding: 40px;
@@ -97,51 +147,85 @@
 
     {{-- KOP SURAT --}}
     <div class="kop">
-        <img src="{{ public_path('images/logo-smk.png') }}" class="logo-center">
-
-        <h1>Inventaris SMK Negeri 1 Kota Bekasi</h1>
-        <h2>Laporan Peminjaman Barang</h2>
-        <p>Periode {{ $namaBulan }} {{ $tahun }}</p>
+        <div class="kop-text">
+            <img src="{{ public_path('images/logo-smk.png') }}" class="kop-logo">
+            <div class="instansi">Pemerintah Daerah Provinsi Jawa Barat</div>
+            <div class="instansi">Dinas Pendidikan</div>
+            <div class="instansi">Cabang Dinas Pendidikan Wilayah III</div>
+            <div class="nama-sekolah">SMK Negeri 1 Kota Bekasi</div>
+            <div class="alamat">Jln. Bintara VIII No. 2 Kec. Bekasi Barat Kota Bekasi 17134 Tlp/Fax : (021) 88951151
+            </div>
+            <div class="alamat">Website : http://www.smkn1kotabekasi.sch.id &nbsp; Email : info@smkn1kotabekasi.sch.id
+            </div>
+        </div>
     </div>
 
-    @if ($data->count())
+    {{-- JUDUL --}}
+    <div class="judul">Data Peminjaman Barang</div>
+    <div class="periode">Periode {{ $namaBulan }} {{ $tahun }}</div>
+
+    @if ($data->count() > 0)
 
         <table>
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Barang</th>
-                    <th>Peminjam</th>
-                    <th>Jumlah</th>
-                    <th>Tanggal Kembali</th>
-                    <th>Status</th>
+                    <th rowspan="2" width="5%">No</th>
+                    <th rowspan="2" width="8%">ID Peminjaman</th>
+                    <th rowspan="2" width="15%">Nama Peminjam</th>
+                    <th rowspan="2" width="25%">Barang yang Dipinjam</th>
+                    <th colspan="2" width="20%">Tanggal</th>
+                    <th rowspan="2" width="12%">Status</th>
+                    <th rowspan="2" width="15%">Tanda Tangan</th>
+                </tr>
+                <tr>
+                    <th width="10%">Peminjaman</th>
+                    <th width="10%">Pengembalian</th>
                 </tr>
             </thead>
-
             <tbody>
                 @foreach ($data as $i => $item)
                     <tr>
                         <td>{{ $i + 1 }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d/m/Y') }}</td>
-                        <td>{{ $item->barang->nama_barang ?? '-' }}</td>
-                        <td>{{ $item->peminjam->nama ?? '-' }}</td>
-                        <td>{{ $item->jumlah }}</td>
-                        <td>
-                            {{ $item->tanggal_kembali ? \Carbon\Carbon::parse($item->tanggal_kembali)->format('d/m/Y') : '-' }}
+                        <td>{{ $item->id_peminjaman }}</td>
+                        <td class="left">{{ $item->user_id }}</td>
+                        <td class="left">
+                            @forelse ($item->detail as $detail)
+                                - {{ $detail->barang->dataBarang->nama_barang ?? $detail->kode_barang }}<br>
+                            @empty
+                                -
+                            @endforelse
                         </td>
-                        <td>{{ ucfirst($item->status) }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_peminjaman)->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pengembalian)->format('d/m/Y') }}</td>
+                        <td>{{ $item->status_peminjaman }}</td>
+                        <td class="ttd"></td>
                     </tr>
                 @endforeach
+
+                {{-- Baris kosong tambahan --}}
+                @for ($j = $data->count(); $j < 15; $j++)
+                    <tr>
+                        <td>{{ $j + 1 }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="ttd"></td>
+                    </tr>
+                @endfor
             </tbody>
         </table>
 
+        {{-- SUMMARY --}}
         <div class="summary">
             Total Transaksi: {{ $data->count() }}
         </div>
 
+        {{-- TANDA TANGAN --}}
         <div class="signature">
-            <p>{{ now()->locale('id')->translatedFormat('d F Y') }}</p>
+            <p>Bekasi, {{ now()->locale('id')->translatedFormat('d F Y') }}</p>
             <p>Mengetahui,</p>
             <br><br><br>
             <p>______________________</p>
@@ -149,7 +233,7 @@
         </div>
     @else
         <div class="no-data">
-            Tidak ada data pada periode {{ $namaBulan }} {{ $tahun }}
+            Tidak ada data peminjaman pada periode {{ $namaBulan }} {{ $tahun }}
         </div>
     @endif
 

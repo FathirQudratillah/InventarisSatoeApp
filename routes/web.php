@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan/pengajuan', [laporanController::class, 'pengajuan'])
         ->name('laporan.laporan-pengajuan');
 });
+
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
 
