@@ -15,11 +15,11 @@
 
             {{-- Peminjaman --}}
             <a href="{{ route('laporan.laporan-peminjaman') }}" class="group">
-                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 border-blue-500">
+                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 bg-gray-900">
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">Peminjaman Barang</h3>
-                    <p class="text-sm text-gray-500">Laporan data peminjaman barang inventaris</p>
+                    <p class="text-sm text-gray-700">Laporan data peminjaman barang inventaris</p>
 
-                    <div class="mt-4 text-blue-600 font-medium group-hover:translate-x-2 transition">
+                    <div class="mt-4 text-gray-700 font-medium group-hover:translate-x-2 transition">
                         Lihat Laporan →
                     </div>
                 </div>
@@ -27,11 +27,11 @@
 
             {{-- Pengajuan --}}
             <a href="{{ route('laporan.laporan-pengajuan') }}" class="group">
-                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 border-green-500">
+                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 bg-gray-900">
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">Pengajuan Barang</h3>
-                    <p class="text-sm text-gray-500">Laporan data pengajuan barang inventaris</p>
+                    <p class="text-sm text-gray-700">Laporan data pengajuan barang inventaris</p>
 
-                    <div class="mt-4 text-green-600 font-medium group-hover:translate-x-2 transition">
+                    <div class="mt-4 text-gray-700 font-medium group-hover:translate-x-2 transition">
                         Lihat Laporan →
                     </div>
                 </div>
@@ -39,11 +39,11 @@
 
             {{-- Pemeliharaan --}}
             <a href="{{ route('laporan.laporan-pemeliharaan') }}" class="group">
-                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 border-yellow-500">
+                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 bg-gray-900">
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">Pemeliharaan Barang</h3>
                     <p class="text-sm text-gray-500">Laporan data pemeliharaan barang inventaris</p>
 
-                    <div class="mt-4 text-yellow-600 font-medium group-hover:translate-x-2 transition">
+                    <div class="mt-4 text-gray-700 font-medium group-hover:translate-x-2 transition">
                         Lihat Laporan →
                     </div>
                 </div>

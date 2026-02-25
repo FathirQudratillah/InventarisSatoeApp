@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataAngkatan;
@@ -27,12 +28,17 @@ class DataAngkatanController extends Controller
      */
     public function store(Request $request)
     {
-        $angkatan = new DataAngkatan;
-        $angkatan->angkatan = $request->angkatan;
-        $angkatan->tahun_masuk = $request->tahun_masuk;
-        $angkatan->tahun_lulus = $request->tahun_lulus;
-        $angkatan->save();
-        return redirect()->route('data-angkatan.index');
+        try {
+            $angkatan = new DataAngkatan;
+            $angkatan->angkatan = $request->angkatan;
+            $angkatan->tahun_masuk = $request->tahun_masuk;
+            $angkatan->tahun_lulus = $request->tahun_lulus;
+            $angkatan->save();
+
+            return redirect()->route('data-angkatan.index')->with('success', 'Data angkatan berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data!')->withInput();
+        }
     }
 
     /**
@@ -57,19 +63,25 @@ class DataAngkatanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $angkatan = DataAngkatan::findOrFail($id);
+        try {
+            $angkatan = DataAngkatan::findOrFail($id);
 
-        $request->validate([
-            'angkatan' => 'required',
-            'tahun_masuk' => 'required',
-            'tahun_lulus' => 'required',
-            
-        ]);
-        $angkatan->angkatan = $request->angkatan;
-        $angkatan->tahun_masuk = $request->tahun_masuk;
-        $angkatan->tahun_lulus = $request->tahun_lulus;
-        $angkatan->save();
-        return redirect()->route('data-angkatan.index');
+            $request->validate([
+                'angkatan' => 'required',
+                'tahun_masuk' => 'required',
+                'tahun_lulus' => 'required',
+            ]);
+
+            $angkatan->angkatan = $request->angkatan;
+            $angkatan->tahun_masuk = $request->tahun_masuk;
+            $angkatan->tahun_lulus = $request->tahun_lulus;
+            $angkatan->save();
+
+            return redirect()->route('data-angkatan.index')->with('success', 'Data angkatan berhasil diperbarui!');
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', 'Gagal memperbarui data!')->withInput();
+        }
     }
 
     /**
@@ -77,8 +89,14 @@ class DataAngkatanController extends Controller
      */
     public function destroy(string $angkatan)
     {
-        $angkatan = DataAngkatan::findOrFail($angkatan);
-        $angkatan->delete();
-        return redirect()->route('data-angkatan.index');
+        try {
+            $angkatan = DataAngkatan::findOrFail($angkatan);
+            $angkatan->delete();
+
+            return redirect()->route('data-angkatan.index')->with('success', 'Data angkatan berhasil dihapus!');
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', 'Gagal menghapus data!');
+        }
     }
 }

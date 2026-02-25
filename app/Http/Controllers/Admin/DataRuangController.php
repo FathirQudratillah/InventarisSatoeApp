@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataRuang;
@@ -28,14 +29,19 @@ class DataRuangController extends Controller
      */
     public function store(Request $request)
     {
-        $ruang = new DataRuang;
-        $ruang->id_ruang = $request->id_ruang;
-        $ruang->nama_ruang = $request->nama_ruang;
-        $ruang->jenis_ruang = $request->jenis_ruang;
-        $ruang->kapasitas = $request->kapasitas;
-        $ruang->lokasi = $request->lokasi;
-        $ruang->save();
-        return redirect()->route('data-ruang.index');
+        try {
+            $ruang = new DataRuang;
+            $ruang->id_ruang = $request->id_ruang;
+            $ruang->nama_ruang = $request->nama_ruang;
+            $ruang->jenis_ruang = $request->jenis_ruang;
+            $ruang->kapasitas = $request->kapasitas;
+            $ruang->lokasi = $request->lokasi;
+            $ruang->save();
+
+            return redirect()->route('data-ruang.index')->with('success', 'Data ruang berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data ruang!')->withInput();
+        }
     }
 
     /**
@@ -53,7 +59,6 @@ class DataRuangController extends Controller
     {
         $ruang = DataRuang::findOrFail($id_ruang);
         return view('data-ruang.edit', compact('ruang'));
-
     }
 
     /**
@@ -61,22 +66,28 @@ class DataRuangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $ruang = DataRuang::findOrFail($id);
+        try {
+            $ruang = DataRuang::findOrFail($id);
 
-        $request->validate([
-            'id_ruang' => 'required',
-            'nama_ruang' => 'required',
-            'jenis_ruang' => 'required',
-            'kapasitas' => 'required',
-            'lokasi' => 'required',
-        ]);
-        $ruang->id_ruang = $request->id_ruang;
-        $ruang->nama_ruang = $request->nama_ruang;
-        $ruang->jenis_ruang = $request->jenis_ruang;
-        $ruang->kapasitas = $request->kapasitas;
-        $ruang->lokasi = $request->lokasi;
-        $ruang->save();
-        return redirect()->route('data-ruang.index');
+            $request->validate([
+                'id_ruang' => 'required',
+                'nama_ruang' => 'required',
+                'jenis_ruang' => 'required',
+                'kapasitas' => 'required',
+                'lokasi' => 'required',
+            ]);
+
+            $ruang->id_ruang = $request->id_ruang;
+            $ruang->nama_ruang = $request->nama_ruang;
+            $ruang->jenis_ruang = $request->jenis_ruang;
+            $ruang->kapasitas = $request->kapasitas;
+            $ruang->lokasi = $request->lokasi;
+            $ruang->save();
+
+            return redirect()->route('data-ruang.index')->with('success', 'Data ruang berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data ruang!')->withInput();
+        }
     }
 
     /**
@@ -84,8 +95,12 @@ class DataRuangController extends Controller
      */
     public function destroy(string $id_ruang)
     {
-        $ruang = DataRuang::findOrFail($id_ruang);
-        $ruang->delete();
-        return Redirect()->route('data-ruang.index');
+        try {
+            $ruang = DataRuang::findOrFail($id_ruang);
+            $ruang->delete();
+            return redirect()->route('data-ruang.index')->with('success', 'Data ruang berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data ruang!');
+        }
     }
 }

@@ -16,14 +16,11 @@
                 </p>
             </div>
 
-            <form {{ $attributes->merge(['method' => 'POST', 'class' => 'space-y-6'])}}>
+            <form {{ $attributes->merge(['method' => 'POST', 'class' => 'space-y-6']) }}>
                 @csrf
 
                 <div class="grid md:grid-cols-2 gap-6">
-
-                    <!-- Username -->
                     {{ $slot }}
-
                 </div>
 
                 <!-- Button Section -->
@@ -33,6 +30,5 @@
 
         </div>
     </div>
-
 
 </x-layout>

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataGuru;
@@ -9,7 +10,7 @@ use app\models\DataAkun;
 
 class DataGuruController extends Controller
 {
-   public function index()
+    public function index()
     {
         $gurus = DataGuru::All();
         return view('data-guru.index', compact('gurus'));
@@ -29,17 +30,21 @@ class DataGuruController extends Controller
      */
     public function store(Request $request)
     {
-        $guru = new DataGuru;
-        $guru->nip = $request->nip;
-        $guru->user_id = $request->user_id;
-        $guru->nama = $request->nama;
-        $guru->email = $request->email;
-        $guru->jenis_kelamin = $request->jenis_kelamin;
-        $guru->no_kontak = $request->no_kontak;
-        $guru->alamat = $request->alamat;
-        $guru->save();
-        return redirect()->route('data-guru.index');
+        try {
+            $guru = new DataGuru;
+            $guru->nip = $request->nip;
+            $guru->user_id = $request->user_id;
+            $guru->nama = $request->nama;
+            $guru->email = $request->email;
+            $guru->jenis_kelamin = $request->jenis_kelamin;
+            $guru->no_kontak = $request->no_kontak;
+            $guru->alamat = $request->alamat;
+            $guru->save();
 
+            return redirect()->route('data-guru.index')->with('success', 'Data guru berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data guru!')->withInput();
+        }
     }
 
     /**
@@ -65,7 +70,22 @@ class DataGuruController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $guru = DataGuru::findOrFail($id);
+
+            $guru->nip = $request->nip;
+            $guru->user_id = $request->user_id;
+            $guru->nama = $request->nama;
+            $guru->email = $request->email;
+            $guru->jenis_kelamin = $request->jenis_kelamin;
+            $guru->no_kontak = $request->no_kontak;
+            $guru->alamat = $request->alamat;
+            $guru->save();
+
+            return redirect()->route('data-guru.index')->with('success', 'Data guru berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data guru!')->withInput();
+        }
     }
 
     /**
@@ -73,6 +93,12 @@ class DataGuruController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $guru = DataGuru::findOrFail($id);
+            $guru->delete();
+            return redirect()->route('data-guru.index')->with('success', 'Data guru berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data guru!');
+        }
     }
 }

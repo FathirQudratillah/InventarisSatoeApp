@@ -17,18 +17,36 @@ use App\Models\DataPenanggungJawab;
 use App\Models\DataAngkatan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-  
+
 
     public function index()
     {
+
+        $jakartaTime = Carbon::now('Asia/Jakarta');
+        $jakartaTime->locale('id'); // Set Indonesia
+
         $stats      = $this->getStats();
         $latest     = $this->getLatestData();
         $barangData = $this->getBarangData();
 
         return view('dashboard.admin', array_merge($stats, $latest, $barangData));
+    }
+
+    public function superAdmin()
+    {
+
+        $jakartaTime = Carbon::now('Asia/Jakarta');
+        $jakartaTime->locale('id'); // Set Indonesia
+
+        $stats      = $this->getStats();
+        $latest     = $this->getLatestData();
+        $barangData = $this->getBarangData();
+
+        return view('dashboard.superadmin', array_merge($stats, $latest, $barangData));
     }
 
     public function siswa()
@@ -154,6 +172,7 @@ class DashboardController extends Controller
     // ─────────────────────────────────────────────────────────────
     // SISWA
     // ─────────────────────────────────────────────────────────────
+
 
     private function getDataSiswa()
     {

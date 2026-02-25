@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataJurusan;
@@ -8,7 +9,7 @@ use Illuminate\Http\Request;
 
 class DataJurusanController extends Controller
 {
-   public function index()
+    public function index()
     {
         $jurusans = DataJurusan::All();
         return view('data-jurusan.index', compact('jurusans'));
@@ -27,11 +28,16 @@ class DataJurusanController extends Controller
      */
     public function store(Request $request)
     {
-        $jurusan = new DataJurusan;
-        $jurusan->id_jurusan = $request->id_jurusan;
-        $jurusan->jurusan = $request->jurusan;
-        $jurusan->save();
-        return redirect()->route('data-jurusan.index');
+        try {
+            $jurusan = new DataJurusan;
+            $jurusan->id_jurusan = $request->id_jurusan;
+            $jurusan->jurusan = $request->jurusan;
+            $jurusan->save();
+
+            return redirect()->route('data-jurusan.index')->with('success', 'Data jurusan berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data jurusan!')->withInput();
+        }
     }
 
     /**
@@ -56,17 +62,22 @@ class DataJurusanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $jurusan = DataJurusan::findOrFail($id);
+        try {
+            $jurusan = DataJurusan::findOrFail($id);
 
-        $request->validate([
-            'id_jurusan' => 'required',
-            'jurusan' => 'required',
-        ]);
+            $request->validate([
+                'id_jurusan' => 'required',
+                'jurusan' => 'required',
+            ]);
 
-        $jurusan->id_jurusan = $request->id_jurusan;
-        $jurusan->jurusan = $request->jurusan;
-        $jurusan->save();
-        return redirect()->route('data-jurusan.index');
+            $jurusan->id_jurusan = $request->id_jurusan;
+            $jurusan->jurusan = $request->jurusan;
+            $jurusan->save();
+
+            return redirect()->route('data-jurusan.index')->with('success', 'Data jurusan berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data jurusan!')->withInput();
+        }
     }
 
     /**
@@ -74,8 +85,12 @@ class DataJurusanController extends Controller
      */
     public function destroy(string $id_jurusan)
     {
-        $jurusan = DataJurusan::findOrFail($id_jurusan);
-        $jurusan->delete();
-        return Redirect()->route('data-jurusan.index');
+        try {
+            $jurusan = DataJurusan::findOrFail($id_jurusan);
+            $jurusan->delete();
+            return redirect()->route('data-jurusan.index')->with('success', 'Data jurusan berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data jurusan!');
+        }
     }
 }
