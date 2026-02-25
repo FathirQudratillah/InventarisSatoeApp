@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataBarang;
@@ -31,35 +32,37 @@ class DataBarangController extends Controller
      */
     public function store(Request $request)
     {
-        
+        try {
+            $jenis = strtoupper($request->jenis_barang);
 
-        $jenis = strtoupper($request->jenis_barang);
+            // Ambil kode terakhir berdasarkan jenis
+            $lastBarang = DataBarang::where('kode_barang', 'like', $jenis . '-%')
+                ->orderBy('kode_barang', 'desc')
+                ->first();
 
-        // Ambil kode terakhir berdasarkan jenis
-        $lastBarang = DataBarang::where('kode_barang', 'like', $jenis . '-%')
-            ->orderBy('kode_barang', 'desc')
-            ->first();
+            if ($lastBarang) {
+                // Ambil angka terakhir
+                $lastNumber = (int) substr($lastBarang->kode_barang, -2);
+                $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+            } else {
+                $newNumber = '01';
+            }
 
-        if ($lastBarang) {
-            // Ambil angka terakhir
-            $lastNumber = (int) substr($lastBarang->kode_barang, -2);
-            $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
-        } else {
-            $newNumber = '01';
+            $kodeBarang = $jenis . '-' . $newNumber;
+
+            $barang = new DataBarang;
+            $barang->kode_barang = $kodeBarang;
+            $barang->id_ruang = $request->id_ruang;
+            $barang->jenis_barang = $request->jenis_barang;
+            $barang->kondisi_barang = $request->kondisi_barang;
+            $barang->tahun_perolehan = $request->tahun_perolehan;
+            $barang->keterangan = $request->keterangan;
+            $barang->save();
+
+            return redirect()->route('data-barang.index')->with('success', 'Data barang berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data barang!')->withInput();
         }
-
-        $kodeBarang = $jenis . '-' . $newNumber;
-
-        
-        $barang = new DataBarang;
-        $barang->kode_barang = $kodeBarang;
-        $barang->id_ruang = $request->id_ruang;
-        $barang->jenis_barang = $request->jenis_barang;
-        $barang->kondisi_barang = $request->kondisi_barang;
-        $barang->tahun_perolehan = $request->tahun_perolehan;
-        $barang->keterangan = $request->keterangan;
-        $barang->save();
-        return redirect()->route('data-barang.index');
     }
 
     /**
@@ -86,22 +89,25 @@ class DataBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $barang = DataBarang::findOrFail($id);
+        try {
+            $barang = DataBarang::findOrFail($id);
 
-        $request->validate([
-            'id_ruang' => 'required',
-           
-            'tahun_perolehan' => 'required',
-            'keterangan' => 'required',
-            
-        ]);
-        
-        $barang->id_ruang = $request->id_ruang;
-        $barang->kondisi_barang = $request->kondisi_barang;
-        $barang->tahun_perolehan = $request->tahun_perolehan;
-        $barang->keterangan = $request->keterangan;
-        $barang->save();
-        return redirect()->route('data-barang.index');
+            $request->validate([
+                'id_ruang' => 'required',
+                'tahun_perolehan' => 'required',
+                'keterangan' => 'required',
+            ]);
+
+            $barang->id_ruang = $request->id_ruang;
+            $barang->kondisi_barang = $request->kondisi_barang;
+            $barang->tahun_perolehan = $request->tahun_perolehan;
+            $barang->keterangan = $request->keterangan;
+            $barang->save();
+
+            return redirect()->route('data-barang.index')->with('success', 'Data barang berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data barang!')->withInput();
+        }
     }
 
     /**
@@ -109,8 +115,12 @@ class DataBarangController extends Controller
      */
     public function destroy(string $kodeBarang)
     {
-        $barang = DataBarang::findOrFail($kodeBarang);
-        $barang->delete();
-        return Redirect()->route('data-barang.index');
+        try {
+            $barang = DataBarang::findOrFail($kodeBarang);
+            $barang->delete();
+            return redirect()->route('data-barang.index')->with('success', 'Data barang berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data barang!');
+        }
     }
 }

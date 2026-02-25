@@ -37,6 +37,7 @@ class DataAdminController extends Controller
         $admin->no_kontak = $request->no_kontak;
         $admin->alamat = $request->alamat;
         $admin->save();
+        
         return redirect('data-admin.index');
     }
 

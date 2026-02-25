@@ -1,4 +1,4 @@
-    <!-- Sidebar (Desktop) -->
+<!-- Sidebar (Desktop) -->
 <aside id="sidebar"
     class="fixed inset-y-0 left-0 z-40 w-60 md:w-80 bg-gray-900 text-white
           transform -translate-x-full transition-transform duration-300
@@ -28,7 +28,7 @@
                 Dashboard
             </x-side-link>
 
-            {{--ADMIN ONLY --}}
+            {{-- ADMIN ONLY --}}
             @if (auth()->user()->role == 'admin')
                 {{-- Dropdown: Data Master --}}
                 <div class="space-y-1">
@@ -106,7 +106,7 @@
                     </div>
                 </div>
 
-                {{-- Pemeliharaan Baran--}}
+                {{-- Pemeliharaan Barang --}}
                 <a href="{{ route('pemeliharaan-barang.create') }}"
                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -123,16 +123,15 @@
                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                     Lihat Laporan
                 </a>
             @endif
-            {{--END ADMIN ONLY --}}
+            {{-- END ADMIN ONLY --}}
 
-            {{--siswa/guru--}}
+            {{-- siswa/guru --}}
             @if (auth()->user()->role != 'admin')
-                {{-- Peminjaman Barang (semua non-admin) --}}
                 <a href="{{ route(auth()->user()->role . '.peminjaman-barang.create') }}"
                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -144,10 +143,10 @@
                 </a>
             @endif
 
-            {{--GURU ONLY--}}
+            {{-- GURU ONLY --}}
             @if (auth()->user()->role == 'guru')
-                {{-- Pengajuan Barang --}}
-                <a href="{{ route('pengajuan-barang.create') }}"
+                {{-- FIX: route pengajuan-barang.create -> guru.pengajuan-barang.create --}}
+                <a href="{{ route('guru.pengajuan-barang.create') }}"
                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -157,7 +156,7 @@
                     Pengajuan Barang
                 </a>
             @endif
-            {{--END GURU ONLY--}}
+            {{-- END GURU ONLY --}}
 
         </div>
     </nav>
@@ -207,7 +206,7 @@
 {{-- Overlay (mobile) --}}
 <div id="overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
 
-{{--SIDEBAR (Mobile - Icon Only--}}
+{{-- SIDEBAR (Mobile - Icon Only) --}}
 <aside class="lg:hidden w-12 md:w-20 bg-gray-900 border-r border-gray-200">
     <div class="h-full flex flex-col items-center py-4">
 

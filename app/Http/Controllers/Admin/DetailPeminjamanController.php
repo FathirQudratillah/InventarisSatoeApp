@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DetailPeminjaman;
@@ -27,12 +28,17 @@ class DetailPeminjamanController extends Controller
      */
     public function store(Request $request)
     {
-        $akun = new DetailPeminjaman;
-        $akun->id_detail = $request->id_detail;
-        $akun->kode_barang = $request->kode_barang;
-        $akun->id_peminjaman = $request->id_peminjaman;
-        $akun->save();
-        return redirect()->route('data-detail-peminjaman.index');
+        try {
+            $akun = new DetailPeminjaman;
+            $akun->id_detail = $request->id_detail;
+            $akun->kode_barang = $request->kode_barang;
+            $akun->id_peminjaman = $request->id_peminjaman;
+            $akun->save();
+
+            return redirect()->route('data-detail-peminjaman.index')->with('success', 'Detail peminjaman berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan detail peminjaman!')->withInput();
+        }
     }
 
     /**
@@ -48,7 +54,8 @@ class DetailPeminjamanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $detail = DetailPeminjaman::findOrFail($id);
+        return view('detail-peminjaman.edit', compact('detail'));
     }
 
     /**
@@ -56,7 +63,18 @@ class DetailPeminjamanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $akun = DetailPeminjaman::findOrFail($id);
+
+            $akun->id_detail = $request->id_detail;
+            $akun->kode_barang = $request->kode_barang;
+            $akun->id_peminjaman = $request->id_peminjaman;
+            $akun->save();
+
+            return redirect()->route('data-detail-peminjaman.index')->with('success', 'Detail peminjaman berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui detail peminjaman!')->withInput();
+        }
     }
 
     /**
@@ -64,6 +82,12 @@ class DetailPeminjamanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $akun = DetailPeminjaman::findOrFail($id);
+            $akun->delete();
+            return redirect()->route('data-detail-peminjaman.index')->with('success', 'Detail peminjaman berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus detail peminjaman!');
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\DataBarang;
 use App\Models\DataPenanggungJawab;
@@ -30,28 +31,33 @@ class PemeliharaanBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $lastPemeliharaan = PemeliharaanBarang::where('kode_barang', $request->kode_barang)
-            ->orderBy('id_pemeliharaan', 'desc')
-            ->first();
+        try {
+            $lastPemeliharaan = PemeliharaanBarang::where('kode_barang', $request->kode_barang)
+                ->orderBy('id_pemeliharaan', 'desc')
+                ->first();
 
-        if ($lastPemeliharaan) {
-            // Ambil angka terakhir
-            $lastNumber = (int) substr($lastPemeliharaan->id_pemeliharaan, -2);
-            $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
-        } else {
-            $newNumber = '01';
+            if ($lastPemeliharaan) {
+                // Ambil angka terakhir
+                $lastNumber = (int) substr($lastPemeliharaan->id_pemeliharaan, -2);
+                $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+            } else {
+                $newNumber = '01';
+            }
+
+
+            $pemeliharaan = new PemeliharaanBarang;
+            $pemeliharaan->id_pemeliharaan = 'PMH-' . $request->kode_barang . '-' . $newNumber;
+            $pemeliharaan->kode_barang = $request->kode_barang;
+            $pemeliharaan->id_pj = $request->id_pj;
+            $pemeliharaan->kegiatan_pemeliharaan = $request->kegiatan_pemeliharaan;
+            $pemeliharaan->tanggal_pemeliharaan = $request->tanggal_pemeliharaan;
+            $pemeliharaan->keterangan = $request->keterangan;
+            $pemeliharaan->save();
+
+            return redirect()->route('dashboard.admin')->with('success', 'Data pemeliharaan barang berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan data pemeliharaan barang!')->withInput();
         }
-
-        
-        $pemeliharaan = new PemeliharaanBarang;
-        $pemeliharaan->id_pemeliharaan = 'PMH-' . $request->kode_barang . '-' . $newNumber;
-        $pemeliharaan->kode_barang = $request->kode_barang;
-        $pemeliharaan->id_pj = $request->id_pj;
-        $pemeliharaan->kegiatan_pemeliharaan = $request->kegiatan_pemeliharaan;
-        $pemeliharaan->tanggal_pemeliharaan = $request->tanggal_pemeliharaan;
-        $pemeliharaan->keterangan = $request->keterangan;
-        $pemeliharaan->save();
-        return redirect()->route('dashboard');
     }
 
     /**
@@ -67,7 +73,10 @@ class PemeliharaanBarangController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $pemeliharaan = PemeliharaanBarang::findOrFail($id);
+        $id_pj = DataPenanggungJawab::all();
+        $kode_barang = DataBarang::All();
+        return view('pemeliharaan-barang.edit', compact('pemeliharaan', 'kode_barang', 'id_pj'));
     }
 
     /**
@@ -75,7 +84,20 @@ class PemeliharaanBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $pemeliharaan = PemeliharaanBarang::findOrFail($id);
+
+            $pemeliharaan->kode_barang = $request->kode_barang;
+            $pemeliharaan->id_pj = $request->id_pj;
+            $pemeliharaan->kegiatan_pemeliharaan = $request->kegiatan_pemeliharaan;
+            $pemeliharaan->tanggal_pemeliharaan = $request->tanggal_pemeliharaan;
+            $pemeliharaan->keterangan = $request->keterangan;
+            $pemeliharaan->save();
+
+            return redirect()->route('dashboard.admin')->with('success', 'Data pemeliharaan barang berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui data pemeliharaan barang!')->withInput();
+        }
     }
 
     /**
@@ -83,8 +105,12 @@ class PemeliharaanBarangController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $pemeliharaan = PemeliharaanBarang::findOrFail($id);
+            $pemeliharaan->delete();
+            return redirect()->route('dashboard.admin')->with('success', 'Data pemeliharaan barang berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data pemeliharaan barang!');
+        }
     }
-
-    
 }

@@ -1,5 +1,5 @@
 <x-layout>
-    <x-slot:title>Dashboard Siswa</x-slot:title>
+    <x-slot:title></x-slot:title>
 
     {{-- Greeting Logic --}}
     @php
@@ -60,7 +60,7 @@
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-xs text-indigo-200 uppercase tracking-widest">
-                    {{ $jakartaTime->translatedFormat('l, d F Y') }}
+                    {{ \Carbon\Carbon::parse($jakartaTime)->locale('id')->translatedFormat('l, d F Y') }}
                 </p>
                 <h1 class="text-2xl md:text-3xl font-bold mt-1">
                     {{ $greeting }}, <span class="text-yellow-300">{{ auth()->user()->username }}</span>
@@ -356,7 +356,7 @@
             </div>
         </div>
     </div>
-    
+
     {{-- PEMINJAMAN AKTIF SISWA (detail) --}}
     <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 mb-6">
         <div class="flex items-center justify-between mb-5">

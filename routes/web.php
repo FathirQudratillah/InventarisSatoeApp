@@ -77,7 +77,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('pengajuan-barang', PengajuanBarangController::class);
 
         Route::resource('data-penanggung-jawab', DataPenanggungJawabController::class);
-        
+
         Route::get('/peminjaman/{id}/accept', [PeminjamanBarangController::class, 'accept'])
             ->name('peminjaman-barang.accept');
 
@@ -114,17 +114,11 @@ Route::middleware(['auth', 'role:siswa'])
         Route::post('/siswa/peminjaman-barang/store', [PeminjamanBarangController::class, 'store'])->name('siswa.peminjaman-barang.store');
     });
 
-Route::middleware(['auth', 'role:guru'])
-    ->group(function () {
-        Route::get('/guru', [DashboardController::class, 'guru'])->name('dashboard.guru');
-
-        Route::get('/guru/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])->name('guru.peminjaman-barang.create');
-        Route::post('/guru/peminjaman-barang/store', [PeminjamanBarangController::class, 'store'])->name('guru.peminjaman-barang.store');
-
-        Route::resource('pengajuan-barang', PengajuanBarangController::class)
-            ->only(['create', 'store'])
-            ->names([
-                'create' => 'guru.pengajuan-barang.create',
-                'store'  => 'guru.pengajuan-barang.store',
-            ]);
-    });
+Route::prefix('guru')->name('guru.')->group(function () {
+    Route::get('/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])
+        ->name('peminjaman-barang.create');
+    Route::post('/peminjaman-barang', [PeminjamanBarangController::class, 'store'])
+        ->name('peminjaman-barang.store');
+    Route::post('/peminjaman-barang/{id}/cancel', [PeminjamanBarangController::class, 'cancel'])
+        ->name('peminjaman-barang.cancel');
+});
