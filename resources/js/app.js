@@ -4,6 +4,7 @@ import './sidebar';
 import './dropdown';
 import './signup';
 
+
 import Alpine from "alpinejs";
 window.Alpine = Alpine;
 Alpine.start();

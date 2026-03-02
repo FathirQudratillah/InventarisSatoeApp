@@ -35,6 +35,20 @@ class PeminjamanBarangController extends Controller
         $prefix = 'PMJ' . $date;
         $kode_barangs = $request->kode_barang;
 
+        $request->validate(
+            [
+                'kode_barang'   => ['required', 'array', 'min:1'],
+                'kode_barang.*' => ['required', 'exists:data_barang,kode_barang'],
+            ],
+            [
+                'kode_barang.required'   => 'Barang wajib dipilih.',
+                'kode_barang.array'      => 'Format data barang tidak valid.',
+                'kode_barang.min'        => 'Minimal pilih 1 barang.',
+                'kode_barang.*.required' => 'Kode barang tidak boleh kosong.',
+                'kode_barang.*.exists'   => 'Kode barang :input tidak terdaftar di data barang.',
+            ]
+        );
+
         // cek barang sedang dipinjam
         foreach ($kode_barangs as $kode_barang) {
 

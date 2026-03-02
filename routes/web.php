@@ -17,17 +17,24 @@ use App\Http\Controllers\Admin\DetailPeminjamanController;
 use App\Http\Controllers\Admin\laporanController;
 use App\Http\Controllers\Admin\PemeliharaanBarangController;
 use App\Http\Controllers\Admin\PeminjamanBarangController;
-use App\Http\Controllers\Admin\PengajuanBarangController;
+
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::get('/', [AuthController::class, 'loginForm'])->name('login');
 
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::resource('register', RegisterController::class);
+
+Route::get('/scan', function () {
+    return view('scan');
+});
+
+Route::post('/scan', [ScanController::class, 'store'])
+    ->name('scan.store');
 
 
 Route::middleware(['auth'])
@@ -46,7 +53,7 @@ Route::middleware(['auth'])
 
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
-        Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard.admin');
+        Route::get('/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
 
         Route::resource('data-kelas', DataKelasController::class);
 
@@ -74,8 +81,6 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::resource('detail-peminjaman', DetailPeminjamanController::class);
 
-        Route::resource('pengajuan-barang', PengajuanBarangController::class);
-
         Route::resource('data-penanggung-jawab', DataPenanggungJawabController::class);
 
         Route::get('/peminjaman/{id}/accept', [PeminjamanBarangController::class, 'accept'])
@@ -96,36 +101,23 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/laporan/pengembalian', [laporanController::class, 'pengembalian'])
             ->name('laporan.laporan-pengembalian');
 
-        Route::get('/laporan/pengajuan', [laporanController::class, 'pengajuan'])
-            ->name('laporan.laporan-pengajuan');
-
         Route::get('/laporan/peminjaman/cetak', [laporanController::class, 'cetakPeminjaman'])
             ->name('laporan.peminjaman.cetak');
 
         Route::get('/laporan/pemeliharaan/cetak', [laporanController::class, 'cetakPemeliharaan'])
             ->name('laporan.pemeliharaan.cetak');
 
-        Route::get('/laporan/pengajuan/cetak', [laporanController::class, 'cetakPengajuan'])
-            ->name('laporan.pengajuan.cetak');
+        
     });
 
-Route::middleware(['auth', 'role:siswa'])
+Route::middleware(['auth', 'role:siswa,guru'])
     ->group(function () {
-        Route::get('/siswa', [DashboardController::class, 'siswa'])->name('dashboard.siswa');
+        Route::get('/user', [DashboardController::class, 'index'])->name('dashboard.user');
 
-        Route::get('/siswa/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('siswa.peminjaman-barang.create');
-        Route::post('/siswa/peminjaman-barang.store', [PeminjamanBarangController::class, 'store'])->name('siswa.peminjaman-barang.store');
+        Route::get('/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('peminjaman-barang.create');
+        Route::post('/peminjaman-barang.store', [PeminjamanBarangController::class, 'store'])->name('peminjaman-barang.store');
         route::get('/peminjaman/{id}/back', [PeminjamanBarangController::class, 'back'])
             ->name('peminjaman-barang.back');
     });
 
-Route::middleware(['auth', 'role:guru'])
-    ->group(function () {
-        Route::get('/guru', [DashboardController::class, 'guru'])->name('dashboard.guru'); //guru
 
-        Route::get('/guru/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('guru.peminjaman-barang.create');
-        Route::get('/guru/peminjaman-barang.store', [PeminjamanBarangController::class, 'store'])->name('guru.peminjaman-barang.store');
-
-        Route::resource('pengajuan-barang', PengajuanBarangController::class)
-            ->only('create', 'store');
-    });

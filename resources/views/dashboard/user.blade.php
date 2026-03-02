@@ -67,7 +67,7 @@
                 </h1>
                 <div class="flex flex-wrap items-center gap-2 mt-2">
                     <span class="text-xs bg-white/20 text-white font-semibold px-2.5 py-0.5 rounded-full">
-                        {{ ucfirst(auth()->user()->role ?? 'Siswa') }}
+                        {{ ucfirst(auth()->user()->role ?? 'User') }}
                     </span>
                     <span class="text-xs text-indigo-200">{{ auth()->user()->user_id }}</span>
                     <span class="text-xs text-indigo-200">{{ auth()->user()->email }}</span>
@@ -78,19 +78,19 @@
             </div>
         </div>
 
-        {{-- Stat Mini Siswa --}}
+        {{-- Stat Mini User --}}
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-5">
             <div class="bg-white/10 rounded-xl px-4 py-3 text-center">
-                <p class="text-xl font-bold text-white">{{ $peminjamanAktifSiswa }}</p>
+                <p class="text-xl font-bold text-white">{{ $peminjamanAktifUser }}</p>
                 <p class="text-xs text-indigo-200 mt-0.5">Dipinjam</p>
             </div>
 
             <div class="bg-white/10 rounded-xl px-4 py-3 text-center">
-                <p class="text-xl font-bold text-white">{{ $pengembalianSiswa }}</p>
+                <p class="text-xl font-bold text-white">{{ $pengembalianUser }}</p>
                 <p class="text-xs text-indigo-200 mt-0.5">Dikembalikan</p>
             </div>
             <div class="bg-white/10 rounded-xl px-4 py-3 text-center">
-                <p class="text-xl font-bold text-white">{{ $totalRiwayatSiswa }}</p>
+                <p class="text-xl font-bold text-white">{{ $totalRiwayatUser }}</p>
                 <p class="text-xs text-indigo-200 mt-0.5">Total Riwayat</p>
             </div>
         </div>
@@ -174,9 +174,9 @@
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-slate-800 truncate">{{ $item->id_peminjaman }}</p>
                         <p class="text-xs text-slate-400">Kembali: {{ $item->tanggal_pengembalian ?? '-' }}</p>
-                        @if ($item->peminjamanDetail && $item->peminjamanDetail->count())
+                        @if ($item->detail && $item->detail->count())
                             <p class="text-xs text-slate-400">
-                                Barang: {{ $item->peminjamanDetail->pluck('kode_barang')->implode(', ') }}
+                                Barang: {{ $item->detail->pluck('kode_barang')->implode(', ') }}
                             </p>
                         @endif
                     </div>
@@ -216,7 +216,7 @@
         </div>
     </div>
 
-    {{-- 1.d LOG AKTIVITAS SISWA --}}
+    {{-- 1.d LOG AKTIVITAS User --}}
     <div class="mb-8">
         <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-300">
@@ -237,8 +237,8 @@
                             <p class="text-sm font-medium text-slate-800">{{ $item->id_peminjaman }}</p>
                             <p class="text-xs text-slate-400">
                                 Peminjaman ·
-                                @if ($item->peminjamanDetail && $item->peminjamanDetail->count())
-                                    {{ $item->peminjamanDetail->pluck('kode_barang')->implode(', ') }}
+                                @if ($item->detail && $item->detail->count())
+                                    {{ $item->detail->pluck('kode_barang')->implode(', ') }}
                                 @else
                                     -
                                 @endif
@@ -264,7 +264,7 @@
         </div>
     </div>
 
-    {{-- 1.e PENGEMBALIAN SISWA --}}
+    {{-- 1.e PENGEMBALIAN User --}}
     <div class="mb-8">
         <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
             <div class="flex items-center justify-between px-6 py-4 border-b border-slate-300">
@@ -372,7 +372,7 @@
         </div>
     </div>
 
-    {{-- PEMINJAMAN AKTIF SISWA (detail) --}}
+    {{-- PEMINJAMAN AKTIF User (detail) --}}
 
 
 </x-layout>

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PeminjamanBarang;
-use App\Models\PengajuanBarang;
 use App\Models\PemeliharaanBarang;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -56,21 +55,6 @@ class laporanController extends Controller
         return view('laporan.laporan-peminjaman', compact('data', 'bulan', 'tahun', 'namaBulan'));
     }
 
-    // Pengajuan
-    public function pengajuan(Request $request)
-    {
-        $bulan = (int) request('bulan', now()->month);
-        $tahun = (int) request('tahun', now()->year);
-
-        $data = PengajuanBarang::whereMonth('tanggal_pengajuan', $bulan)
-            ->whereYear('tanggal_pengajuan', $tahun)
-            ->latest('tanggal_pengajuan')
-            ->get();
-
-        $namaBulan = Carbon::create()->month($bulan)->locale('id')->translatedFormat('F');
-
-        return view('laporan.laporan-pengajuan', compact('data', 'bulan', 'tahun', 'namaBulan'));
-    }
 
     // Pemeliharaan
     public function pemeliharaan(Request $request)
@@ -172,42 +156,5 @@ class laporanController extends Controller
         return $pdf->setPaper('a4', 'portrait')->stream($namaFile);
     }
 
-    // Cetak Pengajuan Barang
-    public function cetakPengajuan(Request $request)
-    {
-        $bulan = str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
-        $tahun = $request->tahun;
-
-        $namaBulanList = [
-            '01' => 'Januari',
-            '02' => 'Februari',
-            '03' => 'Maret',
-            '04' => 'April',
-            '05' => 'Mei',
-            '06' => 'Juni',
-            '07' => 'Juli',
-            '08' => 'Agustus',
-            '09' => 'September',
-            '10' => 'Oktober',
-            '11' => 'November',
-            '12' => 'Desember'
-        ];
-
-        $namaBulan = $namaBulanList[$bulan] ?? '-';
-
-        $data = PengajuanBarang::whereMonth('tanggal_pengajuan', $bulan)
-            ->whereYear('tanggal_pengajuan', $tahun)
-            ->latest('tanggal_pengajuan')
-            ->get();
-
-        $pdf = Pdf::loadView('pdf.pdf-pengajuan', [
-            'data'      => $data,
-            'namaBulan' => $namaBulan,
-            'tahun'     => $tahun
-        ]);
-
-        $namaFile = 'laporan-pengajuan-' . strtolower($namaBulan) . '-' . $tahun . '.pdf';
-
-        return $pdf->setPaper('a4', 'portrait')->stream($namaFile);
-    }
+  
 }

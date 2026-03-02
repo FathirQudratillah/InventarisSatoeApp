@@ -32,8 +32,11 @@ class AuthController extends Controller
 
             if (Auth::attempt($credentials, $remember)) {
                 $request->session()->regenerate();
-
-                return redirect()->intended('/' . auth()->user()->role);
+                if(auth()->user()->role == 'admin'){
+                    return redirect()->intended('/admin');
+                }else{
+                    return redirect()->intended('/user');
+                }
             }
 
             return back()->withErrors([
@@ -52,7 +55,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect('/login')->with('success', 'Anda telah berhasil logout!');
+            return redirect('/')->with('success', 'Anda telah berhasil logout!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal logout!');
         }

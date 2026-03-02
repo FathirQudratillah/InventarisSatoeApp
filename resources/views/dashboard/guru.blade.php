@@ -174,9 +174,9 @@
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-slate-800 truncate">{{ $item->id_peminjaman }}</p>
                         <p class="text-xs text-slate-400">Kembali: {{ $item->tanggal_pengembalian ?? '-' }}</p>
-                        @if ($item->peminjamanDetail && $item->peminjamanDetail->count())
+                        @if ($item->detail && $item->detail->count())
                             <p class="text-xs text-slate-400">
-                                Barang: {{ $item->peminjamanDetail->pluck('kode_barang')->implode(', ') }}
+                                Barang: {{ $item->detail->pluck('kode_barang')->implode(', ') }}
                             </p>
                         @endif
                     </div>
@@ -237,8 +237,8 @@
                             <p class="text-sm font-medium text-slate-800">{{ $item->id_peminjaman }}</p>
                             <p class="text-xs text-slate-400">
                                 Peminjaman ·
-                                @if ($item->peminjamanDetail && $item->peminjamanDetail->count())
-                                    {{ $item->peminjamanDetail->pluck('kode_barang')->implode(', ') }}
+                                @if ($item->detail && $item->detail->count())
+                                    {{ $item->detail->pluck('kode_barang')->implode(', ') }}
                                 @else
                                     -
                                 @endif
