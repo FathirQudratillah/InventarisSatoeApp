@@ -15,11 +15,11 @@
     </div>
 
     {{-- Navigation --}}
-    <nav class="mt-5 px-2 flex-1 overflow-y-auto pb-28">
+    <nav class="mt-5 px-2 flex-1 overflow-y-auto no-scrollbar pb-28">
         <div class="space-y-4">
 
             {{-- Dashboard (semua role) --}}
-            <x-side-link href="{{ route('dashboard.' . auth()->user()->role) }}" :active="request()->is('/')">
+            <x-side-link href="{{ route('dashboard.' . (auth()->user()->role == 'admin' ? 'admin' : 'user')) }}" :active="request()->is('/')">
                 <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -90,7 +90,6 @@
                     </button>
                     <div class="{{ request()->routeIs('detail-peminjaman.*') ||
                     request()->routeIs('pemeliharaan-barang.*') ||
-                    request()->routeIs('pengajuan-barang.*') ||
                     request()->routeIs('peminjaman-barang.*')
                         ? ''
                         : 'hidden' }} space-y-1 pl-11"
@@ -98,8 +97,6 @@
                         <x-side-link href="{{ route('detail-peminjaman.index') }}" :active="request()->is('detail-peminjaman')">Detail
                             Peminjaman</x-side-link>
                         <x-side-link href="{{ route('pemeliharaan-barang.index') }}" :active="request()->is('pemeliharaan-barang')">Pemeliharaan
-                            Barang</x-side-link>
-                        <x-side-link href="{{ route('pengajuan-barang.index') }}" :active="request()->is('pengajuan-barang')">Pengajuan
                             Barang</x-side-link>
                         <x-side-link href="{{ route('peminjaman-barang.index') }}" :active="request()->is('peminjaman-barang')">Peminjaman
                             Barang</x-side-link>
@@ -130,9 +127,9 @@
             @endif
             {{-- END ADMIN ONLY --}}
 
-            {{-- siswa/guru --}}
+            {{-- USER --}}
             @if (auth()->user()->role != 'admin')
-                <a href="{{ route(auth()->user()->role . '.peminjaman-barang.create') }}"
+                <a href="{{ route('peminjaman-barang.create') }}"
                     class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
                     <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -143,20 +140,7 @@
                 </a>
             @endif
 
-            {{-- GURU ONLY --}}
-            @if (auth()->user()->role == 'guru')
-                {{-- FIX: route pengajuan-barang.create -> guru.pengajuan-barang.create --}}
-                <a href="{{ route('pengajuan-barang.create') }}"
-                    class="flex items-center px-4 py-2.5 text-sm font-medium rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white group transition-all duration-200">
-                    <svg class="h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Pengajuan Barang
-                </a>
-            @endif
-            {{-- END GURU ONLY --}}
+            
 
         </div>
     </nav>
@@ -243,7 +227,6 @@
                 <button onclick="toggleSidebar()"
                     class="w-full p-2 flex justify-center rounded-lg {{ request()->routeIs('detail-peminjaman.*') ||
                     request()->routeIs('pemeliharaan-barang.*') ||
-                    request()->routeIs('pengajuan-barang.*') ||
                     request()->routeIs('peminjaman-barang.*')
                         ? 'bg-indigo-50 text-indigo-600'
                         : 'text-gray-500 hover:bg-gray-50' }}">

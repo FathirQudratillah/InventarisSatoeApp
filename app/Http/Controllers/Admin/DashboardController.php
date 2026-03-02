@@ -8,7 +8,6 @@ use App\Models\DataAkun;
 use App\Models\DataRuang;
 use App\Models\DataJurusan;
 use App\Models\PeminjamanBarang;
-use App\Models\PengajuanBarang;
 use App\Models\PemeliharaanBarang;
 use App\Models\DataKelas;
 use App\Models\DataJenisBarang;
@@ -23,7 +22,7 @@ class DashboardController extends Controller
 {
 
 
-    public function index()
+    public function admin()
     {
 
         $jakartaTime = Carbon::now('Asia/Jakarta');
@@ -36,34 +35,17 @@ class DashboardController extends Controller
         return view('dashboard.admin', array_merge($stats, $latest, $barangData));
     }
 
-    public function superAdmin()
-    {
+    
 
-        $jakartaTime = Carbon::now('Asia/Jakarta');
-        $jakartaTime->locale('id'); // Set Indonesia
-
-        $stats      = $this->getStats();
-        $latest     = $this->getLatestData();
-        $barangData = $this->getBarangData();
-
-        return view('dashboard.superadmin', array_merge($stats, $latest, $barangData));
-    }
-
-    public function siswa()
+    public function index()
     {
         $barangData = $this->getBarangData();
-        $dataSiswa  = $this->getDataSiswa();
+        $dataUser  = $this->getDataUser();
 
-        return view('dashboard.siswa', array_merge($barangData, $dataSiswa));
+        return view('dashboard.user', array_merge($barangData, $dataUser));
     }
 
-    public function guru()
-    {
-        $barangData = $this->getBarangData();
-        $dataGuru   = $this->getDataGuru();
-
-        return view('dashboard.guru', array_merge($barangData, $dataGuru));
-    }
+   
 
     // ─────────────────────────────────────────────────────────────
     // SHARED HELPERS
@@ -80,17 +62,12 @@ class DashboardController extends Controller
             SUM(CASE WHEN status_peminjaman = 'dipinjam' THEN 1 ELSE 0 END) as aktif
         ")->first();
 
-            $pengajuanStats = PengajuanBarang::selectRaw("
-            COUNT(*) as total,
-            SUM(CASE WHEN status_pengajuan = 'pending' THEN 1 ELSE 0 END) as pending
-        ")->first();
+
 
             return [
                 'totalBarang'          => DataBarang::count(),
                 'peminjaman'           => $peminjamanStats->total,
                 'peminjamanAktif'      => $peminjamanStats->aktif,
-                'pengajuan'            => $pengajuanStats->total,
-                'pengajuanPending'     => $pengajuanStats->pending,
                 'pemeliharaan'         => PemeliharaanBarang::count(),
                 'totalRuang'           => DataRuang::count(),
                 'totalJurusan'         => DataJurusan::count(),
@@ -109,7 +86,6 @@ class DashboardController extends Controller
 
         return [
             'peminjamanTerbaru'   => PeminjamanBarang::latest()->take(5)->get(),
-            'pengajuanTerbaru'    => PengajuanBarang::latest()->take(4)->get(),
             'pemeliharaanTerbaru' => PemeliharaanBarang::latest()->take(4)->get(),
             
         ];
@@ -174,21 +150,21 @@ class DashboardController extends Controller
     // ─────────────────────────────────────────────────────────────
 
 
-    private function getDataSiswa()
+    private function getDataUser()
     {
         $userId = auth()->id();
 
         return [
-            'peminjamanAktifSiswa' => PeminjamanBarang::where('user_id', $userId)
+            'peminjamanAktifUser' => PeminjamanBarang::where('user_id', $userId)
                 ->where('status_peminjaman', 'dipinjam')
                 ->count(),
 
-            'pengembalianSiswa' => PeminjamanBarang::where('user_id', $userId)
+            'pengembalianUser' => PeminjamanBarang::where('user_id', $userId)
                 ->where('status_peminjaman', 'dikembalikan')
                 ->count(),
 
 
-            'totalRiwayatSiswa' => PeminjamanBarang::where('user_id', $userId)->count(),
+            'totalRiwayatUser' => PeminjamanBarang::where('user_id', $userId)->count(),
 
             'peminjamanTerbaru' => PeminjamanBarang::with('detail.barang.jenis')
                 ->where('user_id', $userId)
@@ -198,32 +174,5 @@ class DashboardController extends Controller
         ];
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // GURU
-    // ─────────────────────────────────────────────────────────────
-
-    private function getDataGuru()
-    {
-
-        $userId = auth()->id();
-
-        return [
-            'peminjamanAktifGuru' => PeminjamanBarang::where('user_id', $userId)
-                ->where('status_peminjaman', 'dipinjam')
-                ->count(),
-
-            'pengembalianGuru' => PeminjamanBarang::where('user_id', $userId)
-                ->where('status_peminjaman', 'dikembalikan')
-                ->count(),
-
-
-            'totalRiwayatGuru' => PeminjamanBarang::where('user_id', $userId)->count(),
-
-            'peminjamanTerbaru' => PeminjamanBarang::with('detail.barang.jenis')
-                ->where('user_id', $userId)
-                ->latest()
-                ->limit(10)
-                ->get(),
-        ];
-    }
+    
 }

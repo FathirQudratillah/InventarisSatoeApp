@@ -110,24 +110,11 @@
                 </div>
                 <span class="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Aktif</span>
             </div>
-            <p class="text-2xl font-bold text-slate-800">{{ $peminjaman }}</p>
+            <p class="text-2xl font-bold text-slate-800">{{ $peminjamanAktif }}</p>
             <p class="text-xs text-slate-400 mt-1">Peminjaman Aktif</p>
         </div>
 
-        <div
-            class="bg-slate-100 rounded-2xl p-5 shadow-sm border border-slate-300 hover:shadow-md transition-shadow duration-200">
-            <div class="flex items-center justify-between mb-3">
-                <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
-                    <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                </div>
-                <span class="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">Pending</span>
-            </div>
-            <p class="text-2xl font-bold text-slate-800">{{ $pengajuan }}</p>
-            <p class="text-xs text-slate-400 mt-1">Pengajuan Barang</p>
-        </div>
+        
 
         <div
             class="bg-slate-100 rounded-2xl p-5 shadow-sm border border-slate-300 hover:shadow-md transition-shadow duration-200">
@@ -173,7 +160,7 @@
                         <div class="min-w-0 flex-1">
                             <p class="text-xs font-mono text-slate-400">{{ $barang->id_peminjaman }}</p>
                             @foreach ($barang->detail as $detail)
-                                <p class="text-sm font-medium text-slate-800 truncate">
+                                <p class="text-sm font-medium text-slate-800 truncate">- 
                                     {{ $detail->kode_barang ?? 'Nama tidak tersedia' }}</p>
                             @endforeach
                         </div>
@@ -352,7 +339,7 @@
                 <span class="text-xs text-slate-400">Semua aktivitas</span>
             </div>
             <div class="divide-y divide-slate-300 max-h-[420px] overflow-y-auto">
-                {{-- Gabungkan peminjaman + pengajuan + pemeliharaan sebagai log --}}
+                
                 @forelse($peminjamanTerbaru as $item)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-slate-200 transition">
                         <div
@@ -380,31 +367,7 @@
                     <div class="text-center text-slate-400 py-6 text-sm">Belum ada log aktivitas.</div>
                 @endforelse
 
-                @foreach ($pengajuanTerbaru as $item)
-                    <div class="flex items-center gap-3 px-6 py-3 hover:bg-slate-200 transition">
-                        <div
-                            class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 flex-shrink-0 text-xs font-bold">
-                            {{ strtoupper(substr($item->user->name ?? 'US', 0, 2)) }}
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-sm font-medium text-slate-800">{{ $item->user_id }}</p>
-                            <p class="text-xs text-slate-400">Pengajuan · {{ $item->id_pengajuan }} ·
-                                {{ $item->nama_barang }}</p>
-                        </div>
-                        <div class="text-right flex-shrink-0">
-                            <span
-                                class="inline-block text-xs px-2 py-1 rounded-full font-medium
-                                    {{ $item->status_pengajuan === 'menunggu'
-                                        ? 'bg-yellow-100 text-yellow-600'
-                                        : ($item->status_pengajuan === 'disetujui'
-                                            ? 'bg-green-100 text-green-600'
-                                            : 'bg-red-100 text-red-600') }}">
-                                {{ ucfirst($item->status_pengajuan) }}
-                            </span>
-                            <p class="text-xs text-slate-400 mt-1">{{ $item->created_at?->diffForHumans() }}</p>
-                        </div>
-                    </div>
-                @endforeach
+               
 
                 @foreach ($pemeliharaanTerbaru as $item)
                     <div class="flex items-center gap-3 px-6 py-3 hover:bg-slate-200 transition">
@@ -435,44 +398,6 @@
         </div>
     </div>
 
-    {{-- 1.e PENGEMBALIAN --}}
-    <div class="mb-8">
-        <div class="bg-slate-100 rounded-2xl shadow-sm border border-slate-300">
-            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-300">
-                <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span>
-                    <h2 class="text-base font-semibold text-slate-800">Pengembalian Terbaru</h2>
-                </div>
-                <a href="{{ route('peminjaman-barang.index') }}"
-                    class="text-xs text-indigo-500 hover:text-indigo-700 font-medium">Lihat semua →</a>
-            </div>
-            <div class="divide-y divide-slate-300 max-h-80 overflow-y-auto">
-                @php $pengembalian = $peminjamanTerbaru->where('status_peminjaman', 'dikembalikan'); @endphp
-                @forelse($pengembalian as $item)
-                    <div class="flex items-center gap-3 px-6 py-3 hover:bg-green-50 transition">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 flex-shrink-0 text-xs font-bold">
-                            {{ strtoupper(substr($item->user_id, 0, 2)) }}
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-sm font-medium text-slate-800">{{ $item->user_id }}</p>
-                            <p class="text-xs text-slate-400">{{ $item->id_peminjaman }}</p>
-                            <p class="text-xs text-slate-400">Dikembalikan: {{ $item->tanggal_pengembalian }}</p>
-                        </div>
-                        <div class="text-right flex-shrink-0">
-                            <span
-                                class="inline-block text-xs px-2 py-1 rounded-full font-medium bg-green-100 text-green-600">
-                                Dikembalikan
-                            </span>
-                            <p class="text-xs text-slate-400 mt-1">{{ $item->created_at?->diffForHumans() }}</p>
-                        </div>
-                    </div>
-                @empty
-                    <div class="text-center text-slate-400 py-10 text-sm">Belum ada pengembalian.</div>
-                @endforelse
-            </div>
-        </div>
-    </div>
 
     
 
@@ -587,53 +512,8 @@
         </div>
     </div>
 
-    {{-- Pengajuan Terbaru --}}
-    <div class="lg:col-span-2 bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 mb-6">
-        <div class="flex items-center justify-between mb-5">
-            <h2 class="text-base font-semibold text-slate-800">Pengajuan Terbaru</h2>
-            <a href="{{ route('pengajuan-barang.index') }}"
-                class="text-xs text-indigo-500 hover:text-indigo-700 font-medium">Lihat semua →</a>
-        </div>
-        <div class="space-y-3">
-            @forelse($pengajuanTerbaru as $item)
-                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-slate-200 transition-colors duration-150">
-                    <div class="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
-                        <span
-                            class="text-indigo-600 text-xs font-bold">{{ strtoupper(substr($item->user->name ?? 'US', 0, 2)) }}</span>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-slate-800 truncate">{{ $item->user_id }}</p>
-                        <p class="text-xs text-slate-400">{{ $item->id_pengajuan }}</p>
-                        <p class="text-xs text-slate-400">{{ $item->tanggal_pengajuan }}</p>
-                        <p class="text-xs text-slate-400">{{ $item->nama_barang }}</p>
-                    </div>
-                    <div class="text-right flex-shrink-0">
-                        <span
-                            class="inline-block text-xs px-2 py-1 rounded-full font-medium
-                                {{ $item->status_pengajuan === 'menunggu'
-                                    ? 'bg-yellow-100 text-yellow-600'
-                                    : ($item->status_pengajuan === 'disetujui'
-                                        ? 'bg-green-100 text-green-600'
-                                        : ($item->status_pengajuan === 'ditolak'
-                                            ? 'bg-red-100 text-red-600'
-                                            : 'bg-slate-200 text-slate-600')) }}">
-                            {{ ucfirst($item->status_pengajuan) }}
-                        </span>
-                        <p class="text-xs text-slate-400 mt-1">{{ $item->created_at?->diffForHumans() }}</p>
-                    </div>
-                </div>
-            @empty
-                <div class="text-center py-10">
-                    <svg class="w-10 h-10 text-slate-300 mx-auto mb-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    <p class="text-sm text-slate-400">Belum ada pengajuan</p>
-                </div>
-            @endforelse
-        </div>
-    </div>
+
+  
 
     {{-- Pemeliharaan Terbaru --}}
     <div class="lg:col-span-2 bg-slate-100 rounded-2xl shadow-sm border border-slate-300 p-6 mb-6">

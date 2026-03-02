@@ -55,9 +55,9 @@ class DataAkunController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        try {
+        
             // Validasi input
-            $validated = $request->validate([
+            $request->validate([
                 'role' => 'required|in:siswa,guru',
                 'username' => 'required|unique:data_akuns,username|max:255',
                 'password' => 'required|min:6|confirmed',
@@ -73,8 +73,10 @@ class DataAkunController extends Controller
                 'subkelas' => 'required_if:role,siswa',
                 'no_absen' => 'required_if:role,siswa|integer',
                 // Validasi khusus untuk guru
-                'nip' => 'required_if:role,guru|max:20',
+                'nip' => 'required_if:role,guru|max:20|exist:data_guru,nip',
             ]);
+
+        try {
 
             $role = $request->role;
 
