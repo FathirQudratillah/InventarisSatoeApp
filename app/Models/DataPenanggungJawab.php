@@ -20,4 +20,9 @@ class DataPenanggungJawab extends Model
     protected $primaryKey = 'id_pj';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function pemeliharaanbarang()
+    {
+        return $this->belongsTo(PemeliharaanBarang::class, 'id_pj', 'id_pj');
+    }
 }

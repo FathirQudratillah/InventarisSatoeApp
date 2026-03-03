@@ -119,10 +119,10 @@
                                     </td>
                                     <td class="px-8 py-4 font-semibold">
                                         @forelse ($item->detail as $detail)
-                                            -
+                                            
                                             {{ $detail->barang->dataBarang->nama_barang ?? $detail->kode_barang }}<br>
                                         @empty
-                                            -
+                                            
                                         @endforelse
                                     </td>
                                     <td class="px-8 py-4">{{ $item->user_id }}</td>
