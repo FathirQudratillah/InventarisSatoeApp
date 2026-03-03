@@ -99,7 +99,7 @@ class PeminjamanBarangController extends Controller
             $no++;
         }
 
-        return redirect()->route('dashboard.' . auth()->user()->role);
+        return redirect()->route('dashboard.user');
     }
 
     /**

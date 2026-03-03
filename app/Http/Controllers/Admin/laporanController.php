@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PeminjamanBarang;
 use App\Models\PemeliharaanBarang;
+use App\Models\DataBarang;
+use App\Models\DataJenisBarang;
+use App\Models\DataRuang;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use App\Models\DetailPeminjaman;
@@ -14,6 +17,7 @@ class laporanController extends Controller
 {
     public function index(Request $request)
     {
+        Carbon::setLocale('id');
         $bulan = now()->format('m');
         $tahun = now()->format('Y');
 
@@ -39,9 +43,9 @@ class laporanController extends Controller
         return view('laporan.laporan', compact('data', 'namaBulan', 'tahun', 'bulan'));
     }
 
-    // Peminjaman
     public function peminjaman(Request $request)
     {
+        Carbon::setLocale('id');
         $bulan = (int) request('bulan', now()->month);
         $tahun = (int) request('tahun', now()->year);
 
@@ -55,33 +59,29 @@ class laporanController extends Controller
         return view('laporan.laporan-peminjaman', compact('data', 'bulan', 'tahun', 'namaBulan'));
     }
 
-
-    // Pemeliharaan
     public function pemeliharaan(Request $request)
     {
-        $bulan = (int) $request->input('bulan', now()->month);
-        $tahun = (int) $request->input('tahun', now()->year);
+        Carbon::setLocale('id');
+        $bulan = now()->format('m');
+        $tahun = now()->format('Y');
+        $barangList = DataBarang::orderBy('kode_barang')->get();
 
-        $data = PemeliharaanBarang::with(['barang.dataBarang', 'penanggungjawab'])
-            ->whereMonth('tanggal_pemeliharaan', $bulan)
-            ->whereYear('tanggal_pemeliharaan', $tahun)
-            ->latest('tanggal_pemeliharaan')
+        $data = PemeliharaanBarang::with(['penanggungjawab', 'barang'])
+            ->when($request->kode_barang, function ($query) use ($request) {
+                $query->where('kode_barang', $request->kode_barang);
+            })
+            ->orderBy('tanggal_pemeliharaan', 'asc')
             ->get();
 
-        $namaBulan = Carbon::create()->month($bulan)->locale('id')->translatedFormat('F');
-
         return view('laporan.laporan-pemeliharaan', [
-            'data'      => $data,
-            'bulan'     => $bulan,
-            'tahun'     => $tahun,
-            'namaBulan' => $namaBulan,
-            'jenis'     => 'pemeliharaan'
+            'data' => $data,
+            'barangList' => $barangList
         ]);
     }
 
-    // Cetak Peminjaman Barang
     public function cetakPeminjaman(Request $request)
     {
+        Carbon::setLocale('id');
         $bulan = str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
         $tahun = $request->tahun;
 
@@ -101,7 +101,7 @@ class laporanController extends Controller
         ];
 
         $namaBulan = $namaBulanList[$bulan] ?? '-';
-        $data = PeminjamanBarang::with(['detail.barang.dataBarang'])
+        $data = PeminjamanBarang::with(['user', 'detail.barang'])
             ->whereMonth('tanggal_peminjaman', $bulan)
             ->whereYear('tanggal_peminjaman', $tahun)
             ->latest('tanggal_peminjaman')
@@ -118,43 +118,61 @@ class laporanController extends Controller
         return $pdf->setPaper('a4', 'portrait')->stream($namaFile);
     }
 
-    // Cetak Pemeliharaan Barang
     public function cetakPemeliharaan(Request $request)
     {
-        $bulan = str_pad($request->bulan, 2, '0', STR_PAD_LEFT);
-        $tahun = $request->tahun;
+        try {
+            Carbon::setLocale('id');
 
-        $namaBulanList = [
-            '01' => 'Januari',
-            '02' => 'Februari',
-            '03' => 'Maret',
-            '04' => 'April',
-            '05' => 'Mei',
-            '06' => 'Juni',
-            '07' => 'Juli',
-            '08' => 'Agustus',
-            '09' => 'September',
-            '10' => 'Oktober',
-            '11' => 'November',
-            '12' => 'Desember'
-        ];
+            $bulan = $request->bulan
+                ? str_pad($request->bulan, 2, '0', STR_PAD_LEFT)
+                : date('m');
 
-        $namaBulan = $namaBulanList[$bulan] ?? '-';
-        $data = PemeliharaanBarang::with(['barang.dataBarang', 'penanggungjawab'])
-            ->whereMonth('tanggal_pemeliharaan', $bulan)
-            ->whereYear('tanggal_pemeliharaan', $tahun)
-            ->latest('tanggal_pemeliharaan')
-            ->get();
+            $tahun = $request->tahun ?? date('Y');
 
-        $pdf = Pdf::loadView('pdf.pdf-pemeliharaan', [
-            'data'      => $data,
-            'namaBulan' => $namaBulan,
-            'tahun'     => $tahun
-        ]);
+            $namaBulanList = [
+                '01' => 'Januari',
+                '02' => 'Februari',
+                '03' => 'Maret',
+                '04' => 'April',
+                '05' => 'Mei',
+                '06' => 'Juni',
+                '07' => 'Juli',
+                '08' => 'Agustus',
+                '09' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember'
+            ];
 
-        $namaFile = 'laporan-pemeliharaan-' . strtolower($namaBulan) . '-' . $tahun . '-inventaris-satoe.pdf';
-        return $pdf->setPaper('a4', 'portrait')->stream($namaFile);
+            $namaBulan = $namaBulanList[$bulan] ?? '-';
+            $kodeBarang = $request->kode_barang;
+
+            $query = PemeliharaanBarang::with(['penanggungjawab', 'barang.jenis'])->where('kode_barang', $kodeBarang);
+
+            $data = $query->orderBy('tanggal_pemeliharaan', 'asc')->get();
+
+            $pdf = Pdf::loadView('pdf.pdf-pemeliharaan', [
+                'data'              => $data,
+                'namaBulan'         => $namaBulan,
+                'tahun'             => $tahun,
+                'dataFirst'         => $query->first(),
+            ]);
+
+            if ($kodeBarang) {
+                $namaFile = 'kartu-pemeliharaan-' . $kodeBarang . '.pdf';
+            } else {
+                $namaFile = 'laporan-pemeliharaan-'
+                    . strtolower($namaBulan) . '-' . $tahun . '.pdf';
+            }
+
+            return $pdf->setPaper('a4', 'portrait')->stream($namaFile);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'request' => $request->all()
+            ], 500);
+        }
     }
-
-  
 }

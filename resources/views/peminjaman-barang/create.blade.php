@@ -1,4 +1,4 @@
-<x-form action="{{ route('peminjaman-barang.store') }}">
+<x-form action="{{ route('user.peminjaman-barang.store') }}">
     <x-slot:title>
         Peminjaman Barang
     </x-slot:title>
