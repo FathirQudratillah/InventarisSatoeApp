@@ -32,6 +32,31 @@ class DataBarangController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id_ruang'         => 'required|exists:data_ruang,id_ruang',
+            'jenis_barang'     => 'required|exists:data_jenis_barang,jenis_barang',
+            'kondisi_barang'   => 'required|in:Baik,Rusak,Rusak Ringan',
+            'tahun_perolehan'  => 'required|digits:4|integer|min:1900|max:' . date('Y'),
+            'keterangan'       => 'nullable|string|max:255',
+        ], [
+            'id_ruang.required'        => 'Ruang wajib dipilih.',
+            'id_ruang.exists'          => 'Ruang tidak valid.',
+
+            'jenis_barang.required'    => 'Jenis barang wajib dipilih.',
+            'jenis_barang.exists'      => 'Jenis barang tidak valid.',
+
+            'kondisi_barang.required'  => 'Kondisi barang wajib dipilih.',
+            'kondisi_barang.in'        => 'Kondisi barang tidak valid.',
+
+            'tahun_perolehan.required' => 'Tahun perolehan wajib diisi.',
+            'tahun_perolehan.integer'  => 'Tahun perolehan harus berupa angka.',
+            'tahun_perolehan.digits'   => 'Tahun perolehan harus 4 digit.',
+            'tahun_perolehan.min'      => 'Tahun perolehan tidak valid.',
+            'tahun_perolehan.max'      => 'Tahun perolehan tidak boleh melebihi tahun sekarang.',
+
+            'keterangan.max'           => 'Keterangan maksimal 255 karakter.',
+        ]);
+
         try {
             $jenis = strtoupper($request->jenis_barang);
 
@@ -65,14 +90,7 @@ class DataBarangController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
+   
     /**
      * Show the form for editing the specified resource.
      */
@@ -89,14 +107,33 @@ class DataBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'id_ruang'         => 'required|exists:data_ruang,id_ruang',
+            'jenis_barang'     => 'required|exists:data_jenis_barang,jenis_barang',
+            'kondisi_barang'   => 'required|in:Baik,Rusak,Rusak Ringan',
+            'tahun_perolehan'  => 'required|digits:4|integer|min:1900|max:' . date('Y'),
+            'keterangan'       => 'nullable|string|max:255',
+        ], [
+            'id_ruang.required'        => 'Ruang wajib dipilih.',
+            'id_ruang.exists'          => 'Ruang tidak valid.',
+
+            'jenis_barang.required'    => 'Jenis barang wajib dipilih.',
+            'jenis_barang.exists'      => 'Jenis barang tidak valid.',
+
+            'kondisi_barang.required'  => 'Kondisi barang wajib dipilih.',
+            'kondisi_barang.in'        => 'Kondisi barang tidak valid.',
+
+            'tahun_perolehan.required' => 'Tahun perolehan wajib diisi.',
+            'tahun_perolehan.integer'  => 'Tahun perolehan harus berupa angka.',
+            'tahun_perolehan.digits'   => 'Tahun perolehan harus 4 digit.',
+            'tahun_perolehan.min'      => 'Tahun perolehan tidak valid.',
+            'tahun_perolehan.max'      => 'Tahun perolehan tidak boleh melebihi tahun sekarang.',
+
+            'keterangan.max'           => 'Keterangan maksimal 255 karakter.',
+        ]);
         try {
             $barang = DataBarang::findOrFail($id);
 
-            $request->validate([
-                'id_ruang' => 'required',
-                'tahun_perolehan' => 'required',
-                'keterangan' => 'required',
-            ]);
 
             $barang->id_ruang = $request->id_ruang;
             $barang->kondisi_barang = $request->kondisi_barang;

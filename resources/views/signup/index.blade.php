@@ -125,8 +125,7 @@
             <div>
                 <label for="role" class="block text-sm font-medium text-gray-300 mb-1.5">Role</label>
                 <select id="role" name="role" required
-                    class="role w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('role') ? 'border-red-500' : '' }}">
-                    <option value="" disabled {{ old('role') ? '' : 'selected' }}>Pilih</option>
+                    class="role w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 {{ $errors->has('role') ? 'border-red-500' : '' }}">       
                     <option value="siswa" {{ old('role') == 'siswa' ? 'selected' : '' }}>Siswa
                     </option>
                     <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru

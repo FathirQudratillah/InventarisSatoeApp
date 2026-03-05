@@ -77,6 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    roleSelect.addEventListener("change", toggleSiswaFields);
-    document.addEventListener("DOMContentLoaded", toggleSiswaFields);
+    roleSelect?.addEventListener("change", toggleSiswaFields);
+    toggleSiswaFields();
 });

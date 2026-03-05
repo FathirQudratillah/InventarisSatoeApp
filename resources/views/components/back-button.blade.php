@@ -11,6 +11,6 @@
                     font-semibold shadow-md 
                     hover:bg-indigo-700 hover:shadow-lg 
                     transition duration-200">
-        Simpan Data
+        Simpan
     </button>
 </div>

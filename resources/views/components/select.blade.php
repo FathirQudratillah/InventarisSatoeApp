@@ -1,10 +1,10 @@
-@props(['name', 'datas' => null, 'value' => null, 'id' => null, 'field' => null, 'output' => null])
+@props(['name', 'datas' => null, 'value' => null, 'id' => null, 'field' => null, 'output' => null, 'col' => null])
 
 @php
     $label = ucwords(str_replace('_', ' ', $field ?? $name));
 @endphp
 
-<div>
+<div class="{{ $col ?? '' }}">
     <label class="block text-sm font-semibold text-gray-700 mb-2">
         {{ $label }}
     </label>

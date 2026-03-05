@@ -1,5 +1,5 @@
-<x-layout>
-    <x-slot:title></x-slot:title>
+<x-layout type="dashboard">
+    <x-slot:title>Dashboard</x-slot:title>
 
     {{-- Greeting Logic --}}
     @php

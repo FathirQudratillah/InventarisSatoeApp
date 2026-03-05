@@ -12,7 +12,7 @@ class DataPenanggungJawab extends Model
     protected $fillable = ['id_pj', 
                             'nama', 
                             'nama_perusahaan',
-                            'alamat',
+                            'alamat_perusahaan',
                             'no_kontak',
                             
                             ];

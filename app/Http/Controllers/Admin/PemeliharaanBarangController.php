@@ -31,14 +31,22 @@ class PemeliharaanBarangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_barang' => 'required|exists:data_barang,kode_barang',
-            'id_pj' => 'required|exists:data_penanggung_jawab,id_pj',
-            'kegiatan_pemeliharaan' => 'required|string',
-            'tanggal_pemeliharaan' => 'required|date',
-            'keterangan' => 'nullable|string'
+            'kode_barang' => ['required', 'exists:data_barang,kode_barang'],
+            'id_pj' => ['required', 'exists:data_penanggung_jawab,id_pj'],
+            'kegiatan_pemeliharaan' => ['required', 'string', 'max:255'],
+            'tanggal_pemeliharaan' => ['required', 'date', 'before_or_equal:today'],
+            'keterangan' => ['nullable', 'string'],
+        ], [
+            'kode_barang.required' => 'Barang wajib dipilih.',
+            'kode_barang.exists' => 'Kode barang tidak ditemukan.',
+            'id_pj.required' => 'Penanggung jawab wajib dipilih.',
+            'id_pj.exists' => 'Penanggung jawab tidak valid.',
+            'kegiatan_pemeliharaan.required' => 'Kegiatan pemeliharaan wajib diisi.',
+            'tanggal_pemeliharaan.required' => 'Tanggal pemeliharaan wajib diisi.',
+            'tanggal_pemeliharaan.date' => 'Format tanggal tidak valid.',
+            'tanggal_pemeliharaan.before_or_equal' => 'Tanggal Harus Hari Ini Atau Sebelum Hari Ini.',
+            
         ]);
-
-        DB::beginTransaction();
 
         try {
 
@@ -89,37 +97,8 @@ class PemeliharaanBarangController extends Controller
         return view('pemeliharaan-barang.edit', compact('pemeliharaan', 'barang', 'penanggungJawab'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'kode_barang' => 'required|exists:data_barang,kode_barang',
-            'id_pj' => 'required|exists:data_penanggung_jawab,id_pj',
-            'kegiatan_pemeliharaan' => 'required|string',
-            'tanggal_pemeliharaan' => 'required|date',
-            'keterangan' => 'nullable|string'
-        ]);
-
-        try {
-
-            $pemeliharaan = PemeliharaanBarang::findOrFail($id);
-
-            $pemeliharaan->update([
-                'kode_barang' => $request->kode_barang,
-                'id_pj' => $request->id_pj,
-                'kegiatan_pemeliharaan' => $request->kegiatan_pemeliharaan,
-                'tanggal_pemeliharaan' => $request->tanggal_pemeliharaan,
-                'keterangan' => $request->keterangan,
-            ]);
-
-            return redirect()->route('dashboard.admin')
-                ->with('success', 'Data pemeliharaan berhasil diperbarui.');
-        } catch (\Exception $e) {
-
-            return back()
-                ->with('error', 'Terjadi kesalahan saat memperbarui data.')
-                ->withInput();
-        }
-    }
+  
+   
 
     public function destroy($id)
     {

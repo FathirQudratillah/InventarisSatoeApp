@@ -1,6 +1,5 @@
 <x-form action="{{ route('data-penanggung-jawab.store') }}">
     <x-slot:title>Data Penanggung Jawab</x-slot:title>
-    <x-input name="id_pj"/>
     <x-input name="nama"/>
     <x-input name="nama_perusahaan"/>
     <x-input name="alamat_perusahaan"/>

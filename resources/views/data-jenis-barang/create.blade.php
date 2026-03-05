@@ -2,7 +2,7 @@
     <x-slot:title>
         Data Jenis Barang
     </x-slot:title>
-    <x-input name="jenis_barang" />
+    <x-input name="jenis_barang" field="Kode Jenis Barang ( 3 Huruf )" />
     <x-select :datas="$id_kategori" name="id_kategori"></x-select>
     <x-input name="nama_barang" />
     <x-input name="sumber" />

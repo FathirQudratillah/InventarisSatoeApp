@@ -26,3 +26,9 @@
             object-fit: cover;
         }
 
+[x-cloak] {
+        display: none !important;
+    }
+
+
+

@@ -12,4 +12,12 @@ class DataKelas extends Model
     protected $primaryKey = 'id_kelas';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    protected $fillable = [
+        'id_kelas',
+        'angkatan',
+        'id_jurusan',
+        'kelas',
+        'subkelas'
+    ];
 }
