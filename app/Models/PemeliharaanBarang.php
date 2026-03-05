@@ -24,7 +24,7 @@ class PemeliharaanBarang extends Model
 
     public function barang()
     {
-        return $this->belongsTo(DataBarang::class, 'kode_barang', 'kode_barang');
+        return $this->hasMany(DataBarang::class, 'kode_barang', 'kode_barang');
     }
 
     public function penanggungjawab()

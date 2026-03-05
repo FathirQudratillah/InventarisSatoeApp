@@ -7,28 +7,27 @@ use App\Models\DataBarang;
 use App\Models\DataPenanggungJawab;
 use App\Models\PemeliharaanBarang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PemeliharaanBarangController extends Controller
 {
     public function index()
     {
-        $pemeliharaanBarangs = PemeliharaanBarang::All();
+        $pemeliharaanBarangs = PemeliharaanBarang::with(['barang', 'penanggungjawab'])
+            ->orderBy('tanggal_pemeliharaan', 'desc')
+            ->get();
+
         return view('pemeliharaan-barang.index', compact('pemeliharaanBarangs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $id_pj = DataPenanggungJawab::all();
-        $kode_barang = DataBarang::All();
-        return view('pemeliharaan-barang.create', compact('kode_barang', 'id_pj'));
+        $barang = DataBarang::orderBy('kode_barang')->get();
+        $penanggungJawab = DataPenanggungJawab::orderBy('nama')->get();
+
+        return view('pemeliharaan-barang.create', compact('barang', 'penanggungJawab'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -50,62 +49,70 @@ class PemeliharaanBarangController extends Controller
         ]);
 
         try {
-            $lastPemeliharaan = PemeliharaanBarang::where('kode_barang', $request->kode_barang)
+
+            // Ambil pemeliharaan terakhir berdasarkan kode barang
+            $last = PemeliharaanBarang::where('kode_barang', $request->kode_barang)
                 ->orderBy('id_pemeliharaan', 'desc')
                 ->first();
 
-            if ($lastPemeliharaan) {
-                // Ambil angka terakhir
-                $lastNumber = (int) substr($lastPemeliharaan->id_pemeliharaan, -2);
-                $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+            if ($last) {
+                $parts = explode('-', $last->id_pemeliharaan);
+                $lastNumber = (int) end($parts);
+                $newNumber = $lastNumber + 1;
             } else {
-                $newNumber = '01';
+                $newNumber = 1;
             }
 
+            $formattedNumber = str_pad($newNumber, 3, '0', STR_PAD_LEFT);
 
-            $pemeliharaan = new PemeliharaanBarang;
-            $pemeliharaan->id_pemeliharaan = 'PMH-' . $request->kode_barang . '-' . $newNumber;
-            $pemeliharaan->kode_barang = $request->kode_barang;
-            $pemeliharaan->id_pj = $request->id_pj;
-            $pemeliharaan->kegiatan_pemeliharaan = $request->kegiatan_pemeliharaan;
-            $pemeliharaan->tanggal_pemeliharaan = $request->tanggal_pemeliharaan;
-            $pemeliharaan->keterangan = $request->keterangan;
-            $pemeliharaan->save();
+            PemeliharaanBarang::create([
+                'id_pemeliharaan' => 'PMH-' . $request->kode_barang . '-' . $formattedNumber,
+                'kode_barang' => $request->kode_barang,
+                'id_pj' => $request->id_pj,
+                'kegiatan_pemeliharaan' => $request->kegiatan_pemeliharaan,
+                'tanggal_pemeliharaan' => $request->tanggal_pemeliharaan,
+                'keterangan' => $request->keterangan,
+            ]);
 
-            return redirect()->route('dashboard.admin')->with('success', 'Data pemeliharaan barang berhasil ditambahkan!');
+            DB::commit();
+
+            return redirect()->route('dashboard.admin')
+                ->with('success', 'Data pemeliharaan berhasil ditambahkan.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan data pemeliharaan barang!')->withInput();
+
+            DB::rollBack();
+
+            return back()
+                ->with('error', 'Terjadi kesalahan saat menyimpan data.')
+                ->withInput();
         }
     }
 
-  
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
         $pemeliharaan = PemeliharaanBarang::findOrFail($id);
-        $id_pj = DataPenanggungJawab::all();
-        $kode_barang = DataBarang::All();
-        return view('pemeliharaan-barang.edit', compact('pemeliharaan', 'kode_barang', 'id_pj'));
+        $barang = DataBarang::orderBy('kode_barang')->get();
+        $penanggungJawab = DataPenanggungJawab::orderBy('nama')->get();
+
+        return view('pemeliharaan-barang.edit', compact('pemeliharaan', 'barang', 'penanggungJawab'));
     }
 
-    /**
-     * Update the specified resource in storage.
+  
    
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
+
             $pemeliharaan = PemeliharaanBarang::findOrFail($id);
             $pemeliharaan->delete();
-            return redirect()->route('dashboard.admin')->with('success', 'Data pemeliharaan barang berhasil dihapus!');
+
+            return redirect()->route('dashboard.admin')
+                ->with('success', 'Data pemeliharaan berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menghapus data pemeliharaan barang!');
+
+            return back()
+                ->with('error', 'Terjadi kesalahan saat menghapus data.');
         }
     }
 }

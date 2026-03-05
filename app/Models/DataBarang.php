@@ -34,4 +34,9 @@ class DataBarang extends Model
     {
         return $this->hasMany(DetailPeminjaman::class, 'kode_barang', 'kode_barang');
     }
+
+    public function pemeliharaanbarang()
+    {
+        return $this->belongsTo(pemeliharaanbarang::class, 'kode_barang', 'kode_barang');
+    }
 }

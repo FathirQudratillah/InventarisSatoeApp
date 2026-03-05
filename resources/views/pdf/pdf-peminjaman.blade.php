@@ -183,36 +183,53 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $i => $item)
+                @php
+                    $jumlahData = $data->count();
+                    $minimalBaris = 15;
+                    $totalBaris = max($jumlahData, $minimalBaris);
+                @endphp
+
+                @for ($i = 0; $i < $totalBaris; $i++)
                     <tr>
                         <td>{{ $i + 1 }}</td>
-                        <td>{{ $item->id_peminjaman }}</td>
-                        <td class="left">{{ $item->user_id }}</td>
-                        <td class="left">
-                            @forelse ($item->detail as $detail)
-                                - {{ $detail->barang->dataBarang->nama_barang ?? $detail->kode_barang }}<br>
-                            @empty
-                                -
-                            @endforelse
-                        </td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_peminjaman)->format('d/m/Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal_pengembalian)->format('d/m/Y') }}</td>
-                        <td>{{ $item->status_peminjaman }}</td>
-                        <td class="ttd"></td>
-                    </tr>
-                @endforeach
 
-                {{-- Baris kosong tambahan --}}
-                @for ($j = $data->count(); $j < 15; $j++)
-                    <tr>
-                        <td>{{ $j + 1 }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="ttd"></td>
+                        @if ($i < $jumlahData)
+                            <td>{{ $data[$i]->id_peminjaman }}</td>
+
+                            <td class="center">
+                                {{ $data[$i]->user_id }}
+                            </td>
+
+                            <td class="center">
+                                @forelse ($data[$i]->detail as $detail)
+                                    {{ $detail->barang->dataBarang->nama_barang ?? $detail->kode_barang }}<br>
+                                @empty
+                                    -
+                                @endforelse
+                            </td>
+
+                            <td>
+                                {{ \Carbon\Carbon::parse($data[$i]->tanggal_peminjaman)->format('d/m/Y') }}
+                            </td>
+
+                            <td>
+                                {{ \Carbon\Carbon::parse($data[$i]->tanggal_pengembalian)->format('d/m/Y') }}
+                            </td>
+
+                            <td>
+                                {{ $data[$i]->status_peminjaman }}
+                            </td>
+
+                            <td class="ttd"></td>
+                        @else
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="ttd"></td>
+                        @endif
                     </tr>
                 @endfor
             </tbody>
