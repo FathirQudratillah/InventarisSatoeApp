@@ -151,7 +151,7 @@
                 <span class="info-content">{{ $dataFirst->barang[0]->jenis->nama_barang  ?? '-' }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">Kode</span>
+                <span class="info-label">Kode Barang</span>
                 <span class="info-value">:</span>
                 <span class="info-content">{{ $dataFirst->barang[0]->kode_barang ?? '-' }}</span>
             </div>

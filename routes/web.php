@@ -86,7 +86,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/peminjaman/{id}/accept', [PeminjamanBarangController::class, 'accept'])
             ->name('peminjaman-barang.accept');
 
-        route::get('/peminjaman/{id}/kembalikan', [PeminjamanBarangController::class, 'kembalikan'])
+        Route::get('/peminjaman/{id}/kembalikan', [PeminjamanBarangController::class, 'kembalikan'])
             ->name('peminjaman-barang.kembalikan');
 
         Route::get('/laporan', [laporanController::class, 'index'])
@@ -115,8 +115,7 @@ Route::middleware(['auth', 'role:admin'])
     });
 
 Route::middleware(['auth', 'role:siswa,guru'])
-    ->group(function () {
-        Route::get('/user', [DashboardController::class, 'index'])->name('dashboard.user');
+->group(function () {
 
         Route::get('/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('user.peminjaman-barang.create');
         Route::post('/peminjaman-barang.store', [PeminjamanBarangController::class, 'store'])->name('user.peminjaman-barang.store');
