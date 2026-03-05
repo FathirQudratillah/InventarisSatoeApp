@@ -95,6 +95,12 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/laporan/peminjaman', [laporanController::class, 'peminjaman'])
             ->name('laporan.laporan-peminjaman');
 
+        Route::get('/cetakQr', [laporanController::class, 'cetakQr'])
+            ->name('cetakQr');
+
+        Route::post('/cetakQrPdf', [laporanController::class, 'cetakQrPdf'])
+            ->name('cetakQrPdf');
+
         Route::get('/laporan/pemeliharaan', [laporanController::class, 'pemeliharaan'])
             ->name('laporan.laporan-pemeliharaan');
 
@@ -111,16 +117,8 @@ Route::middleware(['auth', 'role:admin'])
 Route::middleware(['auth', 'role:siswa,guru'])
 ->group(function () {
 
-    Route::get('/user', [DashboardController::class, 'index'])
-        ->name('dashboard.user');
-
-    Route::get('/peminjaman-barang/create', [PeminjamanBarangController::class, 'create'])
-        ->name('user.peminjaman-barang.create');
-
-    Route::post('/peminjaman-barang/store', [PeminjamanBarangController::class, 'store'])
-        ->name('user.peminjaman-barang.store');
-
-    Route::get('/peminjaman/{id}/back', [PeminjamanBarangController::class, 'back'])
-        ->name('peminjaman-barang.back');
-
-});
+        Route::get('/peminjaman-barang.create', [PeminjamanBarangController::class, 'create'])->name('user.peminjaman-barang.create');
+        Route::post('/peminjaman-barang.store', [PeminjamanBarangController::class, 'store'])->name('user.peminjaman-barang.store');
+        route::get('/peminjaman/{id}/back', [PeminjamanBarangController::class, 'back'])
+            ->name('peminjaman-barang.back');
+    });

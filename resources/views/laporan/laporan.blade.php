@@ -1,4 +1,4 @@
-<x-layout title="">
+<x-layout type="dashboard" title="Laporan">
 
     <div class="space-y-8">
 
@@ -15,11 +15,11 @@
 
             {{-- Peminjaman --}}
             <a href="{{ route('laporan.laporan-peminjaman') }}" class="group">
-                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 bg-gray-900">
+                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 border-blue-600">
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">Peminjaman Barang</h3>
                     <p class="text-sm text-gray-700">Laporan data peminjaman barang inventaris</p>
 
-                    <div class="mt-4 text-gray-700 font-medium group-hover:translate-x-2 transition">
+                    <div class="mt-4 text-blue-600 font-medium group-hover:translate-x-2 transition">
                         Lihat Laporan →
                     </div>
                 </div>
@@ -29,15 +29,16 @@
 
             {{-- Pemeliharaan --}}
             <a href="{{ route('laporan.laporan-pemeliharaan') }}" class="group">
-                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 bg-gray-900">
+                <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6 border-t-4 border-red-500">
                     <h3 class="text-lg font-semibold text-gray-800 mb-1">Pemeliharaan Barang</h3>
                     <p class="text-sm text-gray-500">Laporan data pemeliharaan barang inventaris</p>
 
-                    <div class="mt-4 text-gray-700 font-medium group-hover:translate-x-2 transition">
+                    <div class="mt-4 text-red-500 font-medium group-hover:translate-x-2 transition">
                         Lihat Laporan →
                     </div>
                 </div>
             </a>
+
         </div>
 
     </div>

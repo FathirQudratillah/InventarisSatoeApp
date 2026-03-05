@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\PeminjamanBarang;
-use App\Models\PemeliharaanBarang;
 use App\Models\DataBarang;
 use App\Models\DataJenisBarang;
 use App\Models\DataRuang;
+use App\Models\DetailPeminjaman;
+use App\Models\PemeliharaanBarang;
+use App\Models\PeminjamanBarang;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use App\Models\DetailPeminjaman;
+use Illuminate\Http\Request;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
+
 
 class laporanController extends Controller
 {
@@ -174,5 +177,35 @@ class laporanController extends Controller
                 'request' => $request->all()
             ], 500);
         }
+    }
+
+    public function cetakQr(){
+        $barangs = DataBarang::all();
+        return view('laporan.cetakQr', compact('barangs'));
+    }
+
+    
+
+    public function cetakQrPdf(Request $request)
+    {
+        $request->validate([
+            'barang_ids' => 'required|array|min:1',
+        ]);
+
+        $barangs = DataBarang::whereIn('kode_barang', $request->barang_ids)->get();
+
+        foreach ($barangs as $barang) {
+            $result = Builder::create()
+                ->writer(new PngWriter())
+                ->data($barang->kode_barang)
+                ->size(300)
+                ->build();
+
+            $barang->qr = base64_encode($result->getString());
+        }
+
+        $pdf = Pdf::loadView('pdf.qr-barang', compact('barangs'));
+
+        return $pdf->download('qr-barang.pdf');
     }
 }
