@@ -131,7 +131,7 @@ class DashboardController extends Controller
             'user',
             'detail.barang.jenis'
         ])
-            ->where('status_peminjaman', 'dikembalikan?')
+            ->where('status_peminjaman', 'menunggu_kembali')
             ->latest()
             ->get();
 

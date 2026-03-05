@@ -22,10 +22,10 @@ class PemeliharaanBarangController extends Controller
 
     public function create()
     {
-        $barang = DataBarang::orderBy('kode_barang')->get();
-        $penanggungJawab = DataPenanggungJawab::orderBy('nama')->get();
+        $kode_barang = DataBarang::orderBy('kode_barang')->get();
+        $id_pj = DataPenanggungJawab::orderBy('nama')->get();
 
-        return view('pemeliharaan-barang.create', compact('barang', 'penanggungJawab'));
+        return view('pemeliharaan-barang.create', compact('kode_barang', 'id_pj'));
     }
 
     public function store(Request $request)

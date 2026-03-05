@@ -116,7 +116,7 @@
     <x-input name="tanggal_pengembalian" type="date" :value="date('Y-m-d')" />
 
     <x-slot:button>
-        <x-back-button href="{{ route('data-barang.index') }}"></x-back-button>
+        <x-back-button :href="route('dashboard.user')"></x-back-button>
     </x-slot:button>
 </x-form>
 
