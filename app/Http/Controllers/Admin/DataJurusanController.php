@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\DataJurusan;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DataJurusanController extends Controller
 {
@@ -28,6 +29,18 @@ class DataJurusanController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id_jurusan' => 'required|max:3|unique:data_jurusan,id_jurusan',
+            'jurusan' => 'required|unique:data_jurusan,jurusan',
+        ], [
+            'id_jurusan.required' => 'Id Jurusan wajib diisi.',
+            'id_jurusan.max'      => 'Id Jurusan maksimal 3 huruf.',
+            'id_jurusan.unique'   => 'Id Jurusan sudah terdaftar.',
+
+            'jurusan.required' => 'Jurusan wajib diisi.',
+            'jurusan.unique'   => 'Jurusan sudah terdaftar.',
+
+        ]);
         try {
             $jurusan = new DataJurusan;
             $jurusan->id_jurusan = $request->id_jurusan;
@@ -40,13 +53,7 @@ class DataJurusanController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -62,13 +69,33 @@ class DataJurusanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+
+        $request->validate([
+            'id_jurusan' => [
+                'required',
+                'max:3',
+                Rule::unique('data_jurusan', 'id_jurusan')
+                    ->ignore($dataJurusan->id_jurusan, 'id_jurusan'),
+            ],
+
+            'jurusan' => [
+                'required',
+                Rule::unique('data_jurusan', 'jurusan')
+                    ->ignore($dataJurusan->id_jurusan, 'id_jurusan'),
+            ],
+        ], [
+            'id_jurusan.required' => 'Id Jurusan wajib diisi.',
+            'id_jurusan.max'      => 'Id Jurusan maksimal 3 huruf.',
+            'id_jurusan.unique'   => 'Id Jurusan sudah terdaftar.',
+
+            'jurusan.required' => 'Jurusan wajib diisi.',
+            'jurusan.unique'   => 'Jurusan sudah terdaftar.',
+        ]);
         try {
             $jurusan = DataJurusan::findOrFail($id);
 
-            $request->validate([
-                'id_jurusan' => 'required',
-                'jurusan' => 'required',
-            ]);
+
 
             $jurusan->id_jurusan = $request->id_jurusan;
             $jurusan->jurusan = $request->jurusan;

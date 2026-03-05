@@ -31,14 +31,11 @@ class PeminjamanBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $date = str_replace('-', '', $request->tanggal_peminjaman);
-        $prefix = 'PMJ' . $date;
-        $kode_barangs = $request->kode_barang;
-
         $request->validate(
             [
                 'kode_barang'   => ['required', 'array', 'min:1'],
                 'kode_barang.*' => ['required', 'exists:data_barang,kode_barang'],
+                
             ],
             [
                 'kode_barang.required'   => 'Barang wajib dipilih.',
@@ -48,6 +45,10 @@ class PeminjamanBarangController extends Controller
                 'kode_barang.*.exists'   => 'Kode barang :input tidak terdaftar di data barang.',
             ]
         );
+        $date = str_replace('-', '', $request->tanggal_peminjaman);
+        $prefix = 'PMJ' . $date;
+        $kode_barangs = $request->kode_barang;
+
 
         // cek barang sedang dipinjam
         foreach ($kode_barangs as $kode_barang) {
@@ -58,7 +59,7 @@ class PeminjamanBarangController extends Controller
             if ($cek) {
                 return back()->withErrors([
                     'kode_barang' => "Barang $kode_barang masih dipinjam"
-                ]);
+                ])->withInput();
             }
         }
 
@@ -99,7 +100,7 @@ class PeminjamanBarangController extends Controller
             $no++;
         }
 
-        return redirect()->route('dashboard.' . auth()->user()->role);
+        return redirect()->route('dashboard.user');
     }
 
     /**

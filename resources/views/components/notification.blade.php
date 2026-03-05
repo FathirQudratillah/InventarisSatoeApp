@@ -28,16 +28,27 @@
     </script>
 @endif
 
-@if ($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.form-delete').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
             Swal.fire({
-                icon: 'error',
-                title: 'Validasi Gagal!',
-                html: '<ul style="text-align: left;">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
-                showConfirmButton: true,
-                confirmButtonColor: '#ef4444'
+                title: 'Yakin ingin menghapus?',
+                text: 'Data yang dihapus tidak bisa dikembalikan!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
             });
         });
-    </script>
-@endif
+    });
+});
+</script>

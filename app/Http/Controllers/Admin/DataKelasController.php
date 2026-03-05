@@ -14,7 +14,9 @@ class DataKelasController extends Controller
 {
     public function index()
     {
-        $akun = DataKelas::all();
+        $akun = DataKelas::orderBy('angkatan', 'desc')
+            ->orderBy('id_jurusan')
+            ->orderBy('subkelas')->get();
         return view('data-kelas.index', compact('akun'));
     }
 
@@ -28,14 +30,16 @@ class DataKelasController extends Controller
     public function store(Request $request): RedirectResponse
     {
         try {
-            $kelas = new DataKelas;
+            $id_kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
+            $uniqueKelas = DataKelas::where('id_kelas', $id_kelas)->exists();
 
-            if ($request->kelas != 'Alumni') {
-                $kelas->id_kelas = $request->angkatan . $request->id_jurusan . $request->subkelas;
-            } else {
-                $kelas->id_kelas = $request->angkatan . $request->id_jurusan;
+            if($uniqueKelas){
+                return redirect()->back()->with('error', 'Kelas Sudah Terdaftar')->withInput();
             }
 
+
+            $kelas = new DataKelas;
+            $kelas->id_kelas = $id_kelas;
             $kelas->id_jurusan = $request->id_jurusan;
             $kelas->angkatan = $request->angkatan;
             $kelas->kelas = $request->kelas;
@@ -61,18 +65,9 @@ class DataKelasController extends Controller
         try {
             $kelas = DataKelas::findOrFail($id_kelas);
 
-            $request->validate([
-                'id_jurusan' => 'required',
-                'angkatan' => 'required',
-                'kelas' => 'required',
-                'subkelas' => 'required',
+            $kelas->update([
+                'kelas' => $request->kelas,
             ]);
-
-            $kelas->id_jurusan = $request->id_jurusan;
-            $kelas->angkatan = $request->angkatan;
-            $kelas->kelas = $request->kelas;
-            $kelas->subkelas = $request->subkelas;
-            $kelas->save();
 
             return redirect()->route('data-kelas.index')->with('success', 'Data kelas berhasil diperbarui!');
         } catch (\Exception $e) {

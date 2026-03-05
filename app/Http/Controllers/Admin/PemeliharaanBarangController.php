@@ -31,6 +31,24 @@ class PemeliharaanBarangController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'kode_barang' => ['required', 'exists:data_barang,kode_barang'],
+            'id_pj' => ['required', 'exists:data_penanggung_jawab,id_pj'],
+            'kegiatan_pemeliharaan' => ['required', 'string', 'max:255'],
+            'tanggal_pemeliharaan' => ['required', 'date', 'before_or_equal:today'],
+            'keterangan' => ['nullable', 'string'],
+        ], [
+            'kode_barang.required' => 'Barang wajib dipilih.',
+            'kode_barang.exists' => 'Kode barang tidak ditemukan.',
+            'id_pj.required' => 'Penanggung jawab wajib dipilih.',
+            'id_pj.exists' => 'Penanggung jawab tidak valid.',
+            'kegiatan_pemeliharaan.required' => 'Kegiatan pemeliharaan wajib diisi.',
+            'tanggal_pemeliharaan.required' => 'Tanggal pemeliharaan wajib diisi.',
+            'tanggal_pemeliharaan.date' => 'Format tanggal tidak valid.',
+            'tanggal_pemeliharaan.before_or_equal' => 'Tanggal Harus Hari Ini Atau Sebelum Hari Ini.',
+            
+        ]);
+
         try {
             $lastPemeliharaan = PemeliharaanBarang::where('kode_barang', $request->kode_barang)
                 ->orderBy('id_pemeliharaan', 'desc')
@@ -60,13 +78,7 @@ class PemeliharaanBarangController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+  
 
     /**
      * Show the form for editing the specified resource.
@@ -81,24 +93,7 @@ class PemeliharaanBarangController extends Controller
 
     /**
      * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        try {
-            $pemeliharaan = PemeliharaanBarang::findOrFail($id);
-
-            $pemeliharaan->kode_barang = $request->kode_barang;
-            $pemeliharaan->id_pj = $request->id_pj;
-            $pemeliharaan->kegiatan_pemeliharaan = $request->kegiatan_pemeliharaan;
-            $pemeliharaan->tanggal_pemeliharaan = $request->tanggal_pemeliharaan;
-            $pemeliharaan->keterangan = $request->keterangan;
-            $pemeliharaan->save();
-
-            return redirect()->route('dashboard.admin')->with('success', 'Data pemeliharaan barang berhasil diperbarui!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memperbarui data pemeliharaan barang!')->withInput();
-        }
-    }
+   
 
     /**
      * Remove the specified resource from storage.

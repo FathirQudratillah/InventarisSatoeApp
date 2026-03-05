@@ -14,8 +14,8 @@
     @endunless
 
     <!-- Dropdown Pop Up -->
-    <div
-        class="dropdown-menu hidden absolute right-0 z-50 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl">
+    <div 
+        class="dropdown dropdown-menu hidden absolute right-0 z-50 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl">
 
         <div class="px-4 py-2 border-b border-gray-100">
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide">Pilih Aksi</p>
@@ -64,55 +64,7 @@
                         </div>
                     </a>
                 </li>
-            @elseif ($type == 'profile')
-                <!-- Detail -->
-                <li>
-                    <a href="/"
-                        class="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition">
-                        <span class="flex items-center justify-center w-7 h-7 rounded-md bg-blue-100 text-blue-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="w-4 h-4">
-
-                                <!-- Bentuk mata -->
-                                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z" />
-
-                                <!-- Bola mata -->
-                                <circle cx="12" cy="12" r="3" />
-                            </svg>
-
-                        </span>
-                        <div>
-                            <p class="font-medium text-sm">Detail</p>
-                            <p class="text-xs text-gray-400">Detail {{ ucwords(str_replace('-', ' ', $route)) }}</p>
-                        </div>
-                    </a>
-                </li>
-
-                <li class="border-t border-gray-100 mx-2"></li>
-
-                <!-- Logout -->
-                <li>
-                    <form action="{{ route('logout') }}" method="POST" id="logout-form-profile">
-                        @csrf
-                        <button type="button" onclick="confirmLogout()"
-                            class="flex items-center gap-3 w-full px-4 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
-                            <span class="flex items-center justify-center w-7 h-7 rounded-md bg-red-100 text-red-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-4 h-4">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                    <polyline points="16 17 21 12 16 7"></polyline>
-                                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                                </svg>
-                            </span>
-                            <div class="text-left">
-                                <p class="font-medium text-sm">Logout</p>
-                                <p class="text-xs text-gray-400">Keluar dari akun</p>
-                            </div>
-                        </button>
-                    </form>
-                </li>
+            
             @else
                 <!-- Edit -->
                 <li>
@@ -137,7 +89,7 @@
                 <!-- Delete -->
                 <li>
                     <form action="{{ route($route . '.destroy', $id) }}" method="POST"
-                        onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                        class="form-delete">
                         @csrf
                         @method('DELETE')
                         <button type="submit"

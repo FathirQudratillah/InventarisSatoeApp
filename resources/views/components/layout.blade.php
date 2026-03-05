@@ -32,6 +32,7 @@
                 <x-header>{{ $title }}</x-header>
             @endunless
             {{ $slot }}
+            
         </main>
 
     </div>

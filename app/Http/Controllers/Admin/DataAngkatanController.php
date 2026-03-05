@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\DataAngkatan;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DataAngkatanController extends Controller
 {
@@ -28,6 +29,23 @@ class DataAngkatanController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'angkatan'     => 'required|string|max:2|unique:data_angkatan,angkatan',
+            'tahun_masuk'  => 'required|digits:4|unique:data_angkatan,tahun_masuk',
+            'tahun_lulus'  => 'required|digits:4|unique:data_angkatan,tahun_lulus',
+        ], [
+            'angkatan.required' => 'Angkatan wajib diisi.',
+            'angkatan.max'      => 'Angkatan maksimal 2 huruf.',
+            'angkatan.unique'   => 'Angkatan sudah terdaftar.',
+
+            'tahun_masuk.required' => 'Tahun masuk wajib diisi.',
+            'tahun_masuk.digits'   => 'Tahun masuk harus 4 digit.',
+            'tahun_masuk.unique'   => 'Tahun masuk sudah terdaftar.',
+
+            'tahun_lulus.required' => 'Tahun lulus wajib diisi.',
+            'tahun_lulus.digits'   => 'Tahun lulus harus 4 digit.',
+            'tahun_lulus.unique'   => 'Tahun lulus sudah terdaftar.',
+        ]);
         try {
             $angkatan = new DataAngkatan;
             $angkatan->angkatan = $request->angkatan;
@@ -41,13 +59,7 @@ class DataAngkatanController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -63,14 +75,44 @@ class DataAngkatanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'angkatan' => [
+                'required',
+                'string',
+                'max:2',
+                Rule::unique('data_angkatan', 'angkatan')
+                    ->ignore($dataAngkatan->id_angkatan, 'id_angkatan'),
+            ],
+
+            'tahun_masuk' => [
+                'required',
+                'digits:4',
+                Rule::unique('data_angkatan', 'tahun_masuk')
+                    ->ignore($dataAngkatan->id_angkatan, 'id_angkatan'),
+            ],
+
+            'tahun_lulus' => [
+                'required',
+                'digits:4',
+                Rule::unique('data_angkatan', 'tahun_lulus')
+                    ->ignore($dataAngkatan->id_angkatan, 'id_angkatan'),
+            ],
+        ], [
+            'angkatan.required' => 'Angkatan wajib diisi.',
+            'angkatan.max'      => 'Angkatan maksimal 2 huruf.',
+            'angkatan.unique'   => 'Angkatan sudah terdaftar.',
+
+            'tahun_masuk.required' => 'Tahun masuk wajib diisi.',
+            'tahun_masuk.digits'   => 'Tahun masuk harus 4 digit.',
+            'tahun_masuk.unique'   => 'Tahun masuk sudah terdaftar.',
+
+            'tahun_lulus.required' => 'Tahun lulus wajib diisi.',
+            'tahun_lulus.digits'   => 'Tahun lulus harus 4 digit.',
+            'tahun_lulus.unique'   => 'Tahun lulus sudah terdaftar.',
+        ]);
         try {
             $angkatan = DataAngkatan::findOrFail($id);
 
-            $request->validate([
-                'angkatan' => 'required',
-                'tahun_masuk' => 'required',
-                'tahun_lulus' => 'required',
-            ]);
 
             $angkatan->angkatan = $request->angkatan;
             $angkatan->tahun_masuk = $request->tahun_masuk;

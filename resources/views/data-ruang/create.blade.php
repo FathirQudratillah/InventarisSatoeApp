@@ -5,19 +5,24 @@
     <x-input name="id_ruang" />
     <x-input name="nama_ruang" />
     <x-select name="jenis_ruang">
-        <option value="Ruang Kelas">Ruang Kelas</option>
-        <option value="Ruang Praktek">Ruang Praktek</option>
+        <option value="Ruang Kelas" {{ old('jenis_ruang') == 'Ruang Kelas' ? 'selected' : '' }}>Ruang Kelas</option>
+        <option value="Ruang Praktek" {{ old('jenis_ruang') == 'Ruang Praktek' ? 'selected' : '' }}>Ruang Praktek
+        </option>
     </x-select>
     <x-input name="kapasitas" />
+    @php
+        $lokasiList = ['Gedung A', 'Gedung B', 'Gedung C', 'Gedung D', 'Gedung E', 'Gedung F'];
+    @endphp
+
     <x-select name="lokasi">
-        <option value="Gedung A">Gedung A</option>
-        <option value="Gedung B">Gedung B</option>
-        <option value="Gedung C">Gedung C</option>
-        <option value="Gedung D">Gedung D</option>
-        <option value="Gedung E">Gedung E</option>
-        <option value="Gedung F">Gedung F</option>
+
+        @foreach ($lokasiList as $lokasi)
+            <option value="{{ $lokasi }}" {{ old('lokasi') == $lokasi ? 'selected' : '' }}>
+                {{ $lokasi }}
+            </option>
+        @endforeach
     </x-select>
-    
+
     <x-slot:button> <x-back-button href="{{ route('data-ruang.index') }}"></x-back-button></x-slot:button>
-        
+
 </x-form>

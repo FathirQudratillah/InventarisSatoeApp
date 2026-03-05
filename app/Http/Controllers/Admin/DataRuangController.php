@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\DataRuang;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 
 class DataRuangController extends Controller
@@ -29,6 +29,27 @@ class DataRuangController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id_ruang'    => 'required|unique:data_ruang,id_ruang',
+            'nama_ruang'  => 'required|unique:data_ruang,nama_ruang',
+            'jenis_ruang' => 'required',
+            'kapasitas'   => 'required|min:1|integer',
+            'lokasi'      => 'required',
+        ], [
+            'id_ruang.required'    => 'ID Ruang wajib diisi.',
+            'id_ruang.unique'      => 'ID Ruang sudah terdaftar.',
+
+            'nama_ruang.required'  => 'Nama Ruang wajib diisi.',
+            'nama_ruang.unique'    => 'Nama Ruang sudah terdaftar.',
+
+            'jenis_ruang.required' => 'Jenis Ruang wajib dipilih.',
+
+            'kapasitas.required'   => 'Kapasitas ruang wajib diisi.',
+            'kapasitas.integer'   => 'Kapasitas ruang wajib angka.',
+
+            'lokasi.required'      => 'Lokasi ruang wajib diisi.',
+        ]);
+
         try {
             $ruang = new DataRuang;
             $ruang->id_ruang = $request->id_ruang;
@@ -44,14 +65,8 @@ class DataRuangController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
+    
+    
     /**
      * Show the form for editing the specified resource.
      */
@@ -66,16 +81,41 @@ class DataRuangController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'id_ruang' => [
+                'required',
+                Rule::unique('data_ruang', 'id_ruang')
+                    ->ignore($id, 'id_ruang')
+            ],
+
+            'nama_ruang' => [
+                'required',
+                Rule::unique('data_ruang', 'nama_ruang')
+                    ->ignore($id, 'id_ruang')
+            ],
+
+            'jenis_ruang' => 'required',
+
+            'kapasitas' => 'required|integer|min:1',
+
+            'lokasi' => 'required',
+        ], [
+            'id_ruang.required'    => 'ID Ruang wajib diisi.',
+            'id_ruang.unique'      => 'ID Ruang sudah terdaftar.',
+
+            'nama_ruang.required'  => 'Nama Ruang wajib diisi.',
+            'nama_ruang.unique'    => 'Nama Ruang sudah terdaftar.',
+
+            'jenis_ruang.required' => 'Jenis Ruang wajib dipilih.',
+
+            'kapasitas.required'   => 'Kapasitas ruang wajib diisi.',
+            'kapasitas.integer'    => 'Kapasitas ruang wajib angka.',
+            'kapasitas.min'        => 'Kapasitas minimal 1.',
+
+            'lokasi.required'      => 'Lokasi ruang wajib diisi.',
+        ]);
         try {
             $ruang = DataRuang::findOrFail($id);
-
-            $request->validate([
-                'id_ruang' => 'required',
-                'nama_ruang' => 'required',
-                'jenis_ruang' => 'required',
-                'kapasitas' => 'required',
-                'lokasi' => 'required',
-            ]);
 
             $ruang->id_ruang = $request->id_ruang;
             $ruang->nama_ruang = $request->nama_ruang;

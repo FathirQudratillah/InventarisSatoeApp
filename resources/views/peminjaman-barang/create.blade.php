@@ -1,4 +1,4 @@
-<x-form action="{{ route('peminjaman-barang.store') }}">
+<x-form action="{{ route('user.peminjaman-barang.store') }}">
     <x-slot:title>
         Peminjaman Barang
     </x-slot:title>
@@ -76,9 +76,19 @@
 
             </div>
 
-            @error('kode_barang[]')
-                <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-            @enderror
+            @if ($errors->any())
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validasi Gagal!',
+                            html: '<ul style="text-align: left;">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
+                            showConfirmButton: true,
+                            confirmButtonColor: '#ef4444'
+                        });
+                    });
+                </script>
+            @endif
         </div>
 
     </div>

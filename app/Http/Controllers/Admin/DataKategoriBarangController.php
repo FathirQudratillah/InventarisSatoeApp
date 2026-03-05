@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\DataKategoriBarang;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DataKategoriBarangController extends Controller
 {
@@ -28,6 +28,29 @@ class DataKategoriBarangController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id_kategori' => [
+                'required',
+                'string',
+                'max:3',
+                'unique:data_kategori_barang,id_kategori',
+            ],
+            'kategori' => [
+                'required',
+                'string',
+                'max:100',
+                'unique:data_kategori_barang,kategori',
+            ],
+        ], [
+            'id_kategori.required' => 'ID kategori wajib diisi.',
+            'id_kategori.max'      => 'ID kategori maksimal 3 karakter.',
+            'id_kategori.unique'   => 'ID kategori sudah terdaftar.',
+
+            'kategori.required' => 'Nama kategori wajib diisi.',
+            'kategori.max'      => 'Nama kategori maksimal 100 karakter.',
+            'kategori.unique'   => 'Nama kategori sudah terdaftar.',
+        ]);
+
         try {
             $kategori_barang = new DataKategoriBarang;
             $kategori_barang->id_kategori = $request->id_kategori;
@@ -41,13 +64,7 @@ class DataKategoriBarangController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
+     
     /**
      * Show the form for editing the specified resource.
      */
@@ -62,6 +79,31 @@ class DataKategoriBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'id_kategori' => [
+                'required',
+                'string',
+                'max:3',
+                Rule::unique('data_kategori_barang', 'id_kategori')
+                    ->ignore($dataKategoriBarang->id_kategori, 'id_kategori'),
+            ],
+
+            'kategori' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('data_kategori_barang', 'kategori')
+                    ->ignore($dataKategoriBarang->id_kategori, 'id_kategori'),
+            ],
+        ], [
+            'id_kategori.required' => 'ID kategori wajib diisi.',
+            'id_kategori.max'      => 'ID kategori maksimal 3 karakter.',
+            'id_kategori.unique'   => 'ID kategori sudah terdaftar.',
+
+            'kategori.required' => 'Nama kategori wajib diisi.',
+            'kategori.max'      => 'Nama kategori maksimal 100 karakter.',
+            'kategori.unique'   => 'Nama kategori sudah terdaftar.',
+        ]);
         try {
             $kategori_barang = DataKategoriBarang::findOrFail($id);
 
