@@ -35,7 +35,7 @@ class PeminjamanBarangController extends Controller
             [
                 'kode_barang'   => ['required', 'array', 'min:1'],
                 'kode_barang.*' => ['required', 'exists:data_barang,kode_barang'],
-                
+
             ],
             [
                 'kode_barang.required'   => 'Barang wajib dipilih.',
@@ -108,6 +108,7 @@ class PeminjamanBarangController extends Controller
      */
     public function accept(string $id)
     {
+
         $peminjaman = PeminjamanBarang::findOrFail($id);
         $peminjaman->data_admin = auth()->user()->user_id;
         $peminjaman->status_peminjaman = 'dipinjam';
@@ -115,27 +116,51 @@ class PeminjamanBarangController extends Controller
 
         return back();
     }
-    
+
     public function back(string $id)
     {
-        $peminjaman = PeminjamanBarang::findOrFail($id);
-        $peminjaman->status_peminjaman = 'dikembalikan?';
-        $peminjaman->save();
+        try {
 
-        return back();
+            $peminjaman = PeminjamanBarang::findOrFail($id);
+
+            $peminjaman->update([
+                'status_peminjaman' => 'menunggu_kembali'
+            ]);
+
+            return redirect()->route('dashboard.user')
+                ->with('success', 'Menunggu persetujuan admin');
+        } catch (\Exception $e) {
+
+            return back()->with('error', 'Gagal mengirim pengembalian');
+        }
     }
 
     public function kembalikan(string $id)
     {
-        $peminjaman = PeminjamanBarang::findOrFail($id);
-        $peminjaman->status_peminjaman = 'dikembalikan';
-        $peminjaman->save();
+        try {
 
-        return back();
+            $peminjaman = PeminjamanBarang::with('detail.barang')->findOrFail($id);
+
+            $peminjaman->update([
+                'status_peminjaman' => 'dikembalikan'
+            ]);
+
+            foreach ($peminjaman->detail as $detail) {
+
+                if ($detail->barang) {
+
+                    $detail->barang->update([
+                        'status_barang' => 'tersedia'
+                    ]);
+                }
+            }
+
+            return back()->with('success', 'Barang berhasil dikembalikan');
+        } catch (\Exception $e) {
+
+            return back()->with('error', 'Gagal menerima pengembalian');
+        }
     }
-    /**
-     * Show the form for editing the specified resource.
-     */
 
     public function add($kode)
     {

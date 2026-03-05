@@ -1,16 +1,21 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\DataAdmin;
 use app\models\DataAkun;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class DataAdminController extends Controller
 {
     public function index()
     {
+        Carbon::setLocale('id');
+        $bulan = now()->format('m');
+        $tahun = now()->format('Y');
         $admins = DataAdmin::All();
         return view('data-admin.index', compact('admins'));
     }
@@ -37,7 +42,7 @@ class DataAdminController extends Controller
         $admin->no_kontak = $request->no_kontak;
         $admin->alamat = $request->alamat;
         $admin->save();
-        
+
         return redirect('data-admin.index');
     }
 
