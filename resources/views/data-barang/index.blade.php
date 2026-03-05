@@ -3,8 +3,13 @@
     <div class="mt-4 p-3 md:p-6 bg-white rounded-lg shadow-md flex justify-between items-center">
         <p class="text-gray-600">Data Barang</p>
 
-        <!-- Tombol Tambah Data dengan Titik Tiga -->
-        <x-dropdown type="create" route="data-barang"></x-dropdown-c>
+        <div class="flex items-center gap-2">
+            <button class="bg-orange-100 hover:bg-orange-300 py-1 px-3 rounded-md ">
+                <a href="{{ route('cetakQr') }}">Cetak Qr</a>
+            </button>
+            <!-- Tombol Tambah Data dengan Titik Tiga -->
+            <x-dropdown type="create" route="data-barang"></x-dropdown>
+        </div>
     </div>
 
     <div class="md:p-6">

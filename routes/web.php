@@ -95,6 +95,12 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/laporan/peminjaman', [laporanController::class, 'peminjaman'])
             ->name('laporan.laporan-peminjaman');
 
+        Route::get('/cetakQr', [laporanController::class, 'cetakQr'])
+            ->name('cetakQr');
+
+        Route::post('/cetakQrPdf', [laporanController::class, 'cetakQrPdf'])
+            ->name('cetakQrPdf');
+
         Route::get('/laporan/pemeliharaan', [laporanController::class, 'pemeliharaan'])
             ->name('laporan.laporan-pemeliharaan');
 
@@ -106,8 +112,6 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('/laporan/pemeliharaan/cetak', [laporanController::class, 'cetakPemeliharaan'])
             ->name('laporan.pemeliharaan.cetak');
-
-        
     });
 
 Route::middleware(['auth', 'role:siswa,guru'])
@@ -119,5 +123,3 @@ Route::middleware(['auth', 'role:siswa,guru'])
         route::get('/peminjaman/{id}/back', [PeminjamanBarangController::class, 'back'])
             ->name('peminjaman-barang.back');
     });
-
-
