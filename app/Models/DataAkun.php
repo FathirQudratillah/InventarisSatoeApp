@@ -6,10 +6,11 @@ use App\Models\DataSiswa;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class DataAkun extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
     protected $table = 'data_akun';
     protected $fillable = ['user_id', 'username', 'password', 'role'];
     protected $hidden = ['password',];
