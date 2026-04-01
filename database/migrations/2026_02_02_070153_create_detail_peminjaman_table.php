@@ -12,20 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('detail_peminjaman', function (Blueprint $table) {
-            $table->char('id_detail', 10)->primary();
+            $table->char('id_detail', 18)->primary();
+            $table->char('kode_barang', 10);
+            $table->char('id_peminjaman', 13);
 
             $table->foreign('kode_barang')
             ->references('kode_barang')
-            ->on('detail_peminjaman')
+            ->on('data_barang')
             ->cascadeOnDelete();
 
             $table->foreign('id_peminjaman')
             ->references('id_peminjaman')
-            ->on('detail_peminjaman')
+            ->on('peminjaman_barang')
             ->cascadeOnDelete();
             
-            $table->string('kondisi_sebelum', 5);
-            $table->string('kondisi_sesusdah', 5);
+            $table->string('kondisi_sebelum');
+            $table->string('kondisi_sesudah')->nullable();
             $table->timestamps();
         });
     }
