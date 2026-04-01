@@ -30,7 +30,7 @@ class PeminjamanBarangController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
         $request->validate(
             [
                 'kode_barang'   => ['required', 'array', 'min:1'],
@@ -100,7 +100,7 @@ class PeminjamanBarangController extends Controller
             $no++;
         }
 
-        return redirect()->route('dashboard.user');
+        return redirect()->route('dashboard.user')->with('success', 'Permintaan peminjaman berhasil, Menunggu Persetujuan Admin');
     }
 
     /**
