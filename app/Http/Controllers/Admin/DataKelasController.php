@@ -22,8 +22,8 @@ class DataKelasController extends Controller
 
     public function create()
     {
-        $angkatan = DataAngkatan::all();
-        $id_jurusan = DataJurusan::all();
+        $angkatan = DataAngkatan::select('angkatan')->get();
+        $id_jurusan = DataJurusan::select('id_jurusan')->get();
         return view('data-kelas.create', compact('angkatan', 'id_jurusan'));
     }
 
@@ -55,8 +55,8 @@ class DataKelasController extends Controller
     public function edit(string $id_kelas)
     {
         $kelas = DataKelas::findOrFail($id_kelas);
-        $angkatan = DataAngkatan::all();
-        $id_jurusan = DataJurusan::all();
+        $angkatan = DataAngkatan::select('angkatan')->get();
+        $id_jurusan = DataJurusan::select('id_jurusan')->get();
         return view('data-kelas.edit', compact('kelas', 'angkatan', 'id_jurusan'));
     }
 

@@ -12,7 +12,7 @@ class DataJurusanController extends Controller
 {
     public function index()
     {
-        $jurusans = DataJurusan::All();
+        $jurusans = DataJurusan::orderBy('id_jurusan')->get();
         return view('data-jurusan.index', compact('jurusans'));
     }
 
@@ -76,13 +76,13 @@ class DataJurusanController extends Controller
                 'required',
                 'max:3',
                 Rule::unique('data_jurusan', 'id_jurusan')
-                    ->ignore($dataJurusan->id_jurusan, 'id_jurusan'),
+                    ->ignore($id, 'id_jurusan'),
             ],
 
             'jurusan' => [
                 'required',
                 Rule::unique('data_jurusan', 'jurusan')
-                    ->ignore($dataJurusan->id_jurusan, 'id_jurusan'),
+                    ->ignore($id, 'id_jurusan'),
             ],
         ], [
             'id_jurusan.required' => 'Id Jurusan wajib diisi.',

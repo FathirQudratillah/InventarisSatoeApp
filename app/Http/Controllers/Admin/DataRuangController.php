@@ -12,7 +12,7 @@ class DataRuangController extends Controller
 {
     public function index()
     {
-        $ruangs = DataRuang::All();
+        $ruangs = DataRuang::orderBy('jenis_ruang')->orderBy('id_ruang')->get();
         return view('data-ruang.index', compact('ruangs'));
     }
 

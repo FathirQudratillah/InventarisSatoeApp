@@ -88,17 +88,6 @@ class PemeliharaanBarangController extends Controller
         }
     }
 
-    public function edit($id)
-    {
-        $pemeliharaan = PemeliharaanBarang::findOrFail($id);
-        $barang = DataBarang::orderBy('kode_barang')->get();
-        $penanggungJawab = DataPenanggungJawab::orderBy('nama')->get();
-
-        return view('pemeliharaan-barang.edit', compact('pemeliharaan', 'barang', 'penanggungJawab'));
-    }
-
-  
-   
 
     public function destroy($id)
     {

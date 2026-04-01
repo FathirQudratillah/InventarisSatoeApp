@@ -13,7 +13,7 @@ class DataBarangController extends Controller
 {
     public function index()
     {
-        $barangs = DataBarang::All();
+        $barangs = DataBarang::orderBy('jenis_barang')->orderBy('kode_barang')->get();
         return view('data-barang.index', compact('barangs'));
     }
 
@@ -22,8 +22,8 @@ class DataBarangController extends Controller
      */
     public function create()
     {
-        $jenis_barang = DataJenisBarang::All();
-        $id_ruang = DataRuang::All();
+        $jenis_barang = DataJenisBarang::select('jenis_barang')->get();
+        $id_ruang = DataRuang::select('id_ruang')->get();
         return view('data-barang.create', compact('jenis_barang', 'id_ruang'));
     }
 
@@ -97,8 +97,8 @@ class DataBarangController extends Controller
     public function edit(string $kodeBarang)
     {
         $barang = DataBarang::findOrFail($kodeBarang);
-        $jenis_barang = DataJenisBarang::All();
-        $id_ruang = DataRuang::All();
+        $jenis_barang = DataJenisBarang::select('jenis_barang')->get();
+        $id_ruang = DataRuang::select('id_ruang')->get();
         return view('data-barang.edit', compact('barang', 'jenis_barang', 'id_ruang'));
     }
 

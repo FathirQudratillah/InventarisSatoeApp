@@ -11,7 +11,7 @@ class DataKategoriBarangController extends Controller
 {
     public function index()
     {
-        $kategoriBarangs = DataKategoriBarang::All();
+        $kategoriBarangs = DataKategoriBarang::orderBy('id_kategori')->get();
         return view('data-kategori-barang.index', compact('kategoriBarangs'));
     }
 
@@ -85,7 +85,7 @@ class DataKategoriBarangController extends Controller
                 'string',
                 'max:3',
                 Rule::unique('data_kategori_barang', 'id_kategori')
-                    ->ignore($dataKategoriBarang->id_kategori, 'id_kategori'),
+                    ->ignore($id, 'id_kategori'),
             ],
 
             'kategori' => [
@@ -93,7 +93,7 @@ class DataKategoriBarangController extends Controller
                 'string',
                 'max:100',
                 Rule::unique('data_kategori_barang', 'kategori')
-                    ->ignore($dataKategoriBarang->id_kategori, 'id_kategori'),
+                    ->ignore($id, 'id_kategori'),
             ],
         ], [
             'id_kategori.required' => 'ID kategori wajib diisi.',

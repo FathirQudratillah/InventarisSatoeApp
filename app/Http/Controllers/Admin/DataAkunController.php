@@ -172,20 +172,17 @@ class DataAkunController extends Controller
             $role = auth()->user()->role;
 
             $validated = $request->validate([
-                'nis' => 'required|max:10',
                 'nama' => 'required|max:255',
-                'email' => 'required|email|max:255',
-                'jenis_kelamin' => 'required|in:L,P',
-                'no_kontak' => 'required|max:15',
+                'jenis_kelamin' => 'required',
                 'alamat' => 'required',
             ]);
 
             $akun->$role()->update([
-                'nis' => $request->nis,
+                
                 'nama' => $request->nama,
-                'email' => $request->email,
+                
                 'jenis_kelamin' => $request->jenis_kelamin,
-                'no_kontak' => $request->no_kontak,
+               
                 'alamat' => $request->alamat,
             ]);
 

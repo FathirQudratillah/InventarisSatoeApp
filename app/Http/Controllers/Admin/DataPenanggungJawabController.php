@@ -11,7 +11,7 @@ class DataPenanggungJawabController extends Controller
 {
     public function index()
     {
-        $penanggungJawabs = DataPenanggungJawab::All();
+        $penanggungJawabs = DataPenanggungJawab::orderBy('id_pj')->get();
         return view('data-penanggung-jawab.index', compact('penanggungJawabs'));
     }
 
@@ -90,7 +90,7 @@ class DataPenanggungJawabController extends Controller
             'no_kontak' => [
                 'required',
                 Rule::unique('data_penanggung_jawab', 'no_kontak')
-                    ->ignore($penanggungJawab->id, 'id')
+                    ->ignore($id, 'id_pj')
             ],
         ], [
             'nama.required'              => 'Nama wajib diisi.',

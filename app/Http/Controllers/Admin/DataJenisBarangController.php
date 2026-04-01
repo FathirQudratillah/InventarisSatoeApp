@@ -13,7 +13,7 @@ class DataJenisBarangController extends Controller
 {
     public function index()
     {
-        $jenisBarangs = DataJenisBarang::All();
+        $jenisBarangs = DataJenisBarang::orderBy('id_kategori')->orderBy('jenis_barang')->get();
         return view('data-jenis-barang.index', compact('jenisBarangs'));
     }
 
@@ -22,8 +22,8 @@ class DataJenisBarangController extends Controller
      */
     public function create()
     {
-        $jenis_barang = DataJenisBarang::All();
-        $id_kategori = DataKategoriBarang::All();
+        $jenis_barang = DataJenisBarang::select('jenis_barang')->get();
+        $id_kategori = DataKategoriBarang::select('id_kategori')->get();
         return view('data-jenis-barang.create', compact('jenis_barang', 'id_kategori'));
     }
 
@@ -94,7 +94,7 @@ class DataJenisBarangController extends Controller
     public function edit(string $jenis_barang)
     {
         $jenis_barang = DataJenisBarang::findOrFail($jenis_barang);
-        $id_kategori = DataKategoriBarang::All();
+        $id_kategori = DataKategoriBarang::select('id_kategori')->get();
         return view('data-jenis-barang.edit', compact('jenis_barang', 'id_kategori'));
     }
 
@@ -105,41 +105,6 @@ class DataJenisBarangController extends Controller
     {
 
 
-        $request->validate([
-            'angkatan' => [
-                'required',
-                'string',
-                'max:2',
-                Rule::unique('data_angkatan', 'angkatan')
-                    ->ignore($dataAngkatan->id_angkatan, 'id_angkatan'),
-            ],
-
-            'tahun_masuk' => [
-                'required',
-                'digits:4',
-                Rule::unique('data_angkatan', 'tahun_masuk')
-                    ->ignore($dataAngkatan->id_angkatan, 'id_angkatan'),
-            ],
-
-            'tahun_lulus' => [
-                'required',
-                'digits:4',
-                Rule::unique('data_angkatan', 'tahun_lulus')
-                    ->ignore($dataAngkatan->id_angkatan, 'id_angkatan'),
-            ],
-        ], [
-            'angkatan.required' => 'Angkatan wajib diisi.',
-            'angkatan.max'      => 'Angkatan maksimal 2 huruf.',
-            'angkatan.unique'   => 'Angkatan sudah terdaftar.',
-
-            'tahun_masuk.required' => 'Tahun masuk wajib diisi.',
-            'tahun_masuk.digits'   => 'Tahun masuk harus 4 digit.',
-            'tahun_masuk.unique'   => 'Tahun masuk sudah terdaftar.',
-
-            'tahun_lulus.required' => 'Tahun lulus wajib diisi.',
-            'tahun_lulus.digits'   => 'Tahun lulus harus 4 digit.',
-            'tahun_lulus.unique'   => 'Tahun lulus sudah terdaftar.',
-        ]);
         try {
             $jenis_barang = DataJenisBarang::findOrFail($id);
 
