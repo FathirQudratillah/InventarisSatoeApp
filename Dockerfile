@@ -5,7 +5,8 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libpq-dev \
-    zip unzip git curl
+    zip unzip git curl\
+    nodejs npm
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
@@ -21,4 +22,6 @@ WORKDIR /var/www
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
+RUN npm install
+RUN npm run build
 CMD php artisan serve --host=0.0.0.0 --port=8000
