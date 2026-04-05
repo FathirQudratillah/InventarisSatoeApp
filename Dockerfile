@@ -36,4 +36,4 @@ RUN npm run build
 RUN ls -la public/build && ls -la public/build/assets
 
 # run Laravel (WAJIB pakai $PORT)
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD php -S 0.0.0.0:$PORT -t public
