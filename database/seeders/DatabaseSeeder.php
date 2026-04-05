@@ -21,21 +21,21 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
         $this->call([
-            DataJurusanSeeder::class,
-            DataAngkatanSeeder::class,
-            DataRuangSeeder::class,
-            DataKelasSeeder::class,
+            // DataJurusanSeeder::class,
+            // DataAngkatanSeeder::class,
+            // DataRuangSeeder::class,
+            // DataKelasSeeder::class,
             DataAkunSeeder::class,
-            DataSiswaSeeder::class,
-            DataGuruSeeder::class,
+            // DataSiswaSeeder::class,
+            // DataGuruSeeder::class,
             DataAdminSeeder::class,
-            DataPenanggungJawabSeeder::class,
-            DataKategoriBarangSeeder::class,
-            DataJenisBarangSeeder::class,
-            DataBarangSeeder::class,
-            PemeliharaanBarangSeeder::class,
-            PeminjamanBarangSeeder::class,
-            DetailPeminjamanSeeder::class,
+            // DataPenanggungJawabSeeder::class,
+            // DataKategoriBarangSeeder::class,
+            // DataJenisBarangSeeder::class,
+            // DataBarangSeeder::class,
+            // PemeliharaanBarangSeeder::class,
+            // PeminjamanBarangSeeder::class,
+            // DetailPeminjamanSeeder::class,
 
 
         ]);
