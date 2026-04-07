@@ -20,4 +20,9 @@ class DataRuang extends Model
     protected $primaryKey = 'id_ruang';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function barang()
+    {
+        return $this->hasMany(DataBarang::class, 'id_ruang', 'id_ruang');
+    }
 }

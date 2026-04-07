@@ -23,7 +23,7 @@
                     <tr>
                         <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kode
                             Barang</th>
-                        <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Id
+                        <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                             Ruang</th>
                         <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                             Jenis Barang</th>
@@ -48,11 +48,11 @@
                                 {{ $barang->kode_barang }}
                             </td>
                             <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
-                                {{ $barang->id_ruang }}
+                                {{ $barang->ruang->nama_ruang }}
                             </td>
 
                             <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
-                                {{ $barang->jenis_barang }}
+                                {{ $barang->jenis->nama_barang }}
                             </td>
 
                             <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">

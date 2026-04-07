@@ -13,7 +13,7 @@ class PeminjamanBarangController extends Controller
 {
     public function index()
     {
-        $peminjamanBarangs = PeminjamanBarang::All();
+        $peminjamanBarangs = PeminjamanBarang::with(['user:user_id','admin:user_id','user.siswa:user_id,nama','user.guru:user_id,nama', 'admin.admin:user_id,nama'])->get();
         return view('peminjaman-barang.index', compact('peminjamanBarangs'));
     }
 

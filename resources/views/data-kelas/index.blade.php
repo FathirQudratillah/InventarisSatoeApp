@@ -17,7 +17,7 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">ID Kelas</th>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">ID Jurusan</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Jurusan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Angkatan</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kelas</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Subkelas</th>
@@ -30,7 +30,7 @@
                         @forelse ($akun as $kelas)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $kelas->id_kelas }}</td>
-                                <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $kelas->id_jurusan }}</td>
+                                <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $kelas->jurusan->jurusan }}</td>
                                 <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $kelas->angkatan }}</td>
                                 <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $kelas->kelas }}</td>
                                 <td class="px-4 py-2 md:px-6 md:py-3 text-sm text-gray-700">{{ $kelas->subkelas }}</td>

@@ -11,7 +11,7 @@ class DetailPeminjamanController extends Controller
 {
     public function index()
     {
-        $detailPeminjamans = DetailPeminjaman::All();
+        $detailPeminjamans = DetailPeminjaman::with(['barang:kode_barang,jenis_barang','barang.jenis:jenis_barang,nama_barang'])->get();
         return view('detail-peminjaman.index', compact('detailPeminjamans'));
     }
 

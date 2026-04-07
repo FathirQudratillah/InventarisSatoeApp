@@ -37,7 +37,7 @@
                                     {{ $jenis_barang->jenis_barang }}
                                 </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
-                                    {{ $jenis_barang->id_kategori }}
+                                    {{ $jenis_barang->kategori->kategori }}
                                 </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $jenis_barang->nama_barang }}

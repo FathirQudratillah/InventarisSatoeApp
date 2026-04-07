@@ -13,7 +13,7 @@ class PemeliharaanBarangController extends Controller
 {
     public function index()
     {
-        $pemeliharaanBarangs = PemeliharaanBarang::with(['barang', 'penanggungjawab'])
+        $pemeliharaanBarangs = PemeliharaanBarang::with(['barang:kode_barang,jenis_barang', 'barang.jenis:jenis_barang,nama_barang', 'penanggungjawab'])
             ->orderBy('tanggal_pemeliharaan', 'desc')
             ->get();
 
