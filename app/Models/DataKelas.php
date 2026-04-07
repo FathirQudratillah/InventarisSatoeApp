@@ -20,4 +20,8 @@ class DataKelas extends Model
         'kelas',
         'subkelas'
     ];
+
+    public function jurusan() {
+        return $this->belongsTo(DataJurusan::class, 'id_jurusan', 'id_jurusan');
+    }
 }

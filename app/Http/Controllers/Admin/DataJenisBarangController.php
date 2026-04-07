@@ -13,7 +13,7 @@ class DataJenisBarangController extends Controller
 {
     public function index()
     {
-        $jenisBarangs = DataJenisBarang::orderBy('id_kategori')->orderBy('jenis_barang')->get();
+        $jenisBarangs = DataJenisBarang::with('kategori:id_kategori,kategori')->orderBy('id_kategori')->orderBy('jenis_barang')->get();
         return view('data-jenis-barang.index', compact('jenisBarangs'));
     }
 

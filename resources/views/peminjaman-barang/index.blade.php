@@ -14,7 +14,7 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Id Peminjaman</th>
-                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">User Id</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Data User</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Data Admin</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Status Peminjaman</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal Peminjaman</th>
@@ -29,11 +29,11 @@
                                     {{ $peminjaman_barang->id_peminjaman }}
                                 </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
-                                    {{ $peminjaman_barang->user_id }}
+                                    {{ $peminjaman_barang->user->siswa?->nama ?? $peminjaman_barang->user->guru?->nama }}
                                 </td>
                                 
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
-                                    {{ $peminjaman_barang->data_admin }}
+                                    {{ $peminjaman_barang->admin->admin->nama }}
                                 </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $peminjaman_barang->status_peminjaman }}

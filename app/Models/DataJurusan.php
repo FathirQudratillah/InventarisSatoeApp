@@ -16,4 +16,9 @@ class DataJurusan extends Model
     protected $primaryKey = 'id_jurusan';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function kelas()
+    {
+        return $this->hasMany(DataJurusan::class, 'id_jurusan', 'id_jurusan');
+    }
 }

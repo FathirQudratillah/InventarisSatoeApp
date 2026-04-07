@@ -15,6 +15,7 @@
                         <tr>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Id Detail</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kode Barang</th>
+                            <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Barang</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Id Peminjaman</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kondisi Sebelum</th>
                             <th class="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 uppercase">Kondisi Sesudah</th>
@@ -30,6 +31,9 @@
                                 </td>
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
                                     {{ $detail_peminjaman->kode_barang }}
+                                </td>
+                                <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">
+                                    {{ $detail_peminjaman->barang->jenis->nama_barang }}
                                 </td>
                                 
                                 <td class="px-4 py-1 md:px-6 md:py-2 text-sm text-gray-700">

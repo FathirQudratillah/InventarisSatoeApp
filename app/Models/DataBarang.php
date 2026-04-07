@@ -29,6 +29,10 @@ class DataBarang extends Model
     {
         return $this->belongsTo(DataJenisBarang::class, 'jenis_barang', 'jenis_barang');
     }
+    public function ruang()
+    {
+        return $this->belongsTo(DataRuang::class, 'id_ruang', 'id_ruang');
+    }
 
     public function detail()
     {

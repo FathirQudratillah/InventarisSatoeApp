@@ -30,4 +30,8 @@ class PeminjamanBarang extends Model
     {
         return $this->belongsTo(DataAkun::class, 'user_id', 'user_id');
     }
+    public function admin()
+    {
+        return $this->belongsTo(DataAkun::class, 'data_admin', 'user_id');
+    }
 }

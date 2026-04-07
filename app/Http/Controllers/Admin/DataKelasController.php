@@ -14,7 +14,7 @@ class DataKelasController extends Controller
 {
     public function index()
     {
-        $akun = DataKelas::orderBy('angkatan', 'desc')
+        $akun = DataKelas::with('jurusan:id_jurusan,jurusan')->orderBy('angkatan', 'desc')
             ->orderBy('id_jurusan')
             ->orderBy('subkelas')->get();
         return view('data-kelas.index', compact('akun'));
