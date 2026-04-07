@@ -135,7 +135,7 @@ class PeminjamanBarangController extends Controller
         }
     }
 
-    public function kembalikan(string $id)
+    public function kembalikan(Request $request, string $id)
     {
         try {
 
@@ -150,14 +150,14 @@ class PeminjamanBarangController extends Controller
                 if ($detail->barang) {
 
                     $detail->barang->update([
-                        'status_barang' => 'tersedia'
+                        'kondisi_barang' => $request->kondisi_barang
                     ]);
                 }
             }
 
             return back()->with('success', 'Barang berhasil dikembalikan');
         } catch (\Exception $e) {
-
+            
             return back()->with('error', 'Gagal menerima pengembalian');
         }
     }

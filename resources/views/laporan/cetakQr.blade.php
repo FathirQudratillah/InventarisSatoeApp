@@ -15,10 +15,25 @@
 
             <form action="{{ route('cetakQrPdf') }}" method="POST">
                 @csrf
-                <div class="mb-4 ">
+                <div class="mb-4 flex justify-between">
                     <label class="flex items-center gap-2 cursor-pointer font-medium">
                         <input type="checkbox" id="selectAll" class="w-4 h-4">
                         <span>Pilih Semua</span>
+                    </label>
+                    <label>
+                        <span>Size : </span>
+                        <select class="border border-gray-300 rounded-lg" name="size" id="">
+                            <option value="1">1x1</option>
+                            <option value="2">2x2</option>
+                            <option value="3">3x3</option>
+                            <option value="4">4x4</option>
+                            <option value="5">5x5</option>
+                            <option value="6">6x6</option>
+                            <option value="7">7x7</option>
+                            <option value="8">8x8</option>
+                            <option value="9">9x9</option>
+                            <option value="10">10x10</option>
+                        </select>
                     </label>
                 </div>
 

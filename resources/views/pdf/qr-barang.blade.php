@@ -22,10 +22,7 @@
         padding: 5mm 0;
     }
 
-    .qr {
-        width: 4cm;
-        height: 4cm;
-    }
+    
 
     .kode {
         font-size: 10px;
@@ -40,7 +37,7 @@
     @foreach($barangs as $index => $barang)
 
         <td>
-            <img class="qr" src="data:image/png;base64,{{ $barang->qr }}">
+            <img style="width: {{ $size }}cm; height: {{ $size }}cm" src="data:image/png;base64,{{ $barang->qr }}">
             <div class="kode">{{ $barang->kode_barang }}</div>
         </td>
 

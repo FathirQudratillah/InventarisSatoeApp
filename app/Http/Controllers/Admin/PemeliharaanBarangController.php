@@ -63,7 +63,7 @@ class PemeliharaanBarangController extends Controller
                 $newNumber = 1;
             }
 
-            $formattedNumber = str_pad($newNumber, 3, '0', STR_PAD_LEFT);
+            $formattedNumber = str_pad($newNumber, 2, '0', STR_PAD_LEFT);
 
             PemeliharaanBarang::create([
                 'id_pemeliharaan' => 'PMH-' . $request->kode_barang . '-' . $formattedNumber,
@@ -73,6 +73,10 @@ class PemeliharaanBarangController extends Controller
                 'tanggal_pemeliharaan' => $request->tanggal_pemeliharaan,
                 'keterangan' => $request->keterangan,
             ]);
+
+            $barang = DataBarang::findOrFail($request->kode_barang);
+            $barang->kondisi_barang = 'Baik';
+            $barang->save();
 
             DB::commit();
 

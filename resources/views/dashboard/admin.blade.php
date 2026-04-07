@@ -184,10 +184,13 @@
                                 </svg>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <p class="text-xs font-mono text-slate-400">{{ $barang->id_peminjaman }}</p>
+                                <p class="text-xs font-mono text-slate-400">
+                                    {{ $barang->id_peminjaman . '---' . ($barang->user->siswa?->nama ?? $barang->user->guru?->nama) }}
+                                </p>
                                 @foreach ($barang->detail as $detail)
                                     <p class="text-sm md:text-base font-medium text-slate-800 truncate">
-                                        {{ $detail->kode_barang ?? 'Nama tidak tersedia' }}</p>
+                                        {{ $detail->barang->jenis->kategori->kategori . ' ' . $detail->barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}
+                                    </p>
                                 @endforeach
                             </div>
                             <a href="{{ route('peminjaman-barang.accept', $barang->id_peminjaman) }}"
@@ -231,16 +234,67 @@
                                 </svg>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <p class="text-xs font-mono text-slate-400">{{ $barang->id_peminjaman }}</p>
+                                <p class="text-xs font-mono text-slate-400">
+                                    {{ $barang->id_peminjaman . ' <<--->> ' . ($barang->user->siswa?->nama . ' ' . $barang->user->siswa?->id_kelas ?? $barang->user->guru?->nama) }}
+                                </p>
                                 @foreach ($barang->detail as $detail)
                                     <p class="text-sm md:text-base font-medium text-slate-800 truncate">
-                                        {{ $detail->kode_barang ?? 'Nama tidak tersedia' }}</p>
+                                        {{ $detail->barang->jenis->kategori->kategori . ' ' . $detail->barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}
+                                    </p>
                                 @endforeach
                             </div>
-                            <a href="{{ route('peminjaman-barang.kembalikan', $barang->id_peminjaman) }}"
-                                class="text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 font-medium transition-colors flex-shrink-0">
-                                Terima
-                            </a>
+                            <div x-data="{ open: false }" class="p-6">
+                                <a @click="open = true"
+                                    class="text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 font-medium transition-colors flex-shrink-0">
+                                    Terima
+                                </a>
+
+                                <div x-show="open" class="fixed inset-0 bg-black flex items-center justify-center"
+                                    x-transition>
+
+                                    <div @click.outside="open = false"
+                                        class="bg-white p-6 rounded shadow-2xl w-full max-w-xl h-1/2">
+                                        <h2
+                                        class="text-xl text-center font-bold mb-2">
+                                        Konfirmasi Pengembalian
+                                        </h2>
+                                        <p class="mb-2">Nama Barang : </p>
+                                        <ul class="mb-4 ml-6">
+                                            @foreach ($barang->detail as $detail)
+                                                <li>·
+                                                    {{ $detail->barang->jenis->kategori->kategori . ' ' . $detail->barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                        @php
+                                            $kondisiList = ['Baik', 'Rusak'];
+                                        @endphp
+                                        <form
+                                            action="{{ route('peminjaman-barang.kembalikan', $barang->id_peminjaman) }}"
+                                            method="post">
+                                            @csrf
+
+                                            <x-select name="kondisi_barang">
+                                                @foreach ($kondisiList as $kondisi)
+                                                    <option value="{{ $kondisi }}"
+                                                        {{ old('kondisi_barang') == $kondisi ? 'selected' : '' }}>
+                                                        {{ $kondisi }}
+                                                    </option>
+                                                @endforeach
+                                            </x-select>
+                                            <button @click="open = false" 
+                                                class="mt-4 text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 font-medium transition-colors flex-shrink-0">
+                                                Tutup
+                                            </button>
+                                            <button type="submit"
+                                                class="text-xs md:text-sm px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 font-medium transition-colors flex-shrink-0">
+                                                Terima
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     @empty
                         <div class="text-center text-slate-400 py-8 text-sm">Tidak ada permintaan pengembalian.</div>
@@ -249,6 +303,8 @@
             </div>
         </div>
     @endif
+
+
 
     {{-- TOP 3 BARANG TERPOPULER - MODERN CARDS --}}
     <div class="mb-5 md:mb-6">
@@ -267,7 +323,7 @@
                     'bg-slate-200 text-slate-700',
                     'bg-orange-100 text-orange-700',
                 ];
-               
+
             @endphp
 
             @forelse($topBarang as $index => $item)
@@ -389,7 +445,7 @@
                                 {{ $barang->jenis->nama_barang ?? 'Nama tidak tersedia' }}</p>
                         </div>
                         <span class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-600 flex-shrink-0 font-medium">
-                            Dipinjam
+                            {{ $barang->kondisi_barang != 'Baik' ? $barang->kondisi_barang : 'Dipinjam' }}
                         </span>
                     </div>
                 @empty
@@ -444,8 +500,12 @@
                                     class="text-xs font-bold">{{ strtoupper(substr($activity['data']->user_id, 0, 2)) }}</span>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-slate-800">{{ $activity['data']->user_id }}</p>
+                                <p class="text-sm font-medium text-slate-800">
+                                    {{ $activity['data']->user->siswa->nama ?? $activity['data']->user->guru->nama }}
+                                </p>
                                 <p class="text-xs text-slate-400">Peminjaman · {{ $activity['data']->id_peminjaman }}
+                                    {{ $activity['data']->user->siswa?->id_kelas ? ' · ' . $activity['data']->user->siswa?->id_kelas : '' }}
+                                    · {{ $activity['data']->user->user_id }}
                                 </p>
                             </div>
                             <div class="text-right flex-shrink-0">
@@ -472,9 +532,13 @@
                                 </svg>
                             </div>
                             <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-slate-800">{{ $activity['data']->id_pj }}</p>
+                                <p class="text-sm font-medium text-slate-800">
+                                    {{ $activity['data']->barang->jenis->kategori->kategori . ' ' . $activity['data']->barang->jenis->nama_barang }}
+                                </p>
                                 <p class="text-xs text-slate-400">Pemeliharaan ·
-                                    {{ $activity['data']->kegiatan_pemeliharaan }}</p>
+                                    {{ $activity['data']->kegiatan_pemeliharaan }} ·
+                                    {{ $activity['data']->penanggungjawab->nama }} ·
+                                    {{ $activity['data']->penanggungjawab->nama_perusahaan }}</p>
                             </div>
                             <div class="text-right flex-shrink-0">
                                 <span
@@ -520,8 +584,11 @@
                                 class="text-indigo-600 text-xs font-bold">{{ strtoupper(substr($item->user_id, 0, 2)) }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-slate-800 truncate">{{ $item->user_id }}</p>
-                            <p class="text-xs text-slate-400 truncate">{{ $item->id_peminjaman }}</p>
+                            <p class="text-sm font-medium text-slate-800 truncate">
+                                {{ $item->user->siswa?->nama ?? $item->user->guru?->nama }}</p>
+                            <p class="text-xs text-slate-400 truncate"> {{ $item->id_peminjaman }}
+                                {{ $item->user->siswa?->id_kelas ? ' · ' . $item->user->siswa?->id_kelas : '' }} ·
+                                {{ $item->user->user_id }} </p>
                         </div>
                         <span
                             class="text-xs px-2 py-1 rounded-full font-medium flex-shrink-0
@@ -568,9 +635,13 @@
                                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                             </svg>
                         </div>
+
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-slate-800 truncate">{{ $item->id_pj }}</p>
-                            <p class="text-xs text-slate-400 truncate">{{ $item->kegiatan_pemeliharaan }}</p>
+                            <p class="text-sm font-medium text-slate-800 truncate">
+                                {{ $item->barang->jenis->kategori->kategori . ' ' . $item->barang->jenis->nama_barang }}
+                            </p>
+                            <p class="text-xs text-slate-400 truncate">{{ $item->kegiatan_pemeliharaan }} ·
+                                {{ $item->penanggungjawab->nama }} · {{ $item->penanggungjawab->nama_perusahaan }}</p>
                         </div>
                         <span
                             class="text-xs px-2 py-1 rounded-full font-medium flex-shrink-0
