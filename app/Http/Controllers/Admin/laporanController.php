@@ -193,6 +193,7 @@ class laporanController extends Controller
         ]);
 
         $barangs = DataBarang::whereIn('kode_barang', $request->barang_ids)->get();
+        $size = $request->size;
 
         foreach ($barangs as $barang) {
             $result = Builder::create()
@@ -204,7 +205,7 @@ class laporanController extends Controller
             $barang->qr = base64_encode($result->getString());
         }
 
-        $pdf = Pdf::loadView('pdf.qr-barang', compact('barangs'));
+        $pdf = Pdf::loadView('pdf.qr-barang', compact('barangs', 'size'));
 
         return $pdf->download('qr-barang.pdf');
     }

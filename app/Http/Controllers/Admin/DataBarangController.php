@@ -109,8 +109,7 @@ class DataBarangController extends Controller
     {
         $request->validate([
             'id_ruang'         => 'required|exists:data_ruang,id_ruang',
-            'jenis_barang'     => 'required|exists:data_jenis_barang,jenis_barang',
-            'kondisi_barang'   => 'required|in:Baik,Rusak,Rusak Ringan',
+            'kondisi_barang'   => 'required|in:Baik,Rusak,Perbaikan',
             'tahun_perolehan'  => 'required|digits:4|integer|min:1900|max:' . date('Y'),
             'keterangan'       => 'nullable|string|max:255',
         ], [

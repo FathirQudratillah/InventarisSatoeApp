@@ -266,7 +266,10 @@
                             {{ $item->tanggal_pengembalian ?? '-' }}</p>
                         @if ($item->detail && $item->detail->count())
                             <p class="text-[10px] md:text-xs text-slate-400 truncate">
-                                Barang: {{ $item->detail->pluck('kode_barang')->implode(', ') }}
+                                Barang:
+                                {{ $item->detail->map(function ($d) {
+                                        return $d->barang->jenis->nama_barang ?? '-';
+                                    })->implode(', ') }}
                             </p>
                         @endif
                     </div>
@@ -401,7 +404,9 @@
                             <p class="text-[10px] md:text-xs text-slate-400 truncate">
                                 Peminjaman ·
                                 @if ($item->detail && $item->detail->count())
-                                    {{ $item->detail->pluck('kode_barang')->implode(', ') }}
+                                    {{ $item->detail->map(function ($d) {
+                                            return $d->barang->jenis->nama_barang ?? '-';
+                                        })->implode(', ') }}
                                 @else
                                     -
                                 @endif
@@ -455,7 +460,11 @@
                             <p class="text-xs md:text-sm font-medium text-slate-800 truncate">
                                 {{ $item->id_peminjaman }}</p>
                             <p class="text-[10px] md:text-xs text-slate-400 truncate">Dikembalikan:
-                                {{ $item->tanggal_pengembalian ?? '-' }}</p>
+                                {{ $item->tanggal_pengembalian ?? '-' }} Barang:
+                                {{ $item->detail->map(function ($d) {
+                                        return $d->barang->jenis->nama_barang ?? '-';
+                                    })->implode(', ') }}
+                            </p>
                         </div>
                         <div class="text-right flex-shrink-0">
                             <span

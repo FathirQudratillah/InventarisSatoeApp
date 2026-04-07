@@ -86,7 +86,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/peminjaman/{id}/accept', [PeminjamanBarangController::class, 'accept'])
             ->name('peminjaman-barang.accept');
 
-        Route::get('/peminjaman/{id}/kembalikan', [PeminjamanBarangController::class, 'kembalikan'])
+        Route::post('/peminjaman/{id}/kembalikan', [PeminjamanBarangController::class, 'kembalikan'])
             ->name('peminjaman-barang.kembalikan');
 
         Route::get('/laporan', [laporanController::class, 'index'])

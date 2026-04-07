@@ -37,6 +37,6 @@ class DataBarang extends Model
 
     public function pemeliharaanbarang()
     {
-        return $this->belongsTo(pemeliharaanbarang::class, 'kode_barang', 'kode_barang');
+        return $this->hasMany(pemeliharaanbarang::class, 'kode_barang', 'kode_barang');
     }
 }

@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.3.0/dist/flowbite.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="shortcut icon" href="{{ asset('images/logo_notext.png') }}" type="image/x-icon">
 
 
     <title>{{ $title }}</title>
