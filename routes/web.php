@@ -17,7 +17,6 @@ use App\Http\Controllers\Admin\DetailPeminjamanController;
 use App\Http\Controllers\Admin\laporanController;
 use App\Http\Controllers\Admin\PemeliharaanBarangController;
 use App\Http\Controllers\Admin\PeminjamanBarangController;
-
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -29,14 +28,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::resource('register', RegisterController::class);
 
-Route::get('/scan', function () {
-    return view('scan');
-});
-
-Route::post('/scan', [ScanController::class, 'store'])
-    ->name('scan.store');
-
-
+//semua user yang sudah login bisa akses fitur detail akun, ubah data akun, dan ubah password
 Route::middleware(['auth'])
     ->group(function () {
 
@@ -51,6 +43,7 @@ Route::middleware(['auth'])
         Route::put('/ubah-password', [DataAkunController::class, 'ubahPassword'])->name('ubah-password');
     });
 
+//admin bisa akses semua fitur, buat laporan, dan cetak laporan
 Route::middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/admin', [DashboardController::class, 'admin'])->name('dashboard.admin');
@@ -113,6 +106,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/laporan/pemeliharaan/cetak', [laporanController::class, 'cetakPemeliharaan'])
             ->name('laporan.pemeliharaan.cetak');
     });
+
+//siswa dan guru bisa akses dashboard, buat peminjaman barang, dan kembalikan barang
 
 Route::middleware(['auth', 'role:siswa,guru'])
     ->group(function () {

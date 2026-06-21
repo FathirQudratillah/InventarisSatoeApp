@@ -3,7 +3,7 @@
         Peminjaman Barang
     </x-slot:title>
 
-    <div class="md:col-span-2 " id="barang-wrapper">
+    <div class="md:col-span-2 " id="barang-wrapper">        
         <div class="barang-item">
 
             <div class="flex justify-between items-center mb-2">

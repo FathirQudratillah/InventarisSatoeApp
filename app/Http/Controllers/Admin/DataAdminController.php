@@ -46,17 +46,6 @@ class DataAdminController extends Controller
         return redirect('data-admin.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $nip)
     {
         $admin = DataAdmin::findOrFail($nip);
@@ -64,17 +53,6 @@ class DataAdminController extends Controller
         return view('data-admin.edit', compact('admin', 'user_id'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $nip)
     {
         $admin = DataAdmin::find($nip);
